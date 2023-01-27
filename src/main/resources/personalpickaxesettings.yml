@@ -1,0 +1,7 @@
+Material: DIAMOND_PICKAXE
+Name: "&e%player_name%'s &fPickaxe"
+Lore:
+  - ""
+  - "&7Right click to open"
+  - "&7the pickaxe menu."
+Glow_When_Not_Enchanted: true

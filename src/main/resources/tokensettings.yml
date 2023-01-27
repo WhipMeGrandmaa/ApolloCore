@@ -1,0 +1,7 @@
+Withdraw_Item:
+  Material: PAPER
+  Name: "&a&l%tokens% TOKENS"
+  Lore:
+    - ""
+    - "&7Right click to cash in."
+  Glow: true

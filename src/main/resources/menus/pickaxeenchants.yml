@@ -1,0 +1,152 @@
+First_Menu:
+  Title: "&b&lCustom Enchants"
+  Size: "9 * 5"
+  Buttons:
+    Black_Hole:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 11
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: BLACK_HOLE
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 10
+    Haste:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 12
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: HASTE
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 5
+    Jack_Hammer:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 13
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: JACK_HAMMER
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 8
+    Space_Droplets:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 14
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: SPACE_DROPLETS
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 15
+    Speed:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 15
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: SPEED
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 14
+    Star_Multiplier:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 20
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: STAR_MULTIPLIER
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 20
+    Token_Greed:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 21
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: TOKEN_GREED
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 25
+    Wrath:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 22
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: WRATH
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 27
+    Fortune:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 23
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: FORTUNE
+        Max_Level_For_Default_Enchants: 25000
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 4000
+        Tokens_By_Level:
+          1: 23
+          2: 50
+          3: 400
+          4: 1000
+          5: 3000
+    Efficiency:
+      Title: "&e%enchant%"
+      Lore:
+        - ""
+        - "&7Level: &f%level%"
+        - "&7Upgrade: &f%price% tokens"
+      Slot: 24
+      Glow: true
+      Material: ENCHANTED_BOOK
+      Click:
+        Enchantment: EFFICIENCY
+        Max_Level_For_Default_Enchants: 100
+        Level_Zero: "&aClick to purchase!"
+        Tokens: 30
+        Increase_Tokens: 45
+    Player_Stats:
+      Title: "&d%player_name%"
+      Lore:
+        - ""
+        - "&7Rank: %apollocore_rank%"
+        - "&7Tokens: &f%apollocore_tokens%"
+      Slot: 40
+      Material: PLAYER_HEAD
+      Player_Skull: true

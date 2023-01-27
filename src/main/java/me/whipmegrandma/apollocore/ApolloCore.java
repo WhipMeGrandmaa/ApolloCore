@@ -1,0 +1,64 @@
+package me.whipmegrandma.apollocore;
+
+import me.whipmegrandma.apollocore.database.Database;
+import me.whipmegrandma.apollocore.hook.EffectLibHook;
+import me.whipmegrandma.apollocore.hook.PapiHook;
+import me.whipmegrandma.apollocore.hook.VaultHook;
+import me.whipmegrandma.apollocore.listener.MineBombListener;
+import me.whipmegrandma.apollocore.manager.TaskManager;
+import me.whipmegrandma.apollocore.menu.PersonalPickaxeEnchantsMenu;
+import me.whipmegrandma.apollocore.model.MineBomb;
+import me.whipmegrandma.apollocore.model.Rank;
+import org.bukkit.Bukkit;
+import org.mineacademy.fo.Common;
+import org.mineacademy.fo.FileUtil;
+import org.mineacademy.fo.model.HookManager;
+import org.mineacademy.fo.plugin.SimplePlugin;
+
+public final class ApolloCore extends SimplePlugin {
+
+	@Override
+	protected void onPluginStart() {
+	}
+
+	@Override
+	protected void onReloadablesStart() {
+
+		Database.getInstance().connect("jdbc:sqlite:" + FileUtil.getOrMakeFile("database.sqlite").getAbsolutePath());
+
+		if (HookManager.isPlaceholderAPILoaded()) {
+			new PapiHook().register();
+		} else
+			Common.log("PlaceholderAPI not loaded. Some features are disabled.");
+
+		if (HookManager.isVaultLoaded()) {
+			VaultHook.load();
+		} else {
+			Common.log("Vault is not loaded. Disabling plugin.");
+
+			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
+		}
+
+		EffectLibHook.restart();
+
+		TaskManager.restart();
+
+		PersonalPickaxeEnchantsMenu.loadMenus();
+		Rank.loadRanks();
+		MineBomb.loadBombs();
+	}
+
+	@Override
+	protected void onPluginPreReload() {
+	}
+
+	@Override
+	protected void onPluginStop() {
+		MineBombListener.getCooldown().clear();
+		EffectLibHook.disable();
+	}
+
+	public static ApolloCore getInstance() {
+		return (ApolloCore) SimplePlugin.getInstance();
+	}
+}

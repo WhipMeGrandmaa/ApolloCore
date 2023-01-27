@@ -1,0 +1,20 @@
+5x5:
+  Name: "&d&l5x5 &e&lMineBomb"
+  Lore:
+    - ""
+    - "&7Right click to use."
+  Material: ENDER_EYE
+  Glow: true
+  Radius: 5
+  Throw:
+    Velocity: 3.0
+    Sound: ENTITY_EXPERIENCE_BOTTLE_THROW 1.0 1.0
+  Flying:
+    Material: FIRE_CHARGE
+    Particle: END_ROD
+    Sound: BLOCK_BLASTFURNACE_FIRE_CRACKLE 1.0 1.0
+    Chance: 0.5
+  Explosion:
+    Particle: EXPLOSION_NORMAL
+    Sound: ENTITY_GENERIC_EXPLODE 1.0 1.0
+    Chance: 1

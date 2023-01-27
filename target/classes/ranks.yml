@@ -1,0 +1,22 @@
+A:
+  Rank_Formatted: "&d&lA"
+  Next_Rank: B
+  Upgrade_Price: 100
+  Upgrade_Type: UPGRADE
+  First_Rank: true
+B:
+  Rank_Formatted: "&d&lB"
+  Next_Rank: C
+  Upgrade_Price: 200
+  Upgrade_Type: UPGRADE
+C:
+  Rank_Formatted: "&d&lC"
+  Next_Rank: Prestige
+  Upgrade_Price: 300
+  Upgrade_Type: PRESTIGE
+Prestige:
+  Rank_Formatted: "&d&lPrestige-%number%"
+  Upgrade_Price: 300
+  Upgrade_Type: PRESTIGE
+  Infinite_Ranks: true
+  Infinite_Upgrade_Price_Multiplier: 1.25
