@@ -15,6 +15,8 @@ public final class PrestigeCommand extends SimpleCommand {
 
 	public PrestigeCommand() {
 		super("prestige");
+
+		this.setPermission("apollocore.command.prestige");
 	}
 
 	@Override

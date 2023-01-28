@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -103,5 +104,14 @@ public final class PersonalPickaxeListener implements Listener {
 			else
 				Common.log("'First_Menu' menu isn't configured in enchants menu.");
 		}
+	}
+
+	@EventHandler
+	public void onDurabilityDamage(PlayerItemDamageEvent event) {
+		ItemStack hand = event.getItem();
+		boolean isPersonalPickaxe = CompMetadata.hasMetadata(hand, CompData.PICKAXE.toString());
+
+		if (isPersonalPickaxe)
+			event.setCancelled(true);
 	}
 }

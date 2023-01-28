@@ -15,7 +15,7 @@ public class TokensResetSubCommand extends SimpleSubCommand {
 	protected TokensResetSubCommand(SimpleCommandGroup parent) {
 		super(parent, "reset");
 
-		this.setPermission("apollocore.command.reset");
+		this.setPermission("apollocore.command.tokens.reset");
 		this.setUsage("[player]");
 	}
 
@@ -30,7 +30,6 @@ public class TokensResetSubCommand extends SimpleSubCommand {
 
 			return;
 		}
-
 
 		String username = args[0];
 

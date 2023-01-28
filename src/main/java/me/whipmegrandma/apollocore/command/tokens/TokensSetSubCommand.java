@@ -15,7 +15,7 @@ public class TokensSetSubCommand extends SimpleSubCommand {
 	protected TokensSetSubCommand(SimpleCommandGroup parent) {
 		super(parent, "set");
 
-		this.setPermission("apollocore.command.set");
+		this.setPermission("apollocore.command.tokens.set");
 		this.setMinArguments(2);
 		this.setUsage("<player> <amount>");
 	}

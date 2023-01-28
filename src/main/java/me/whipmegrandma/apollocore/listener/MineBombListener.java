@@ -3,7 +3,11 @@ package me.whipmegrandma.apollocore.listener;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.enums.CompData;
 import me.whipmegrandma.apollocore.model.MineBomb;
+import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.util.MineBombUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
+import me.whipmegrandma.apollocore.util.WorldGuardUtil;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -102,6 +106,18 @@ public final class MineBombListener implements Listener {
 
 		EntityUtil.trackFalling(bomb, () -> {
 
+			if (!WorldGuardUtil.testBuild(bomb.getLocation(), player) && player.getGameMode() != GameMode.CREATIVE) {
+				MineBombUtil.give(player, mineBomb, 1);
+				bomb.remove();
+
+				return;
+			}
+
+			Chunk bombChunk = bomb.getLocation().getChunk();
+
+			if (!bombChunk.isLoaded())
+				bombChunk.load();
+
 			if (mineBomb.getExplosionParticle() != null)
 				mineBomb.getExplosionParticle().spawn(bomb.getLocation());
 
@@ -109,12 +125,20 @@ public final class MineBombListener implements Listener {
 				mineBomb.getExplosionParticleSound().play(bomb.getLocation());
 
 			Set<Location> sphereBlocks = BlockUtil.getSphere(bomb.getLocation(), mineBomb.getRadius(), false);
+
+			sphereBlocks.removeIf(location -> !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()));
+
+			if (sphereBlocks.isEmpty())
+				return;
+
+			PlayerCache.from(player).addBlocksBroken(sphereBlocks.size());
+
 			VaultEcoUtil.sell(player, sphereBlocks);
 
 			bomb.remove();
 
 			for (Location location : sphereBlocks) {
-				if (mineBomb.getExplosionParticle() != null && !CompMaterial.isAir(location.getBlock()) && RandomUtil.chanceD(mineBomb.getExplosionParticleChance()))
+				if (mineBomb.getExplosionParticle() != null && RandomUtil.chanceD(mineBomb.getExplosionParticleChance()))
 					mineBomb.getExplosionParticle().spawn(location);
 
 				Remain.setTypeAndData(location.getBlock(), CompMaterial.AIR);
@@ -131,10 +155,9 @@ public final class MineBombListener implements Listener {
 	}
 
 	private int getCooldown(Player player) {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 100; i++)
 			if (PlayerUtil.hasPerm(player, "apollocore.minebomb.cooldown." + i))
 				return i;
-		}
 
 		return 5;
 	}

@@ -18,7 +18,7 @@ public class TokensWithdrawSubCommand extends SimpleSubCommand {
 	protected TokensWithdrawSubCommand(SimpleCommandGroup parent) {
 		super(parent, "withdraw");
 
-		this.setPermission("apollocore.command.withdraw");
+		this.setPermission("apollocore.command.tokens.withdraw");
 		this.setMinArguments(1);
 		this.setUsage("<tokens>");
 	}

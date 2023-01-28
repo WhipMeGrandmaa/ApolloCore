@@ -20,9 +20,9 @@ public class PersonalPickaxeSettings extends YamlStaticConfig {
 	}
 
 	private static void init() {
-		material = getMaterial("Material") != null ? getMaterial("Material") : CompMaterial.DIAMOND_PICKAXE;
-		name = getString("Name") != null ? getString("Name") : "&d&l%player_name% &b&lPickaxe";
-		lore = getStringList("Lore") != null ? getStringList("Lore") : Arrays.asList("", "&7Right click to open", "&7the pickaxe menu.");
-		glow = getBoolean("Glow_When_Not_Enchanted");
+		material = isSet("Material") ? getMaterial("Material") : CompMaterial.DIAMOND_PICKAXE;
+		name = isSet("Name") ? getString("Name") : "&d&l%player_name% &b&lPickaxe";
+		lore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Right click to open", "&7the pickaxe menu.");
+		glow = isSet("Glow_When_Not_Enchanted") ? getBoolean("Glow_When_Not_Enchanted") : false;
 	}
 }

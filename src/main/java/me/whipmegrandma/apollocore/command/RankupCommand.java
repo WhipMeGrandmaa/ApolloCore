@@ -15,6 +15,8 @@ public final class RankupCommand extends SimpleCommand {
 
 	public RankupCommand() {
 		super("rankup");
+
+		this.setPermission("apollocore.command.rankup");
 	}
 
 	@Override

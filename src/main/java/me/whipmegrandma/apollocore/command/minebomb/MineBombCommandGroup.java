@@ -26,7 +26,6 @@ public final class MineBombCommandGroup extends SimpleCommandGroup {
 		return new String[]{Common.colorize("{prefix} The following commands are available:")};
 	}
 
-
 	@Override
 	protected List<SimpleComponent> getNoParamsHeader() {
 		return Arrays.asList(SimpleComponent.of("{prefix} Use /minebomb ? to list the commands."));

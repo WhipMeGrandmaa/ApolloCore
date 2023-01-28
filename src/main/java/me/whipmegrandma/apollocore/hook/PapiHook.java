@@ -2,7 +2,6 @@ package me.whipmegrandma.apollocore.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.whipmegrandma.apollocore.model.PlayerCache;
-import me.whipmegrandma.apollocore.model.Rank;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,13 +37,16 @@ public class PapiHook extends PlaceholderExpansion {
 	public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
 
 		if ("rank".equals(params))
-			return PlayerCache.from(player).getRank() != null ? PlayerCache.from(player).getRank().getRankFormatted() : Rank.getFirstRank() != null ? Rank.getFirstRank().getRankFormatted() : "";
+			return PlayerCache.from(player).getRank() != null ? PlayerCache.from(player).getRank().getRankFormatted() : "";
 
 		if ("rankraw".equals(params))
-			return PlayerCache.from(player).getRank() != null ? PlayerCache.from(player).getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "";
+			return PlayerCache.from(player).getRank() != null ? PlayerCache.from(player).getRank().getName() : "";
 
 		if ("tokens".equals(params))
-			return PlayerCache.from(player).getTokens() != null ? PlayerCache.from(player).getTokens().toString() : "0";
+			return PlayerCache.from(player).getTokens().toString();
+
+		if ("blocksbroken".equals(params))
+			return PlayerCache.from(player).getBlocksBroken().toString();
 
 		return null;
 	}

@@ -1,18 +1,18 @@
 package me.whipmegrandma.apollocore.database;
 
 import lombok.Getter;
+import me.whipmegrandma.apollocore.api.IntermediateDatabase;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.model.Rank;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.Valid;
 import org.mineacademy.fo.collection.SerializedMap;
-import org.mineacademy.fo.database.SimpleDatabase;
 
 import java.sql.ResultSet;
 import java.util.function.Consumer;
 
-public class Database extends SimpleDatabase {
+public class Database extends IntermediateDatabase {
 	@Getter
 	private static Database instance = new Database();
 
@@ -28,6 +28,7 @@ public class Database extends SimpleDatabase {
 				.add("Tokens", "INTEGER")
 				.add("Enchantments", "LONGTEXT")
 				.add("Rank", "LONGTEXT")
+				.add("Blocks_Broken", "INTEGER")
 				.setPrimaryColumn("UUID"));
 	}
 
@@ -93,7 +94,8 @@ public class Database extends SimpleDatabase {
 						"Username", player.getName(),
 						"Tokens", cache.getTokens(),
 						"Enchantments", cache.enchantmentsToMap().toJson(),
-						"Rank", cache.getRank() != null ? cache.getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "No Rank");
+						"Rank", cache.getRank() != null ? cache.getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "No Rank",
+						"Blocks_Broken", cache.getBlocksBroken());
 
 				final String columns = Common.join(map.keySet());
 				final String values = Common.join(map.values(), ", ", value -> value == null || value.equals("NULL") ? "NULL" : "'" + value + "'");

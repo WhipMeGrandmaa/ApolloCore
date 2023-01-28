@@ -28,6 +28,7 @@ First_Menu:
         Enchantment: HASTE
         Level_Zero: "&aClick to purchase!"
         Tokens: 5
+        Increase_Tokens: 45
     Jack_Hammer:
       Title: "&e%enchant%"
       Lore:
@@ -67,6 +68,7 @@ First_Menu:
         Enchantment: SPEED
         Level_Zero: "&aClick to purchase!"
         Tokens: 14
+        Increase_Tokens: 45
     Star_Multiplier:
       Title: "&e%enchant%"
       Lore:

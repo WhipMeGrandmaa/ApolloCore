@@ -130,7 +130,7 @@ public class Rank extends YamlConfig {
 		effect.particleCount = 1;
 		effect.period = 2;
 		effect.iterations = 10;
-		
+
 		effect.start();
 
 		CompSound.ENTITY_ENDER_DRAGON_GROWL.play(player);
@@ -141,7 +141,7 @@ public class Rank extends YamlConfig {
 		if (!this.infiniteRanks)
 			return this.getPathPrefix();
 
-		return this.getPathPrefix() + "-" + this.infiniteNumber;
+		return this.getPathPrefix() + this.infiniteNumber;
 	}
 
 	public static Rank getFirstRank() {
@@ -155,13 +155,13 @@ public class Rank extends YamlConfig {
 			return byName;
 
 		for (Rank rank : getRanks())
-			if (rank.getPathPrefix().equals(name.replaceAll("[0-9]", "").replaceAll("-", ""))) {
+			if (rank.getPathPrefix().equalsIgnoreCase(name.replaceAll("[0-9]", ""))) {
 				int number = Integer.parseInt(name.replaceAll("[^0-9.]", ""));
 
 				return rank.getInfiniteRank(number);
 			}
 
-		return firstRank;
+		return null;
 	}
 
 	public static List<Rank> getRanks() {

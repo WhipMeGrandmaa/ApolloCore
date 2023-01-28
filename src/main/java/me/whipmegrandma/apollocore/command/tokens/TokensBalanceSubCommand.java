@@ -4,7 +4,6 @@ import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
@@ -15,7 +14,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 	protected TokensBalanceSubCommand(SimpleCommandGroup parent) {
 		super(parent, "balance|bal");
 
-		this.setPermission("apollocore.command.balance");
+		this.setPermission("apollocore.command.tokens.balance");
 		this.setUsage("[player]");
 	}
 
@@ -45,7 +44,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 				return;
 			}
 
-			Common.tell(target, "Tokens of " + target.getName() + ": " + tokens);
+			super.tell("Tokens of " + target.getName() + ": " + tokens);
 
 		} else {
 

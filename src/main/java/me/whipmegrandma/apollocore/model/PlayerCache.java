@@ -2,7 +2,6 @@ package me.whipmegrandma.apollocore.model;
 
 import lombok.Data;
 import lombok.Getter;
-import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.manager.EnchantsManager;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -26,25 +25,23 @@ public class PlayerCache {
 	private Integer tokens;
 	private Map<Enchantment, Integer> enchantments;
 	private Rank rank;
+	private Integer blocksBroken;
 
-	private PlayerCache(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank) {
+	private PlayerCache(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken) {
 		this.uuid = uuid;
 		this.username = username;
 		this.tokens = tokens;
 		this.enchantments = enchantments;
 		this.rank = rank;
+		this.blocksBroken = blocksBroken;
 	}
 
 	public void setTokens(Integer tokens) {
 		this.tokens = tokens;
-
-		Database.getInstance().update(this.username, "Tokens", tokens);
 	}
 
 	public void setEnchantment(Enchantment enchantment, Integer level) {
 		this.enchantments.put(enchantment, level);
-
-		Database.getInstance().update(this.username, "Enchantments", this.enchantmentsToMap().toJson());
 	}
 
 	public Integer getEnchantLevel(Enchantment enchantment) {
@@ -53,12 +50,22 @@ public class PlayerCache {
 
 	public void upgradeRank() {
 		this.rank = rank.getNextRank();
-
-		Database.getInstance().update(this.username, "Rank", rank != null ? rank.getName() : "null");
 	}
 
 	public void addToCache() {
 		playerCache.put(this.uuid, this);
+	}
+
+	public void increaseBlocksBroken() {
+		blocksBroken++;
+	}
+
+	public void setBlocksBroken(Integer blocksBroken) {
+		this.blocksBroken = blocksBroken;
+	}
+
+	public void addBlocksBroken(Integer blocksBroken) {
+		this.blocksBroken += blocksBroken;
 	}
 
 	public void removeFromCache() {
@@ -81,7 +88,7 @@ public class PlayerCache {
 		PlayerCache cache = playerCache.get(uuid);
 
 		if (cache == null)
-			cache = new PlayerCache(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null);
+			cache = new PlayerCache(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0);
 
 		return cache;
 	}
@@ -93,9 +100,10 @@ public class PlayerCache {
 			String username = resultSet.getString("Username");
 			Integer tokens = resultSet.getInt("Tokens");
 			Map<Enchantment, Integer> enchants = deserializeEnchants(SerializedMap.fromJson(resultSet.getString("Enchantments")));
-			Rank rank = Rank.getByName(resultSet.getString("Rank"));
+			Rank rank = Rank.getByName(resultSet.getString("Rank")) != null ? Rank.getByName(resultSet.getString("Rank")) : Rank.getFirstRank();
+			Integer blocksBroken = resultSet.getInt("Blocks_Broken");
 
-			return new PlayerCache(uuid, username, tokens, enchants, rank);
+			return new PlayerCache(uuid, username, tokens, enchants, rank, blocksBroken);
 		} catch (Throwable t) {
 			Common.error(t, "Unable to convert data from database.");
 		}

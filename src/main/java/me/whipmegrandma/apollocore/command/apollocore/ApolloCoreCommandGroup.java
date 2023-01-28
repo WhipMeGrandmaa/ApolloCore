@@ -26,7 +26,6 @@ public final class ApolloCoreCommandGroup extends SimpleCommandGroup {
 		return new String[]{Common.colorize("{prefix} The following commands are available:")};
 	}
 
-
 	@Override
 	protected List<SimpleComponent> getNoParamsHeader() {
 		return Arrays.asList(SimpleComponent.of("{prefix} Use /apollocore ? to list the commands."));

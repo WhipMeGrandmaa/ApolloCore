@@ -15,7 +15,7 @@ public class TokensAddSubCommand extends SimpleSubCommand {
 	protected TokensAddSubCommand(SimpleCommandGroup parent) {
 		super(parent, "add");
 
-		this.setPermission("apollocore.command.add");
+		this.setPermission("apollocore.command.tokens.add");
 		this.setMinArguments(2);
 		this.setUsage("<player> <amount>");
 	}
