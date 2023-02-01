@@ -22,6 +22,7 @@ import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,13 +159,13 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 					if (data.enchantment != null && level != null) {
 						formattedTitle = title.replace("%enchant%", ItemUtil.bountifyCapitalized(data.enchantment.getKey().getKey()))
 								.replace("%level%", level.toString())
-								.replace("%price%", data.getTokens0(player).toString());
+								.replace("%price%", NumberFormat.getInstance().format(data.getTokens0(player)));
 						formattedLore = new ArrayList<>();
 
 						for (String line : lore)
 							formattedLore.add(line.replace("%enchant%", ItemUtil.bountifyCapitalized(data.enchantment.getKey().getKey()))
 									.replace("%level%", level.toString())
-									.replace("%price%", data.getTokens0(player).toString()));
+									.replace("%price%", NumberFormat.getInstance().format(data.getTokens0(player))));
 					}
 
 					ItemCreator maker = ItemCreator.of(data.getMaterial(), formattedTitle != null ? formattedTitle : title, formattedLore != null ? formattedLore : lore)

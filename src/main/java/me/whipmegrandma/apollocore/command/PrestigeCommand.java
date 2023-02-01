@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.mineacademy.fo.annotation.AutoRegister;
 import org.mineacademy.fo.command.SimpleCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 @AutoRegister
@@ -27,7 +28,7 @@ public final class PrestigeCommand extends SimpleCommand {
 		PlayerCache cache = PlayerCache.from(player);
 		Rank rank = cache.getRank();
 
-		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.PRESTIGE, "You must use the '/upgrade'.");
+		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.PRESTIGE, "You must use '/rankup'.");
 
 		Rank.UpgradeResult result = rank.upgrade(player);
 
@@ -37,7 +38,7 @@ public final class PrestigeCommand extends SimpleCommand {
 				double balance = economy.getBalance(player);
 				double difference = rank.getUpgradePrice() - balance;
 
-				tell("Insufficient funds. Missing: $" + difference);
+				tell("Insufficient funds. Missing: $" + NumberFormat.getInstance().format(difference));
 
 				break;
 			case MAX_RANK:
@@ -45,7 +46,7 @@ public final class PrestigeCommand extends SimpleCommand {
 
 				break;
 			case SUCCESS:
-				tell("Successfully prestiged to " + cache.getRank().getName() + " for $" + rank.getUpgradePrice() + "!");
+				tell("Successfully prestiged to " + cache.getRank().getName() + " for $" + NumberFormat.getInstance().format(rank.getUpgradePrice()) + "!");
 		}
 	}
 

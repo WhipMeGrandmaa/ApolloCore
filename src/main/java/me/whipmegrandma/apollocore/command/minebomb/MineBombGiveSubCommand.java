@@ -7,11 +7,12 @@ import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
-public class MineBombGiveSubCommand extends SimpleSubCommand {
+public class MinebombGiveSubCommand extends SimpleSubCommand {
 
-	protected MineBombGiveSubCommand(SimpleCommandGroup parent) {
+	protected MinebombGiveSubCommand(SimpleCommandGroup parent) {
 		super(parent, "give");
 
 		this.setPermission("apollocore.command.minebomb.give");
@@ -33,7 +34,7 @@ public class MineBombGiveSubCommand extends SimpleSubCommand {
 
 			MineBombUtil.give(getPlayer(), bomb, amount);
 
-			tell("You have received a " + bomb.getRawName() + " mine bomb.");
+			tell("You have received " + NumberFormat.getInstance().format(amount) + "x " + bomb.getRawName() + " mine bombs.");
 
 			return;
 		}
@@ -48,10 +49,10 @@ public class MineBombGiveSubCommand extends SimpleSubCommand {
 
 		MineBombUtil.give(target, bomb, amount);
 
-		Common.tell(target, "You have received " + amount + "x " + bomb.getRawName() + " mine bombs.");
+		Common.tell(target, "You have received " + NumberFormat.getInstance().format(amount) + "x " + bomb.getRawName() + " mine bombs.");
 
 		if (!getPlayer().equals(target))
-			tell("You gave " + target.getName() + " " + amount + "x " + bomb.getRawName() + " mine bombs.");
+			tell("You gave " + target.getName() + " " + NumberFormat.getInstance().format(amount) + "x " + bomb.getRawName() + " mine bombs.");
 	}
 
 	@Override

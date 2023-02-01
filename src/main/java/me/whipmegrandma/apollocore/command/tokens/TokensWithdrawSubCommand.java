@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command.tokens;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.settings.TokensSettings;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +10,7 @@ import org.mineacademy.fo.command.SimpleSubCommand;
 import org.mineacademy.fo.menu.model.ItemCreator;
 import org.mineacademy.fo.model.HookManager;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class TokensWithdrawSubCommand extends SimpleSubCommand {
 		checkBoolean(tokens >= amount, "Insufficient tokens!");
 		checkBoolean(isInventoryFull(), "Your inventory is full!");
 
-		String tokensString = String.valueOf(amount);
+		String tokensString = NumberFormat.getInstance().format(amount);
 
 		String replacePlaceholdersName = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(getPlayer(), TokensSettings.name) : TokensSettings.name;
 		List<String> replacePlaceholdersLore = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(getPlayer(), TokensSettings.lore) : TokensSettings.lore;
@@ -52,10 +53,10 @@ public class TokensWithdrawSubCommand extends SimpleSubCommand {
 
 		ItemCreator.of(TokensSettings.material, formattedName, formattedLore)
 				.glow(TokensSettings.glow)
-				.tag(CompData.WITHDRAW.toString(), String.valueOf(amount))
+				.tag(CompMetadataTags.WITHDRAW.toString(), String.valueOf(amount))
 				.give(getPlayer());
 
-		super.tell("You withdrew " + amount + " tokens.");
+		super.tell("You withdrew " + NumberFormat.getInstance().format(amount) + " tokens.");
 	}
 
 	private boolean isInventoryFull() {

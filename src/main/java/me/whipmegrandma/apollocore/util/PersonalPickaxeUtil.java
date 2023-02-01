@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.util;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.settings.PersonalPickaxeSettings;
 import org.bukkit.enchantments.Enchantment;
@@ -37,7 +37,7 @@ public class PersonalPickaxeUtil {
 
 		ItemCreator unfinishedPickaxe = ItemCreator.of(PersonalPickaxeSettings.material)
 				.glow(PersonalPickaxeSettings.glow)
-				.tag(CompData.PICKAXE.toString(), CompData.PICKAXE.toString());
+				.tag(CompMetadataTags.PICKAXE.toString(), CompMetadataTags.PICKAXE.toString());
 
 		ItemStack pickaxe = updateEnchants(unfinishedPickaxe, player)
 				.name(replacedName)

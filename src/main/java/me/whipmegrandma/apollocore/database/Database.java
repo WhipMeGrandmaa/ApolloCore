@@ -4,12 +4,16 @@ import lombok.Getter;
 import me.whipmegrandma.apollocore.api.IntermediateDatabase;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.model.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.Valid;
 import org.mineacademy.fo.collection.SerializedMap;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Consumer;
 
 public class Database extends IntermediateDatabase {
@@ -29,6 +33,7 @@ public class Database extends IntermediateDatabase {
 				.add("Enchantments", "LONGTEXT")
 				.add("Rank", "LONGTEXT")
 				.add("Blocks_Broken", "INTEGER")
+				.add("Player_Shop", "LONGTEXT")
 				.setPrimaryColumn("UUID"));
 	}
 
@@ -80,6 +85,27 @@ public class Database extends IntermediateDatabase {
 		});
 	}
 
+	public void loadAll(Consumer<List<PlayerCache>> callback) {
+		this.checkLoadedAndSync();
+
+		Common.runAsync(() -> {
+			List<PlayerCache> dataList = new ArrayList<>();
+
+			this.selectAll("{table}", data -> dataList.add(PlayerCache.fromDatabase(data)));
+
+			for (ListIterator<PlayerCache> iterator = dataList.listIterator(); iterator.hasNext(); ) {
+				Player player = Bukkit.getPlayerExact(iterator.next().getUsername());
+
+				if (player != null) {
+					iterator.remove();
+					iterator.add(PlayerCache.from(player));
+				}
+			}
+
+			Common.runLater(() -> callback.accept(dataList));
+		});
+	}
+
 	public void save(Player player, Consumer<PlayerCache> callback) {
 		this.checkLoadedAndSync();
 
@@ -95,7 +121,8 @@ public class Database extends IntermediateDatabase {
 						"Tokens", cache.getTokens(),
 						"Enchantments", cache.enchantmentsToMap().toJson(),
 						"Rank", cache.getRank() != null ? cache.getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "No Rank",
-						"Blocks_Broken", cache.getBlocksBroken());
+						"Blocks_Broken", cache.getBlocksBroken(),
+						"Player_Shop", cache.shopItemsToMap().toJson().replace("'", "''"));
 
 				final String columns = Common.join(map.keySet());
 				final String values = Common.join(map.values(), ", ", value -> value == null || value.equals("NULL") ? "NULL" : "'" + value + "'");

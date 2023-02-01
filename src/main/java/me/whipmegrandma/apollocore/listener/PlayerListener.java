@@ -5,6 +5,7 @@ import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
+import me.whipmegrandma.apollocore.util.WorldGuardUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,8 +57,10 @@ public final class PlayerListener implements Listener {
 	public void onBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-
-		PlayerCache.from(player).increaseBlocksBroken();
-		VaultEcoUtil.sell(player, block);
+		
+		if (WorldGuardUtil.testBuild(block.getLocation(), player)) {
+			PlayerCache.from(player).increaseBlocksBroken();
+			VaultEcoUtil.sell(player, block);
+		}
 	}
 }

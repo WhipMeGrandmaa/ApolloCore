@@ -1,6 +1,6 @@
 package me.whipmegrandma.apollocore.listener;
 
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +16,8 @@ import org.mineacademy.fo.remain.CompParticle;
 import org.mineacademy.fo.remain.CompSound;
 import org.mineacademy.fo.remain.Remain;
 
+import java.text.NumberFormat;
+
 @AutoRegister
 public final class TokensListener implements Listener {
 
@@ -26,14 +28,14 @@ public final class TokensListener implements Listener {
 
 		Player player = event.getPlayer();
 		ItemStack hand = player.getItemInHand();
-		String key = CompMetadata.getMetadata(hand, CompData.WITHDRAW.toString());
+		String key = CompMetadata.getMetadata(hand, CompMetadataTags.WITHDRAW.toString());
 		Integer amount = key != null ? Integer.parseInt(key) : null;
 
 		if (amount != null) {
 			PlayerCache cache = PlayerCache.from(player);
 			cache.setTokens(cache.getTokens() + amount);
 
-			Common.tell(player, "You deposited " + amount + " tokens.");
+			Common.tell(player, "You deposited " + NumberFormat.getInstance().format(amount) + " tokens.");
 			PlayerUtil.takeOnePiece(player, hand);
 
 			CompSound.ANVIL_LAND.play(player);

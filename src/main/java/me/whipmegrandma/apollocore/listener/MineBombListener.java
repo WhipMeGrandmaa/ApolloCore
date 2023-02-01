@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.listener;
 
 import lombok.Getter;
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.util.MineBombUtil;
@@ -46,7 +46,7 @@ public final class MineBombListener implements Listener {
 		Player player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
 		ItemStack hand = event.getItem();
-		String data = hand != null ? CompMetadata.getMetadata(hand, CompData.MINEBOMB.toString()) : null;
+		String data = hand != null ? CompMetadata.getMetadata(hand, CompMetadataTags.MINEBOMB.toString()) : null;
 
 		if (data == null)
 			return;
@@ -82,7 +82,7 @@ public final class MineBombListener implements Listener {
 		else if (mineBomb.getFlyingMaterial() != null) {
 			projectile = player.getWorld().dropItem(player.getEyeLocation(), ItemCreator.of(mineBomb.getFlyingMaterial()).make());
 
-			CompMetadata.setMetadata(projectile, CompData.PROJECTILE.toString());
+			CompMetadata.setMetadata(projectile, CompMetadataTags.PROJECTILE.toString());
 		}
 
 		projectile.setVelocity(player.getEyeLocation().getDirection().multiply(mineBomb.getThrowVelocity()));
@@ -150,7 +150,7 @@ public final class MineBombListener implements Listener {
 	public void onPickup(PlayerPickupItemEvent event) {
 		Item item = event.getItem();
 
-		if (CompMetadata.hasMetadata(item, CompData.PROJECTILE.toString()))
+		if (CompMetadata.hasMetadata(item, CompMetadataTags.PROJECTILE.toString()))
 			event.setCancelled(true);
 	}
 

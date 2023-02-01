@@ -8,6 +8,7 @@ import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class TokensAddSubCommand extends SimpleSubCommand {
@@ -35,10 +36,10 @@ public class TokensAddSubCommand extends SimpleSubCommand {
 			PlayerCache cache = PlayerCache.from(target);
 			cache.setTokens(amount + cache.getTokens());
 
-			Common.tell(target, amount + " tokens have been given to " + target.getName() + ".");
+			Common.tell(target, NumberFormat.getInstance().format(amount) + " tokens have been given to " + target.getName() + ".");
 
 			if (!target.equals(getPlayer()))
-				super.tell(amount + " tokens have been given to you.");
+				super.tell(NumberFormat.getInstance().format(amount) + " tokens have been given to you.");
 
 		} else {
 
@@ -54,7 +55,7 @@ public class TokensAddSubCommand extends SimpleSubCommand {
 				int tokens = cache.getTokens();
 
 				Database.getInstance().update(username, "Tokens", amount + tokens);
-				super.tell(amount + " tokens have been given to " + name + ".");
+				super.tell(NumberFormat.getInstance().format(amount) + " tokens have been given to " + name + ".");
 
 			});
 		}

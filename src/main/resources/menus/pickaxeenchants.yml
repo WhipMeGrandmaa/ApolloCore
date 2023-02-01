@@ -148,7 +148,7 @@ First_Menu:
       Lore:
         - ""
         - "&7Rank: %apollocore_rank%"
-        - "&7Tokens: &f%apollocore_tokens%"
+        - "&7Tokens: &f%apollocore_tokensformatted%"
       Slot: 40
       Material: PLAYER_HEAD
       Player_Skull: true

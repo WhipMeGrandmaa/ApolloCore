@@ -8,11 +8,12 @@ import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
-public class BlockStatsSetSubCommand extends SimpleSubCommand {
+public class BlockstatsSetSubCommand extends SimpleSubCommand {
 
-	protected BlockStatsSetSubCommand(SimpleCommandGroup parent) {
+	protected BlockstatsSetSubCommand(SimpleCommandGroup parent) {
 		super(parent, "set");
 
 		this.setPermission("apollocore.command.blockstats.set");
@@ -35,10 +36,10 @@ public class BlockStatsSetSubCommand extends SimpleSubCommand {
 			PlayerCache cache = PlayerCache.from(target);
 			cache.setBlocksBroken(blocks);
 
-			Common.tell(target, "The amount of blocks you've broken has been set to " + blocks + ".");
+			Common.tell(target, "The amount of blocks you've broken has been set to " + NumberFormat.getInstance().format(blocks) + ".");
 
 			if (!target.equals(getPlayer()))
-				super.tell("The amount of blocks " + target.getName() + " has broken has been set to " + blocks + ".");
+				super.tell("The amount of blocks " + target.getName() + " has broken has been set to " + NumberFormat.getInstance().format(blocks) + ".");
 
 		} else {
 
@@ -53,7 +54,7 @@ public class BlockStatsSetSubCommand extends SimpleSubCommand {
 				String name = cache.getUsername();
 
 				Database.getInstance().update(username, "Blocks_Broken", blocks);
-				super.tell("The amount of blocks " + name + " has broken has been set to " + blocks + ".");
+				super.tell("The amount of blocks " + name + " has broken has been set to " + NumberFormat.getInstance().format(blocks) + ".");
 
 			});
 		}

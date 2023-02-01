@@ -7,11 +7,16 @@ import me.whipmegrandma.apollocore.hook.VaultHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.ReflectionUtil;
+import org.mineacademy.fo.Valid;
+import org.mineacademy.fo.collection.SerializedMap;
+import org.mineacademy.fo.model.Triple;
 import org.mineacademy.fo.remain.CompSound;
 import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -27,6 +32,7 @@ public class Rank extends YamlConfig {
 	private Boolean infiniteRanks;
 	private Integer infiniteNumber;
 	private Double upgradePriceMultiplier;
+	private SerializedMap upgradeByLevel;
 
 	private Rank(String name) {
 		this.setPathPrefix(name);
@@ -34,7 +40,7 @@ public class Rank extends YamlConfig {
 		this.loadConfiguration(NO_DEFAULT, "ranks.yml");
 	}
 
-	private Rank(String rankFormatted, String nextRank, Integer upgradePrice, UpgradeType upgradeType, Boolean infiniteRanks, Integer infiniteNumber, Double upgradePriceMultiplier) {
+	private Rank(String rankFormatted, String nextRank, Integer upgradePrice, UpgradeType upgradeType, Boolean infiniteRanks, Integer infiniteNumber, Double upgradePriceMultiplier, SerializedMap upgradeByLevel) {
 		this.rankFormatted = rankFormatted;
 		this.nextRank = nextRank;
 		this.upgradePrice = upgradePrice;
@@ -42,6 +48,7 @@ public class Rank extends YamlConfig {
 		this.infiniteRanks = infiniteRanks;
 		this.infiniteNumber = infiniteNumber;
 		this.upgradePriceMultiplier = upgradePriceMultiplier;
+		this.upgradeByLevel = upgradeByLevel;
 	}
 
 	@Override
@@ -53,23 +60,16 @@ public class Rank extends YamlConfig {
 		this.infiniteRanks = getBoolean("Infinite_Ranks", false);
 		this.infiniteNumber = 1;
 		this.upgradePriceMultiplier = getDouble("Infinite_Upgrade_Price_Multiplier", 1.0);
+		this.upgradeByLevel = getMap("Infinite_Price_By_Level");
 
 		if (getBoolean("First_Rank", false))
 			firstRank = this;
 	}
 
-	public void forceUpgrade(Player player) {
-		this.upgrade(player, true);
-	}
-
 	public UpgradeResult upgrade(Player player) {
-		return this.upgrade(player, false);
-	}
-
-	public UpgradeResult upgrade(Player player, Boolean forced) {
 		UpgradeResult result = this.canUpgrade(player);
 
-		if (result == UpgradeResult.SUCCESS || forced) {
+		if (result == UpgradeResult.SUCCESS) {
 			PlayerCache cache = PlayerCache.from(player);
 
 			cache.upgradeRank();
@@ -96,25 +96,43 @@ public class Rank extends YamlConfig {
 	}
 
 	public double getUpgradePrice() {
-		return this.upgradePrice * this.upgradePriceMultiplier * this.infiniteNumber;
+		if (this.upgradePrice == null && this.upgradeByLevel.isEmpty())
+			return 0;
+
+		for (Map.Entry<String, Object> entry : this.upgradeByLevel.entrySet()) {
+			int prestige = Valid.isInteger(entry.getKey()) ? Integer.parseInt(entry.getKey()) : 0;
+			int price = Valid.isInteger(entry.getValue().toString()) ? Integer.parseInt(entry.getValue().toString()) : 0;
+
+			if (this.getInfiniteNumber() + 1 == prestige)
+				return price;
+		}
+
+		double multiplier = this.upgradePriceMultiplier;
+
+		for (int i = 1; i < this.getInfiniteNumber(); i++)
+			multiplier = multiplier * this.upgradePriceMultiplier;
+
+		DecimalFormat decimal = new DecimalFormat("0.00");
+
+		return Double.parseDouble(decimal.format(this.upgradePrice * multiplier));
 	}
 
 	public String getRankFormatted() {
 		if (!this.getInfiniteRanks())
 			return this.rankFormatted;
 
-		return this.rankFormatted.replace("%number%", this.infiniteNumber.toString());
+		return this.rankFormatted.replace("%number%", this.getInfiniteNumber().toString());
 	}
 
 	public Rank getNextRank() {
 		if (!this.getInfiniteRanks())
 			return getByName(this.nextRank);
 
-		return this.getInfiniteRank(this.infiniteNumber + 1);
+		return this.getInfiniteRank(this.getInfiniteNumber() + 1);
 	}
 
 	public Rank getInfiniteRank(Integer infiniteNumber) {
-		Rank rank = new Rank(this.rankFormatted, this.nextRank, this.upgradePrice, this.upgradeType, this.infiniteRanks, infiniteNumber, this.upgradePriceMultiplier);
+		Rank rank = new Rank(this.rankFormatted, this.nextRank, this.upgradePrice, this.upgradeType, this.infiniteRanks, infiniteNumber, this.upgradePriceMultiplier, this.upgradeByLevel);
 		rank.setPathPrefix(this.getPathPrefix());
 
 		return rank;
@@ -141,7 +159,7 @@ public class Rank extends YamlConfig {
 		if (!this.infiniteRanks)
 			return this.getPathPrefix();
 
-		return this.getPathPrefix() + this.infiniteNumber;
+		return this.getPathPrefix() + this.getInfiniteNumber();
 	}
 
 	public static Rank getFirstRank() {
@@ -164,6 +182,38 @@ public class Rank extends YamlConfig {
 		return null;
 	}
 
+	public static Triple<UpgradeResult, Double, Integer> prestigeMax(Player player) {
+		PlayerCache cache = PlayerCache.from(player);
+		Rank rank = cache.getRank();
+		Economy economy = VaultHook.getEconomy();
+
+		double spent = 0;
+		int times = 0;
+
+		UpgradeResult result = UpgradeResult.INSUFFICIENT_BALANCE;
+
+		while (economy.getBalance(player) >= rank.getUpgradePrice() + spent) {
+			if (rank.getNextRank() == null)
+				return new Triple<>(UpgradeResult.MAX_RANK, spent, times);
+
+			spent += rank.getUpgradePrice();
+			rank = rank.getNextRank();
+
+			times++;
+
+			result = UpgradeResult.SUCCESS;
+		}
+
+		if (result == UpgradeResult.SUCCESS) {
+			cache.setRank(rank);
+			rank.onUpgrade(player);
+
+			economy.withdrawPlayer(player, spent);
+		}
+
+		return new Triple<>(result, spent, times);
+	}
+
 	public static List<Rank> getRanks() {
 		return ranks.getItems();
 	}
@@ -177,7 +227,7 @@ public class Rank extends YamlConfig {
 	}
 
 	public enum UpgradeType {
-		UPGRADE,
+		RANKUP,
 		PRESTIGE
 	}
 

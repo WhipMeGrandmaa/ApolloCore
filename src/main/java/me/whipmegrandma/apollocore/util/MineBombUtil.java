@@ -1,6 +1,6 @@
 package me.whipmegrandma.apollocore.util;
 
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.PlayerUtil;
@@ -18,7 +18,7 @@ public class MineBombUtil {
 			item.lore(bomb.getLore());
 
 		item.glow(bomb.getGlow());
-		item.tag(CompData.MINEBOMB.toString(), bomb.getRawName());
+		item.tag(CompMetadataTags.MINEBOMB.toString(), bomb.getRawName());
 		item.amount(amount);
 
 		PlayerUtil.addItemsOrDrop(player, item.make());

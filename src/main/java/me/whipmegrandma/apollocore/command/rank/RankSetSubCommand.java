@@ -66,6 +66,9 @@ public class RankSetSubCommand extends SimpleSubCommand {
 		if (args.length == 1)
 			return completeLastWordPlayerNames();
 
+		if (args.length == 2)
+			return completeLastWord(Rank.getRankNames());
+
 		return NO_COMPLETE;
 	}
 }

@@ -7,9 +7,9 @@ import org.mineacademy.fo.command.SimpleSubCommand;
 
 import java.util.List;
 
-public class MineBombListSubCommand extends SimpleSubCommand {
+public class MinebombListSubCommand extends SimpleSubCommand {
 
-	protected MineBombListSubCommand(SimpleCommandGroup parent) {
+	protected MinebombListSubCommand(SimpleCommandGroup parent) {
 		super(parent, "list");
 
 		this.setPermission("apollocore.command.minebomb.list");

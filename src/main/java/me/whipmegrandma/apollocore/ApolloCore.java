@@ -5,6 +5,7 @@ import me.whipmegrandma.apollocore.hook.EffectLibHook;
 import me.whipmegrandma.apollocore.hook.PapiHook;
 import me.whipmegrandma.apollocore.hook.VaultHook;
 import me.whipmegrandma.apollocore.listener.MineBombListener;
+import me.whipmegrandma.apollocore.listener.PlayerListener;
 import me.whipmegrandma.apollocore.manager.TaskManager;
 import me.whipmegrandma.apollocore.menu.PersonalPickaxeEnchantsMenu;
 import me.whipmegrandma.apollocore.model.MineBomb;
@@ -13,7 +14,6 @@ import me.whipmegrandma.apollocore.settings.PriceSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
-import org.mineacademy.fo.FileUtil;
 import org.mineacademy.fo.model.HookManager;
 import org.mineacademy.fo.plugin.SimplePlugin;
 import org.mineacademy.fo.remain.Remain;
@@ -26,9 +26,6 @@ public final class ApolloCore extends SimplePlugin {
 
 	@Override
 	protected void onReloadablesStart() {
-
-		Database.getInstance().connect("jdbc:sqlite:" + FileUtil.getOrMakeFile("database.sqlite").getAbsolutePath());
-
 		if (HookManager.isPlaceholderAPILoaded())
 			new PapiHook().register();
 		else
@@ -61,6 +58,7 @@ public final class ApolloCore extends SimplePlugin {
 	protected void onPluginStop() {
 		MineBombListener.getCooldown().clear();
 		EffectLibHook.disable();
+		PlayerListener.getBlocksBroken().clear();
 
 		for (Player player : Remain.getOnlinePlayers())
 			Database.getInstance().save(player, non -> {

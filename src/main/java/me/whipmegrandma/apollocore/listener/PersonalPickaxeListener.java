@@ -1,6 +1,6 @@
 package me.whipmegrandma.apollocore.listener;
 
-import me.whipmegrandma.apollocore.enums.CompData;
+import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.menu.PersonalPickaxeEnchantsMenu;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public final class PersonalPickaxeListener implements Listener {
 	public void onDrop(PlayerDropItemEvent event) {
 		ItemStack itemStack = event.getItemDrop().getItemStack();
 
-		if (!CompMaterial.isAir(itemStack) && CompMetadata.hasMetadata(itemStack, CompData.PICKAXE.toString()))
+		if (!CompMaterial.isAir(itemStack) && CompMetadata.hasMetadata(itemStack, CompMetadataTags.PICKAXE.toString()))
 			event.setCancelled(true);
 	}
 
@@ -44,14 +44,14 @@ public final class PersonalPickaxeListener implements Listener {
 		ItemStack clicked = event.getCurrentItem();
 		ClickType clickType = event.getClick();
 
-		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompData.PICKAXE.toString())) {
+		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString())) {
 			Inventory clickedInventory = event.getClickedInventory();
 
 			if (clickedInventory != null && clickedInventory.getType() != InventoryType.PLAYER)
 				event.setCancelled(true);
 		}
 
-		if (!CompMaterial.isAir(clicked) && CompMetadata.hasMetadata(clicked, CompData.PICKAXE.toString()) && (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT))
+		if (!CompMaterial.isAir(clicked) && CompMetadata.hasMetadata(clicked, CompMetadataTags.PICKAXE.toString()) && (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT))
 			event.setCancelled(true);
 	}
 
@@ -62,7 +62,7 @@ public final class PersonalPickaxeListener implements Listener {
 
 		ItemStack cursor = event.getOldCursor();
 
-		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompData.PICKAXE.toString())) {
+		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString())) {
 			int size = event.getView().getTopInventory().getSize();
 
 			for (int slot : event.getRawSlots()) {
@@ -78,7 +78,7 @@ public final class PersonalPickaxeListener implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 
 		for (ItemStack item : event.getDrops())
-			if (!CompMaterial.isAir(item) && CompMetadata.hasMetadata(item, CompData.PICKAXE.toString()))
+			if (!CompMaterial.isAir(item) && CompMetadata.hasMetadata(item, CompMetadataTags.PICKAXE.toString()))
 				item.setType(CompMaterial.AIR.toMaterial());
 	}
 
@@ -94,7 +94,7 @@ public final class PersonalPickaxeListener implements Listener {
 
 		Player player = event.getPlayer();
 		ItemStack hand = event.getItem();
-		boolean isPersonalPickaxe = hand != null && CompMetadata.hasMetadata(hand, CompData.PICKAXE.toString());
+		boolean isPersonalPickaxe = hand != null && CompMetadata.hasMetadata(hand, CompMetadataTags.PICKAXE.toString());
 
 		if (isPersonalPickaxe) {
 			PersonalPickaxeEnchantsMenu menu = PersonalPickaxeEnchantsMenu.findMenu("First_Menu");
@@ -109,7 +109,7 @@ public final class PersonalPickaxeListener implements Listener {
 	@EventHandler
 	public void onDurabilityDamage(PlayerItemDamageEvent event) {
 		ItemStack hand = event.getItem();
-		boolean isPersonalPickaxe = CompMetadata.hasMetadata(hand, CompData.PICKAXE.toString());
+		boolean isPersonalPickaxe = CompMetadata.hasMetadata(hand, CompMetadataTags.PICKAXE.toString());
 
 		if (isPersonalPickaxe)
 			event.setCancelled(true);

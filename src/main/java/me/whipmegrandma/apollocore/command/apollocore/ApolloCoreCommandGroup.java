@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @AutoRegister
-public final class ApolloCoreCommandGroup extends SimpleCommandGroup {
+public final class ApollocoreCommandGroup extends SimpleCommandGroup {
 
-	public ApolloCoreCommandGroup() {
+	public ApollocoreCommandGroup() {
 		super("apollocore");
 	}
 

@@ -27,7 +27,7 @@ public final class RankupCommand extends SimpleCommand {
 		PlayerCache cache = PlayerCache.from(player);
 		Rank rank = cache.getRank();
 
-		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.UPGRADE, "You must use the '/prestige'.");
+		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.RANKUP, "You must use the '/prestige'.");
 
 		Rank.UpgradeResult result = rank.upgrade(player);
 

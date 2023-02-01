@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class TokensBalanceSubCommand extends SimpleSubCommand {
@@ -25,7 +26,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 			checkConsole();
 
 			int tokens = PlayerCache.from(getPlayer()).getTokens();
-			super.tell("Tokens: " + tokens);
+			super.tell("Tokens: " + NumberFormat.getInstance().format(tokens));
 
 			return;
 		}
@@ -39,12 +40,12 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 			int tokens = PlayerCache.from(target).getTokens();
 
 			if (target.equals(getPlayer())) {
-				super.tell("Tokens: " + tokens);
+				super.tell("Tokens: " + NumberFormat.getInstance().format(tokens));
 
 				return;
 			}
 
-			super.tell("Tokens of " + target.getName() + ": " + tokens);
+			super.tell("Tokens of " + target.getName() + ": " + NumberFormat.getInstance().format(tokens));
 
 		} else {
 
@@ -59,7 +60,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 				String name = cache.getUsername();
 				int tokens = cache.getTokens();
 
-				super.tell("Tokens of " + name + ": " + tokens);
+				super.tell("Tokens of " + name + ": " + NumberFormat.getInstance().format(tokens));
 
 			});
 		}

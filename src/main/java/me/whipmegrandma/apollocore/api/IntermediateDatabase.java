@@ -427,7 +427,7 @@ public class IntermediateDatabase {
 	 * @param sql
 	 */
 	protected final void update(String sql) {
-		
+
 		this.checkEstablished();
 
 		if (!this.isConnected())
@@ -685,7 +685,7 @@ public class IntermediateDatabase {
 	 *
 	 * @return whether the connection driver was set
 	 */
-	protected final boolean isConnected() {
+	public final boolean isConnected() {
 		if (!this.isLoaded())
 			return false;
 

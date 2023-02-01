@@ -9,16 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @AutoRegister
-public final class BlockStatsCommandGroup extends SimpleCommandGroup {
+public final class BlockstatsCommandGroup extends SimpleCommandGroup {
 
-	public BlockStatsCommandGroup() {
+	public BlockstatsCommandGroup() {
 		super("blockstats");
 	}
 
 	@Override
 	protected void registerSubcommands() {
-		registerSubcommand(new BlockStatsResetSubCommand(this));
-		registerSubcommand(new BlockStatsSetSubCommand(this));
+		registerSubcommand(new BlockstatsResetSubCommand(this));
+		registerSubcommand(new BlockstatsSetSubCommand(this));
 	}
 
 	@Override

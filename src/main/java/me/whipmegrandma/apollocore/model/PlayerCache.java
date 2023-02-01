@@ -10,9 +10,7 @@ import org.mineacademy.fo.collection.SerializedMap;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Getter
@@ -26,14 +24,16 @@ public class PlayerCache {
 	private Map<Enchantment, Integer> enchantments;
 	private Rank rank;
 	private Integer blocksBroken;
+	private List<ShopItem> shopItems;
 
-	private PlayerCache(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken) {
+	private PlayerCache(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken, List<ShopItem> shopItems) {
 		this.uuid = uuid;
 		this.username = username;
 		this.tokens = tokens;
 		this.enchantments = enchantments;
 		this.rank = rank;
 		this.blocksBroken = blocksBroken;
+		this.shopItems = shopItems;
 	}
 
 	public void setTokens(Integer tokens) {
@@ -56,6 +56,14 @@ public class PlayerCache {
 		playerCache.put(this.uuid, this);
 	}
 
+	public void addShopItem(ShopItem item) {
+		shopItems.add(item);
+	}
+
+	public void removeShopItem(ShopItem item) {
+		shopItems.remove(item);
+	}
+
 	public void increaseBlocksBroken() {
 		blocksBroken++;
 	}
@@ -75,11 +83,20 @@ public class PlayerCache {
 	public SerializedMap enchantmentsToMap() {
 		SerializedMap map = new SerializedMap();
 
-		for (Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
+		for (Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet())
 			map.put(entry.getKey().getKey().getKey(), entry.getValue());
-		}
 
 		return map;
+	}
+
+	public SerializedMap shopItemsToMap() {
+		return SerializedMap.of("Player_Shop", this.shopItems);
+	}
+
+	public Integer getPrestige() {
+		String prestige = this.rank.getName().replaceAll("[^0-9.]", "");
+
+		return !prestige.isEmpty() ? Integer.parseInt(prestige) : 0;
 	}
 
 	public static PlayerCache from(Player player) {
@@ -88,7 +105,7 @@ public class PlayerCache {
 		PlayerCache cache = playerCache.get(uuid);
 
 		if (cache == null)
-			cache = new PlayerCache(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0);
+			cache = new PlayerCache(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0, new ArrayList<>());
 
 		return cache;
 	}
@@ -102,8 +119,9 @@ public class PlayerCache {
 			Map<Enchantment, Integer> enchants = deserializeEnchants(SerializedMap.fromJson(resultSet.getString("Enchantments")));
 			Rank rank = Rank.getByName(resultSet.getString("Rank")) != null ? Rank.getByName(resultSet.getString("Rank")) : Rank.getFirstRank();
 			Integer blocksBroken = resultSet.getInt("Blocks_Broken");
+			List<ShopItem> shopItems = deserializeShopItems(SerializedMap.fromJson(resultSet.getString("Player_Shop")));
 
-			return new PlayerCache(uuid, username, tokens, enchants, rank, blocksBroken);
+			return new PlayerCache(uuid, username, tokens, enchants, rank, blocksBroken, shopItems);
 		} catch (Throwable t) {
 			Common.error(t, "Unable to convert data from database.");
 		}
@@ -124,4 +142,7 @@ public class PlayerCache {
 		return enchants;
 	}
 
+	private static List<ShopItem> deserializeShopItems(SerializedMap map) {
+		return map.getList("Player_Shop", ShopItem.class);
+	}
 }

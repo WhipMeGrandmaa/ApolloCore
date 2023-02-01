@@ -36,6 +36,15 @@ Timestamp_Format: "dd.MM.yyyy HH:mm:ss"
 Location_Format: "{world} [{x}, {y}, {z}]"
 
 # -------------------------------------------------------------------------------------------------
+
+MySQL:
+  Host: "null"
+  Port: -1
+  Database: "null"
+  Username: "null"
+  Password: "null"
+
+# -------------------------------------------------------------------------------------------------
 # What commands should trigger the main plugin command group?
 #
 # * THE FIRST ALIAS IS THE MAIN LABEL, YOU CAN CHANGE IT BUT DO NOT REMOVE IT. *

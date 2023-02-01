@@ -1,6 +1,6 @@
 package me.whipmegrandma.apollocore.enums;
 
-public enum CompData {
+public enum CompMetadataTags {
 
 	WITHDRAW("ApolloCore:Tokens"),
 	PICKAXE("ApolloCore:Pickaxe"),
@@ -9,7 +9,7 @@ public enum CompData {
 
 	private final String compData;
 
-	private CompData(String compData) {
+	private CompMetadataTags(String compData) {
 		this.compData = compData;
 	}
 

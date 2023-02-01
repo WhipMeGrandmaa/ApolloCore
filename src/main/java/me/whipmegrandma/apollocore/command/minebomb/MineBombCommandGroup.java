@@ -9,16 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @AutoRegister
-public final class MineBombCommandGroup extends SimpleCommandGroup {
+public final class MinebombCommandGroup extends SimpleCommandGroup {
 
-	public MineBombCommandGroup() {
+	public MinebombCommandGroup() {
 		super("minebomb|mb");
 	}
 
 	@Override
 	protected void registerSubcommands() {
-		registerSubcommand(new MineBombGiveSubCommand(this));
-		registerSubcommand(new MineBombListSubCommand(this));
+		registerSubcommand(new MinebombGiveSubCommand(this));
+		registerSubcommand(new MinebombListSubCommand(this));
 	}
 
 	@Override

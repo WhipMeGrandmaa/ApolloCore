@@ -26,7 +26,7 @@ public final class BlocksCommand extends SimpleCommand {
 			checkConsole();
 
 			int blocks = PlayerCache.from(getPlayer()).getBlocksBroken();
-			super.tell("You've broken " + Common.plural(blocks, "block") + ".");
+			this.blocksTopPosition(getPlayer(), "You've broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
 
 			return;
 		}
@@ -40,12 +40,12 @@ public final class BlocksCommand extends SimpleCommand {
 			int blocks = PlayerCache.from(target).getBlocksBroken();
 
 			if (target.equals(getPlayer())) {
-				super.tell("You've broken " + Common.plural(blocks, "block") + ".");
+				this.blocksTopPosition(getPlayer(), "You've broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
 
 				return;
 			}
 
-			super.tell(target.getName() + " has broken " + Common.plural(blocks, "block") + ".");
+			this.blocksTopPosition(target, getPlayer(), target.getName() + " has broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
 
 		} else {
 
@@ -61,6 +61,7 @@ public final class BlocksCommand extends SimpleCommand {
 				int blocks = cache.getBlocksBroken();
 
 				super.tell(name + " has broken " + Common.plural(blocks, "block") + ".");
+				this.blocksTopPosition(name, getPlayer(), name + " has broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
 
 			});
 		}
@@ -73,5 +74,31 @@ public final class BlocksCommand extends SimpleCommand {
 			return completeLastWordPlayerNames();
 
 		return NO_COMPLETE;
+	}
+
+	private void blocksTopPosition(Player sender, String... message) {
+		this.blocksTopPosition(sender, sender, message);
+	}
+
+	private void blocksTopPosition(Player target, Player sender, String... message) {
+		this.blocksTopPosition(target.getName(), sender, message);
+	}
+
+	private void blocksTopPosition(String target, Player sender, String... message) {
+
+		Database.getInstance().loadAll(allData -> {
+
+			allData.sort((cache1, cache2) -> cache2.getBlocksBroken().compareTo(cache1.getBlocksBroken()));
+
+			int position = 1;
+
+			for (PlayerCache cache : allData) {
+				if (cache.getUsername().equals(target))
+					for (String line : message)
+						Common.tell(sender, line.replace("%position%", String.valueOf(position)));
+
+				++position;
+			}
+		});
 	}
 }

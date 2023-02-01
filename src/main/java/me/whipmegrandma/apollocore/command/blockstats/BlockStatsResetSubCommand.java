@@ -10,9 +10,9 @@ import org.mineacademy.fo.command.SimpleSubCommand;
 
 import java.util.List;
 
-public class BlockStatsResetSubCommand extends SimpleSubCommand {
+public class BlockstatsResetSubCommand extends SimpleSubCommand {
 
-	protected BlockStatsResetSubCommand(SimpleCommandGroup parent) {
+	protected BlockstatsResetSubCommand(SimpleCommandGroup parent) {
 		super(parent, "reset");
 
 		this.setPermission("apollocore.command.blockstats.reset");

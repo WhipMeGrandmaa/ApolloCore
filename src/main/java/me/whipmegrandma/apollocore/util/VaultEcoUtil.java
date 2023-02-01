@@ -24,7 +24,7 @@ public class VaultEcoUtil {
 		int broken = 0;
 
 		for (Location location : blocks) {
-			moneyMade += PriceSettings.getPrice(location.getBlock());
+			moneyMade += PriceSettings.getPrice(location, player);
 			broken++;
 		}
 
@@ -39,19 +39,19 @@ public class VaultEcoUtil {
 	}
 
 	public static void sell(Player player, Block block) {
-		double moneyMade = PriceSettings.getPrice(block);
-
-		economy.depositPlayer(player, moneyMade);
+		double moneyMade = PriceSettings.getPrice(block, player);
 
 		HashMap<UUID, Tuple<Integer, Double>> map = PlayerListener.getBlocksBroken();
-
 		UUID uuid = player.getUniqueId();
 
 		Tuple<Integer, Double> tuple = map.containsKey(uuid) ? map.get(uuid) : new Tuple<>(0, 0D);
 		int brokenOld = tuple.getKey();
 		double moneyMadeOld = tuple.getValue();
 
-		if (moneyMadeOld != 0)
+		economy.depositPlayer(player, moneyMade);
+
+		if (moneyMade != 0)
 			PlayerListener.getBlocksBroken().put(uuid, new Tuple<>(brokenOld + 1, moneyMadeOld + moneyMade));
+
 	}
 }
