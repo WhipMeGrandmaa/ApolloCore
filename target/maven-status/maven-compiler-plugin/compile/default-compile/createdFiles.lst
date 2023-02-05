@@ -46,6 +46,7 @@ me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$2.class
 me\whipmegrandma\apollocore\task\EnchantTask.class
 me\whipmegrandma\apollocore\command\tokens\TokensResetSubCommand.class
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$2.class
+me\whipmegrandma\apollocore\command\playershop\PlayershopResetSubCommand.class
 me\whipmegrandma\apollocore\command\minebomb\MinebombGiveSubCommand.class
 me\whipmegrandma\apollocore\command\playershop\PlayershopAddSubCommand.class
 me\whipmegrandma\apollocore\api\IntermediateDatabase$LastCredentials.class

@@ -106,17 +106,19 @@ public class Database extends IntermediateDatabase {
 	}
 
 	public void save(Player player, Consumer<ApolloPlayer> callback) {
+		this.save(ApolloPlayer.from(player), callback);
+	}
+
+	public void save(ApolloPlayer cache, Consumer<ApolloPlayer> callback) {
 		this.checkLoadedAndSync();
 
 		Common.runAsync(() -> {
 
-			ApolloPlayer cache = ApolloPlayer.from(player);
-
 			try {
 
 				SerializedMap map = SerializedMap.ofArray(
-						"UUID", player.getUniqueId(),
-						"Username", player.getName(),
+						"UUID", cache.getUuid(),
+						"Username", cache.getUsername(),
 						"Tokens", cache.getTokens(),
 						"Enchantments", cache.enchantmentsToMap().toJson(),
 						"Rank", cache.getRank() != null ? cache.getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "No Rank",

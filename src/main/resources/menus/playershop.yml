@@ -38,8 +38,9 @@ Buttons:
     Title: "&d&lInformation"
     Lore:
       - "&7Command: &f/playershop add <price>"
-      - "Shift Right Click to remove"
-      - "an item from your player shop."
+      - ""
+      - "Click an item in your"
+      - "player shop to remove it."
   Refresh:
     Material: STRING
     Title: "&d&lRefresh"
