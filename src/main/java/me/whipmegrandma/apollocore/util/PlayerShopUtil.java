@@ -7,7 +7,7 @@ import me.whipmegrandma.apollocore.model.ShopItem;
 import java.util.Iterator;
 import java.util.List;
 
-public class PersonalShopUtil {
+public class PlayerShopUtil {
 
 	public static void sortShops(SortedBy sort, List<ApolloPlayer> data) {
 		switch (sort) {
@@ -62,7 +62,7 @@ public class PersonalShopUtil {
 	public static List<ApolloPlayer> getAllDataFiltered() {
 		List<ApolloPlayer> data = ApolloPlayer.getAllCached();
 
-		PersonalShopUtil.filter(data);
+		PlayerShopUtil.filter(data);
 
 		return data;
 	}

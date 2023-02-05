@@ -43,6 +43,22 @@ public class PlayerShopMenuSettings extends YamlStaticConfig {
 	public static String sortedMostTitle;
 	public static List<String> sortedMostLore;
 
+	public static CompMaterial sortedMostExpensiveMaterial;
+	public static String sortedMostExpensiveTitle;
+	public static List<String> sortedMostExpensiveLore;
+
+	public static CompMaterial sortedLeastExpensiveMaterial;
+	public static String sortedLeastExpensiveTitle;
+	public static List<String> sortedLeastExpensiveLore;
+
+	public static CompMaterial sortedNewestMaterial;
+	public static String sortedNewestTitle;
+	public static List<String> sortedNewestLore;
+
+	public static CompMaterial sortedOldestMaterial;
+	public static String sortedOldestTitle;
+	public static List<String> sortedOldestLore;
+
 	public static CompMaterial nextPageMaterial;
 	public static String nextPageTitle;
 
@@ -106,6 +122,30 @@ public class PlayerShopMenuSettings extends YamlStaticConfig {
 		sortedMostMaterial = isSet("Material") ? getMaterial("Material") : CompMaterial.CHARCOAL;
 		sortedMostTitle = isSet("Title") ? getString("Title") : "&d&lSorting";
 		sortedMostLore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Sorted by: &dMost Items");
+
+		setPathPrefix("Buttons.Sort.Price_Descending");
+
+		sortedMostExpensiveMaterial = isSet("Material") ? getMaterial("Material") : CompMaterial.CHARCOAL;
+		sortedMostExpensiveTitle = isSet("Title") ? getString("Title") : "&d&lSorting";
+		sortedMostExpensiveLore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Sorted by: &dMost Expensive");
+
+		setPathPrefix("Buttons.Sort.Price_Ascending");
+
+		sortedLeastExpensiveMaterial = isSet("Material") ? getMaterial("Material") : CompMaterial.CHARCOAL;
+		sortedLeastExpensiveTitle = isSet("Title") ? getString("Title") : "&d&lSorting";
+		sortedLeastExpensiveLore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Sorted by: &dLeast Expensive");
+
+		setPathPrefix("Buttons.Sort.Newest");
+
+		sortedNewestMaterial = isSet("Material") ? getMaterial("Material") : CompMaterial.CHARCOAL;
+		sortedNewestTitle = isSet("Title") ? getString("Title") : "&d&lSorting";
+		sortedNewestLore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Sorted by: &dNewest");
+
+		setPathPrefix("Buttons.Sort.Oldest");
+
+		sortedOldestMaterial = isSet("Material") ? getMaterial("Material") : CompMaterial.CHARCOAL;
+		sortedOldestTitle = isSet("Title") ? getString("Title") : "&d&lSorting";
+		sortedOldestLore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Sorted by: &dOldest");
 
 		setPathPrefix("Buttons.Next_Page");
 

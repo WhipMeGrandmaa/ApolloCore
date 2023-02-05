@@ -1,7 +1,10 @@
 package me.whipmegrandma.apollocore.command.playershop;
 
+import me.whipmegrandma.apollocore.enums.SortedBy;
 import me.whipmegrandma.apollocore.menu.PlayerShopMenu.PlayerShopIndividualMenu;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
+import me.whipmegrandma.apollocore.model.ShopItem;
+import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
@@ -22,7 +25,10 @@ public class PlayershopOpenSubCommand extends SimpleSubCommand {
 		checkConsole();
 
 		if (args.length == 0) {
-			new PlayerShopIndividualMenu(getPlayer(), ApolloPlayer.from(getPlayer())).displayTo(getPlayer());
+			List<ShopItem> items = ApolloPlayer.from(getPlayer()).getShopItems();
+			PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+			new PlayerShopIndividualMenu(getPlayer(), ApolloPlayer.from(getPlayer()), items).displayTo(getPlayer());
 
 			return;
 		}
@@ -32,7 +38,10 @@ public class PlayershopOpenSubCommand extends SimpleSubCommand {
 
 		checkBoolean(seller != null, username + " doesn't have a player shop.");
 
-		new PlayerShopIndividualMenu(getPlayer(), seller).displayTo(getPlayer());
+		List<ShopItem> items = seller.getShopItems();
+		PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+		new PlayerShopIndividualMenu(getPlayer(), seller, items).displayTo(getPlayer());
 	}
 
 	@Override

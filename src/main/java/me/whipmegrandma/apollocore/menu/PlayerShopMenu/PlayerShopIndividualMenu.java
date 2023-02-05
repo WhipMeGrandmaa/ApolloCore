@@ -7,8 +7,8 @@ import me.whipmegrandma.apollocore.hook.VaultHook;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.ShopItem;
 import me.whipmegrandma.apollocore.settings.PlayerShopMenuSettings;
-import me.whipmegrandma.apollocore.util.PersonalShopUtil;
 import me.whipmegrandma.apollocore.util.PlaceholderUtil;
+import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -34,6 +34,8 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 
 	private ApolloPlayer seller;
 
+	private List<ShopItem> shopItems;
+
 	@Position(9 * 5)
 	private final Button personalShop;
 
@@ -46,12 +48,19 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 	@Position(9 * 5 + 8)
 	private final Button market;
 
-	private SortedBy.Individual sort = SortedBy.Individual.PRICE_DESCENDING;
+	private SortedBy.Individual sort = SortedBy.Individual.NEWEST;
 
-	public PlayerShopIndividualMenu(Player player, ApolloPlayer seller) {
+	private PlayerShopIndividualMenu(Player player, ApolloPlayer seller, List<ShopItem> shopItems, SortedBy.Individual sort) {
+		this(player, seller, shopItems);
+
+		this.sort = sort;
+	}
+
+	public PlayerShopIndividualMenu(Player player, ApolloPlayer seller, List<ShopItem> shopItems) {
 		super(9 * 5, seller.getShopItems());
 
 		this.seller = seller;
+		this.shopItems = shopItems;
 
 		this.setViewer(player);
 		this.setTitle(PlaceholderUtil.set(seller.getUsername(), PlayerShopMenuSettings.pShopMenuTitle));
@@ -62,8 +71,12 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 				List<ApolloPlayer> data = ApolloPlayer.getAllCached();
 
 				for (ApolloPlayer personalData : data)
-					if (player.getUniqueId().equals(personalData.getUuid()))
-						new PlayerShopIndividualMenu(player, personalData).displayTo(player);
+					if (player.getUniqueId().equals(personalData.getUuid())) {
+						List<ShopItem> items = personalData.getShopItems();
+						PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+						new PlayerShopIndividualMenu(player, personalData, items).displayTo(player);
+					}
 			}
 
 			@Override
@@ -80,7 +93,10 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 
 				for (ApolloPlayer personalData : data)
 					if (seller.getUuid().equals(personalData.getUuid())) {
-						Menu individualMenu = new PlayerShopIndividualMenu(player, personalData);
+						List<ShopItem> items = personalData.getShopItems();
+						PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+						Menu individualMenu = new PlayerShopIndividualMenu(player, personalData, items);
 
 						individualMenu.displayTo(player);
 						Common.runLater(1, () -> animateTitle("&aRefreshed listings"));
@@ -109,12 +125,12 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 
 					index++;
 				}
-				PersonalShopUtil.sortShops(sort, data);
+				PlayerShopUtil.sortItems(sort, PlayerShopIndividualMenu.this.shopItems);
 
-				Menu marketMenu = new PlayerShopMarketMenu(player, data, sort);
+				Menu individualMenu = new PlayerShopIndividualMenu(player, seller, shopItems, sort);
 
-				marketMenu.displayTo(player);
-				Common.runLater(1, () -> marketMenu.animateTitle("&aSorted by " + ItemUtil.bountifyCapitalized(sort.toString())));
+				individualMenu.displayTo(player);
+				Common.runLater(1, () -> individualMenu.animateTitle("&aSorted by " + ItemUtil.bountifyCapitalized(sort.toString())));
 			}
 
 			@Override
@@ -123,41 +139,36 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 				switch (sort) {
 					case PRICE_DESCENDING:
 
-						return ItemCreator.of(PlayerShopMenuSettings.sortedNewMaterial, PlayerShopMenuSettings.sortedNewTitle, PlayerShopMenuSettings.sortedNewLore).make();
+						return ItemCreator.of(PlayerShopMenuSettings.sortedMostExpensiveMaterial, PlayerShopMenuSettings.sortedMostExpensiveTitle, PlayerShopMenuSettings.sortedMostExpensiveLore).make();
 					case PRICE_ASCENDING:
 
-						return ItemCreator.of(PlayerShopMenuSettings.sortedMostMaterial, PlayerShopMenuSettings.sortedMostTitle, PlayerShopMenuSettings.sortedMostLore).make();
+						return ItemCreator.of(PlayerShopMenuSettings.sortedLeastExpensiveMaterial, PlayerShopMenuSettings.sortedLeastExpensiveTitle, PlayerShopMenuSettings.sortedLeastExpensiveLore).make();
 					case NEWEST:
 
-						return ItemCreator.of(PlayerShopMenuSettings.sortedNewMaterial, PlayerShopMenuSettings.sortedNewTitle, PlayerShopMenuSettings.sortedNewLore).make();
+						return ItemCreator.of(PlayerShopMenuSettings.sortedNewestMaterial, PlayerShopMenuSettings.sortedNewestTitle, PlayerShopMenuSettings.sortedNewestLore).make();
 					case OLDEST:
 
-						return ItemCreator.of(PlayerShopMenuSettings.sortedMostMaterial, PlayerShopMenuSettings.sortedMostTitle, PlayerShopMenuSettings.sortedMostLore).make();
+						return ItemCreator.of(PlayerShopMenuSettings.sortedOldestMaterial, PlayerShopMenuSettings.sortedOldestTitle, PlayerShopMenuSettings.sortedOldestLore).make();
 				}
 
 				return NO_ITEM;
 			}
 		};
+
+		this.market = new Button() {
+			@Override
+			public void onClickedInMenu(Player player, Menu menu, ClickType click) {
+				List<ApolloPlayer> data = PlayerShopUtil.getAllDataFiltered();
+
+				new PlayerShopMarketMenu(player, data).displayTo(player);
+			}
+
+			@Override
+			public ItemStack getItem() {
+				return ItemCreator.of(PlayerShopMenuSettings.marketMaterial, PlayerShopMenuSettings.marketTitle, PlayerShopMenuSettings.marketLore).make();
+			}
+		};
 	}
-
-		this.com.bekvon.bukkit.residence.commands.market =new
-
-	Button() {
-		@Override
-		public void onClickedInMenu (Player player, Menu menu, ClickType click){
-			List<ApolloPlayer> data = PersonalShopUtil.getAllDataFiltered();
-
-			new PlayerShopMarketMenu(player, data).displayTo(player);
-		}
-
-		@Override
-		public ItemStack getItem () {
-			return ItemCreator.of(PlayerShopMenuSettings.marketMaterial, PlayerShopMenuSettings.marketTitle, PlayerShopMenuSettings.marketLore).make();
-		}
-	}
-
-	;
-}
 
 	@Override
 	protected ItemStack convertToItemStack(ShopItem item) {
@@ -220,7 +231,10 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 
 		for (ApolloPlayer personalData : data)
 			if (seller.getUuid().equals(personalData.getUuid())) {
-				Menu menu = new PlayerShopIndividualMenu(this.getViewer(), personalData);
+				List<ShopItem> items = personalData.getShopItems();
+				PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+				Menu menu = new PlayerShopIndividualMenu(this.getViewer(), personalData, items, sort);
 
 				menu.displayTo(getViewer());
 
@@ -239,105 +253,105 @@ public class PlayerShopIndividualMenu extends IntermediateMenuPagged<ShopItem> {
 		return 9 * 5 + 4;
 	}
 
-private class ConfirmMenu extends Menu {
+	private class ConfirmMenu extends Menu {
 
-	private ShopItem shopItem;
-	private ApolloPlayer data;
+		private ShopItem shopItem;
+		private ApolloPlayer data;
 
-	@Position(9 * 0 + 2)
-	private final Button confirm;
+		@Position(9 * 0 + 2)
+		private final Button confirm;
 
-	@Position(9 * 0 + 4)
-	private final Button item;
+		@Position(9 * 0 + 4)
+		private final Button item;
 
-	@Position(9 * 0 + 6)
-	private final Button deny;
+		@Position(9 * 0 + 6)
+		private final Button deny;
 
-	private ConfirmMenu(Player player, ShopItem item, ApolloPlayer data) {
-		this.setSize(9);
-		this.setViewer(player);
-		this.setTitle(PlayerShopMenuSettings.confirmMenuTitle);
+		private ConfirmMenu(Player player, ShopItem item, ApolloPlayer data) {
+			this.setSize(9);
+			this.setViewer(player);
+			this.setTitle(PlayerShopMenuSettings.confirmMenuTitle);
 
-		this.shopItem = item;
-		this.data = data;
+			this.shopItem = item;
+			this.data = data;
 
-		this.confirm = new Button() {
-			@Override
-			public void onClickedInMenu(Player player, Menu menu, ClickType click) {
+			this.confirm = new Button() {
+				@Override
+				public void onClickedInMenu(Player player, Menu menu, ClickType click) {
 
-				ApolloPlayer seller = ApolloPlayer.from(PlayerShopIndividualMenu.this.seller.getUuid());
-				Economy economy = VaultHook.getEconomy();
-				double balance = economy.getBalance(player);
+					ApolloPlayer seller = ApolloPlayer.from(PlayerShopIndividualMenu.this.seller.getUuid());
+					Economy economy = VaultHook.getEconomy();
+					double balance = economy.getBalance(player);
 
-				if (item.getPrice() > balance && !player.isOp()) {
-					PlayerShopIndividualMenu.this.refreshAndRestart("&cInsufficient balance");
+					if (item.getPrice() > balance && !player.isOp()) {
+						PlayerShopIndividualMenu.this.refreshAndRestart("&cInsufficient balance");
 
-					return;
+						return;
+					}
+
+					if (!seller.getShopItems().contains(shopItem)) {
+						PlayerShopIndividualMenu.this.refreshAndRestart("&cItem is no longer listed");
+
+						return;
+					}
+
+					shopItem.give(player);
+					seller.removeShopItem(shopItem);
+
+					Player sellerPlayer = Remain.getPlayerByUUID(seller.getUuid());
+
+					economy.withdrawPlayer(player, item.getPrice());
+					economy.depositPlayer(Remain.getOfflinePlayerByUUID(seller.getUuid()), item.getPrice());
+
+					if (sellerPlayer == null) {
+						Database.getInstance().update(seller.getUsername(), "Player_Shop", data.shopItemsToMap().toJson().replace("'", "''"), username -> {
+							PlayerShopIndividualMenu.this.refreshAndRestart("&aSuccessfully purchased item");
+						});
+
+						return;
+					}
+
+					ItemStack shopItemStack = shopItem.getItem();
+					ItemMeta itemMeta = shopItemStack.getItemMeta();
+
+					Common.tell(sellerPlayer, player.getName() + " has purchased " + shopItemStack.getAmount() + " " + (!itemMeta.getDisplayName().isEmpty() ? itemMeta.getDisplayName() : ItemUtil.bountifyCapitalized(shopItemStack.getType()).toLowerCase()) + " &ffor $" + NumberFormat.getInstance().format(shopItem.getPrice()) + " from your player shop!");
+					PlayerShopIndividualMenu.this.refreshAndRestart("&aSuccessfully purchased item");
 				}
 
-				if (!seller.getShopItems().contains(shopItem)) {
-					PlayerShopIndividualMenu.this.refreshAndRestart("&cItem is no longer listed");
+				@Override
+				public ItemStack getItem() {
+					return ItemCreator.of(PlayerShopMenuSettings.confirmMaterial, PlayerShopMenuSettings.confirmTitle).make();
+				}
+			};
 
-					return;
+			this.item = Button.makeDummy(ItemCreator.of(item.getItem()).lore(getLoreItem()));
+
+			this.deny = new Button() {
+				@Override
+				public void onClickedInMenu(Player player, Menu menu, ClickType click) {
+					PlayerShopIndividualMenu.this.refreshAndRestart("&cBacked out of purchase");
 				}
 
-				shopItem.give(player);
-				seller.removeShopItem(shopItem);
-
-				Player sellerPlayer = Remain.getPlayerByUUID(seller.getUuid());
-
-				economy.withdrawPlayer(player, item.getPrice());
-				economy.depositPlayer(sellerPlayer, item.getPrice());
-
-				if (sellerPlayer == null) {
-					Database.getInstance().update(seller.getUsername(), "Player_Shop", data.shopItemsToMap().toJson().replace("'", "''"), username -> {
-						PlayerShopIndividualMenu.this.refreshAndRestart("&aSuccessfully purchased item");
-					});
-
-					return;
+				@Override
+				public ItemStack getItem() {
+					return ItemCreator.of(PlayerShopMenuSettings.denyMaterial, PlayerShopMenuSettings.denyTitle).make();
 				}
+			};
+		}
 
-				ItemStack shopItemStack = shopItem.getItem();
-				ItemMeta itemMeta = shopItemStack.getItemMeta();
+		private List<String> getLoreItem() {
+			List<String> addedLore = new ArrayList<>();
 
-				Common.tell(sellerPlayer, player.getName() + " has purchased " + shopItemStack.getAmount() + " " + (!itemMeta.getDisplayName().isEmpty() ? itemMeta.getDisplayName() : ItemUtil.bountifyCapitalized(shopItemStack.getType()).toLowerCase()) + " &ffor $" + NumberFormat.getInstance().format(shopItem.getPrice()) + " from your player shop!");
-				PlayerShopIndividualMenu.this.refreshAndRestart("&aSuccessfully purchased item");
-			}
+			for (String line : PlayerShopMenuSettings.confirmMenuLore)
+				addedLore.add(line
+						.replace("%playershop_itemprice%", NumberFormat.getInstance().format(shopItem.getPrice())));
 
-			@Override
-			public ItemStack getItem() {
-				return ItemCreator.of(PlayerShopMenuSettings.confirmMaterial, PlayerShopMenuSettings.confirmTitle).make();
-			}
-		};
+			return addedLore;
+		}
 
-		this.item = Button.makeDummy(ItemCreator.of(item.getItem()).lore(getLoreItem()));
-
-		this.deny = new Button() {
-			@Override
-			public void onClickedInMenu(Player player, Menu menu, ClickType click) {
-				PlayerShopIndividualMenu.this.refreshAndRestart("&cBacked out of purchase");
-			}
-
-			@Override
-			public ItemStack getItem() {
-				return ItemCreator.of(PlayerShopMenuSettings.denyMaterial, PlayerShopMenuSettings.denyTitle).make();
-			}
-		};
+		@Override
+		public ItemStack getItemAt(int slot) {
+			return ItemCreator.of(CompMaterial.GRAY_STAINED_GLASS_PANE, " ").make();
+		}
 	}
-
-	private List<String> getLoreItem() {
-		List<String> addedLore = new ArrayList<>();
-
-		for (String line : PlayerShopMenuSettings.confirmMenuLore)
-			addedLore.add(line
-					.replace("%playershop_itemprice%", NumberFormat.getInstance().format(shopItem.getPrice())));
-
-		return addedLore;
-	}
-
-	@Override
-	public ItemStack getItemAt(int slot) {
-		return ItemCreator.of(CompMaterial.GRAY_STAINED_GLASS_PANE, " ").make();
-	}
-}
 }

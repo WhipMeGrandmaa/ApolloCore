@@ -55,7 +55,6 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopMarketSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\task\BlocksBrokenTask.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopOpenSubCommand.java
-C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\PersonalShopUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\enchant\TokenGreedEnchant.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\settings\BlocksBrokenSettings.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopCommandGroup.java
@@ -65,6 +64,7 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopAddSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\task\EnchantTask.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\manager\TaskManager.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\PlayerShopUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\minebomb\MinebombCommandGroup.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\enchant\SpaceDropletsEnchant.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\enchant\StarMultiplerEnchant.java

@@ -59,6 +59,30 @@ Buttons:
       Lore:
         - ""
         - "&7Sorted by: &dMost Items"
+    Price_Descending:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dMost Expensive"
+    Price_Ascending:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dLeast Expensive"
+    Newest:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dNewest"
+    Oldest:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dOldest"
   Next_Page:
     Material: GREEN_SHULKER_BOX
     Title: "&aNext Page"

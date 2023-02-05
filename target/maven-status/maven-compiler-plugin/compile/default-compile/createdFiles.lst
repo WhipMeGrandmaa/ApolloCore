@@ -28,9 +28,10 @@ me\whipmegrandma\apollocore\model\enchant\TokenGreedEnchant.class
 me\whipmegrandma\apollocore\settings\TokensSettings.class
 me\whipmegrandma\apollocore\hook\PapiHook.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$1.class
-me\whipmegrandma\apollocore\util\PersonalShopUtil.class
+me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$4.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$3.class
 me\whipmegrandma\apollocore\command\MaxrankupCommand.class
+me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$5.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu.class
 me\whipmegrandma\apollocore\command\tokens\TokensWithdrawSubCommand.class
@@ -39,6 +40,7 @@ me\whipmegrandma\apollocore\api\IntermediateDatabase.class
 me\whipmegrandma\apollocore\model\enchant\WrathEnchant.class
 me\whipmegrandma\apollocore\model\Rank$UpgradeResult.class
 me\whipmegrandma\apollocore\command\playershop\PlayershopCommandGroup.class
+me\whipmegrandma\apollocore\util\PlayerShopUtil$1.class
 me\whipmegrandma\apollocore\enums\SortedBy.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$2.class
 me\whipmegrandma\apollocore\task\EnchantTask.class
@@ -59,6 +61,7 @@ me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$4.class
 me\whipmegrandma\apollocore\model\Rank$UpgradeType.class
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$1.class
 me\whipmegrandma\apollocore\command\rank\RankResetSubCommand.class
+me\whipmegrandma\apollocore\enums\SortedBy$Individual.class
 me\whipmegrandma\apollocore\manager\TaskManager$TaskType.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$3.class
 me\whipmegrandma\apollocore\util\MineBombUtil.class
@@ -76,13 +79,13 @@ me\whipmegrandma\apollocore\command\RankupCommand.class
 me\whipmegrandma\apollocore\command\PrestigetopCommand.class
 me\whipmegrandma\apollocore\command\BlocksCommand.class
 me\whipmegrandma\apollocore\settings\BlocksBrokenSettings.class
-me\whipmegrandma\apollocore\util\PersonalShopUtil$1.class
 me\whipmegrandma\apollocore\settings\Settings.class
 me\whipmegrandma\apollocore\command\RankupCommand$1.class
 me\whipmegrandma\apollocore\hook\EffectLibHook.class
 me\whipmegrandma\apollocore\util\WorldGuardUtil.class
 me\whipmegrandma\apollocore\model\enchant\JackHammerEnchant.class
 me\whipmegrandma\apollocore\command\tokens\TokensBalanceSubCommand.class
+me\whipmegrandma\apollocore\util\PlayerShopUtil.class
 me\whipmegrandma\apollocore\hook\VaultHook.class
 me\whipmegrandma\apollocore\command\rank\RankListSubCommand.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$2.class

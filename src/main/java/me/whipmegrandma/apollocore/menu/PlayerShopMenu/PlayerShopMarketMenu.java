@@ -5,8 +5,8 @@ import me.whipmegrandma.apollocore.enums.SortedBy;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.ShopItem;
 import me.whipmegrandma.apollocore.settings.PlayerShopMenuSettings;
-import me.whipmegrandma.apollocore.util.PersonalShopUtil;
 import me.whipmegrandma.apollocore.util.PlaceholderUtil;
+import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -61,8 +61,12 @@ public class PlayerShopMarketMenu extends IntermediateMenuPagged<ApolloPlayer> {
 				List<ApolloPlayer> data = ApolloPlayer.getAllCached();
 
 				for (ApolloPlayer personalData : data) {
-					if (player.getUniqueId().equals(personalData.getUuid()))
-						new PlayerShopIndividualMenu(player, personalData).displayTo(player);
+					if (player.getUniqueId().equals(personalData.getUuid())) {
+						List<ShopItem> items = personalData.getShopItems();
+						PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+						new PlayerShopIndividualMenu(player, personalData, items).displayTo(player);
+					}
 				}
 			}
 
@@ -75,9 +79,9 @@ public class PlayerShopMarketMenu extends IntermediateMenuPagged<ApolloPlayer> {
 		this.refresh = new Button() {
 			@Override
 			public void onClickedInMenu(Player player, Menu menu, ClickType click) {
-				List<ApolloPlayer> data = PersonalShopUtil.getAllDataFiltered();
+				List<ApolloPlayer> data = PlayerShopUtil.getAllDataFiltered();
 
-				PersonalShopUtil.sortShops(sort, data);
+				PlayerShopUtil.sortShops(sort, data);
 
 				Menu marketMenu = new PlayerShopMarketMenu(player, data, sort);
 
@@ -106,7 +110,7 @@ public class PlayerShopMarketMenu extends IntermediateMenuPagged<ApolloPlayer> {
 
 					index++;
 				}
-				PersonalShopUtil.sortShops(sort, data);
+				PlayerShopUtil.sortShops(sort, data);
 
 				Menu marketMenu = new PlayerShopMarketMenu(player, data, sort);
 
@@ -164,7 +168,10 @@ public class PlayerShopMarketMenu extends IntermediateMenuPagged<ApolloPlayer> {
 
 	@Override
 	protected void onPageClick(Player player, ApolloPlayer seller, ClickType click) {
-		new PlayerShopIndividualMenu(player, seller).displayTo(player);
+		List<ShopItem> items = seller.getShopItems();
+		PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+		new PlayerShopIndividualMenu(player, seller, items).displayTo(player);
 	}
 
 	@Override

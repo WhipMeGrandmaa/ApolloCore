@@ -12,7 +12,7 @@ import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import me.whipmegrandma.apollocore.model.Rank;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
-import me.whipmegrandma.apollocore.util.PersonalShopUtil;
+import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -75,8 +75,8 @@ public final class ApolloCore extends SimplePlugin {
 
 	private void loadPlayerShops() {
 		Database.getInstance().loadAll(data -> {
-			PersonalShopUtil.filter(data);
-			PersonalShopUtil.addAllToCache(data);
+			PlayerShopUtil.filter(data);
+			PlayerShopUtil.addAllToCache(data);
 		});
 	}
 

@@ -3,7 +3,7 @@ package me.whipmegrandma.apollocore.command.playershop;
 import me.whipmegrandma.apollocore.enums.SortedBy;
 import me.whipmegrandma.apollocore.menu.PlayerShopMenu.PlayerShopMarketMenu;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
-import me.whipmegrandma.apollocore.util.PersonalShopUtil;
+import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
@@ -24,8 +24,8 @@ public class PlayershopMarketSubCommand extends SimpleSubCommand {
 
 		List<ApolloPlayer> data = ApolloPlayer.getAllCached();
 
-		PersonalShopUtil.filter(data);
-		PersonalShopUtil.sortShops(SortedBy.NEWEST_ITEM, data);
+		PlayerShopUtil.filter(data);
+		PlayerShopUtil.sortShops(SortedBy.NEWEST_ITEM, data);
 
 		new PlayerShopMarketMenu(getPlayer(), data).displayTo(getPlayer());
 
