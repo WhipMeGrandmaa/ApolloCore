@@ -7,6 +7,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
+import org.mineacademy.fo.remain.Remain;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -14,9 +15,9 @@ import java.util.*;
 
 @Data
 @Getter
-public class PlayerCache {
+public class ApolloPlayer {
 
-	private static Map<UUID, PlayerCache> playerCache = new HashMap<>();
+	private static Map<UUID, ApolloPlayer> playerCache = new HashMap<>();
 
 	private UUID uuid;
 	private String username;
@@ -26,7 +27,7 @@ public class PlayerCache {
 	private Integer blocksBroken;
 	private List<ShopItem> shopItems;
 
-	private PlayerCache(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken, List<ShopItem> shopItems) {
+	private ApolloPlayer(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken, List<ShopItem> shopItems) {
 		this.uuid = uuid;
 		this.username = username;
 		this.tokens = tokens;
@@ -99,18 +100,65 @@ public class PlayerCache {
 		return !prestige.isEmpty() ? Integer.parseInt(prestige) : 0;
 	}
 
-	public static PlayerCache from(Player player) {
+	public Integer getNumberOfShopItems() {
+		return this.shopItems.size();
+	}
+
+	public Long getNewestShopItemTime() {
+		return !this.shopItems.isEmpty() ? this.shopItems.get(this.shopItems.size() - 1).getTimeMade() : 0L;
+	}
+
+	public static ApolloPlayer from(Player player) {
 		UUID uuid = player.getUniqueId();
 		String username = player.getName();
-		PlayerCache cache = playerCache.get(uuid);
+		ApolloPlayer cache = playerCache.get(uuid);
 
 		if (cache == null)
-			cache = new PlayerCache(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0, new ArrayList<>());
+			cache = new ApolloPlayer(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0, new ArrayList<>());
 
 		return cache;
 	}
 
-	public static PlayerCache fromDatabase(ResultSet resultSet) {
+	public static ApolloPlayer from(UUID uuid) {
+		return playerCache.get(uuid);
+	}
+
+	public static ApolloPlayer from(String username) {
+
+		for (ApolloPlayer player : getAllCached())
+			if (username.equals(player.getUsername()))
+				return player;
+
+		return null;
+	}
+
+	public static boolean contains(Player player) {
+		return playerCache.containsKey(player.getUniqueId());
+	}
+
+	public static boolean contains(ApolloPlayer player) {
+		return playerCache.containsKey(player.getUuid());
+	}
+
+	public static boolean contains(UUID uuid) {
+		return playerCache.containsKey(uuid);
+	}
+
+	public static void removeOfflineFromCache() {
+
+		for (Iterator<ApolloPlayer> iterator = playerCache.values().iterator(); iterator.hasNext(); ) {
+			Player player = Remain.getPlayerByUUID(iterator.next().getUuid());
+
+			if (player == null)
+				iterator.remove();
+		}
+	}
+
+	public static List<ApolloPlayer> getAllCached() {
+		return new ArrayList<>(playerCache.values());
+	}
+
+	public static ApolloPlayer fromDatabase(ResultSet resultSet) {
 
 		try {
 			UUID uuid = UUID.fromString(resultSet.getString("UUID"));
@@ -121,7 +169,7 @@ public class PlayerCache {
 			Integer blocksBroken = resultSet.getInt("Blocks_Broken");
 			List<ShopItem> shopItems = deserializeShopItems(SerializedMap.fromJson(resultSet.getString("Player_Shop")));
 
-			return new PlayerCache(uuid, username, tokens, enchants, rank, blocksBroken, shopItems);
+			return new ApolloPlayer(uuid, username, tokens, enchants, rank, blocksBroken, shopItems);
 		} catch (Throwable t) {
 			Common.error(t, "Unable to convert data from database.");
 		}

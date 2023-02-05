@@ -22,7 +22,6 @@ public class TaskManager {
 	public static void stop() {
 		for (Iterator<Map.Entry<TaskType, BukkitTask>> it = activeTasks.entrySet().iterator(); it.hasNext(); ) {
 			Map.Entry<TaskType, BukkitTask> entry = it.next();
-			TaskType type = entry.getKey();
 			BukkitTask task = entry.getValue();
 
 			if (!task.isCancelled())

@@ -1,10 +1,8 @@
 package me.whipmegrandma.apollocore.command;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
-import org.bukkit.Bukkit;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.annotation.AutoRegister;
 import org.mineacademy.fo.command.SimpleCommand;
@@ -33,14 +31,8 @@ public final class PrestigetopCommand extends SimpleCommand {
 			int position = 1;
 			List<SimpleComponent> lines = new ArrayList<>();
 
-			for (PlayerCache cache : allData) {
-				Player target = Bukkit.getPlayerExact(cache.getUsername());
-
-				if (target != null)
-					cache = PlayerCache.from(target);
-
+			for (ApolloPlayer cache : allData)
 				lines.add(SimpleComponent.of("&f#" + position++ + " &7- &f" + cache.getUsername() + " &7(" + NumberFormat.getInstance().format(cache.getPrestige()) + ")"));
-			}
 
 			new ChatPaginator(10, ChatColor.DARK_GRAY)
 					.setHeader(

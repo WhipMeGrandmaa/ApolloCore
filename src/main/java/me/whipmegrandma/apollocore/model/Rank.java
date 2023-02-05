@@ -70,7 +70,7 @@ public class Rank extends YamlConfig {
 		UpgradeResult result = this.canUpgrade(player);
 
 		if (result == UpgradeResult.SUCCESS) {
-			PlayerCache cache = PlayerCache.from(player);
+			ApolloPlayer cache = ApolloPlayer.from(player);
 
 			cache.upgradeRank();
 			this.onUpgrade(player);
@@ -182,8 +182,8 @@ public class Rank extends YamlConfig {
 		return null;
 	}
 
-	public static Triple<UpgradeResult, Double, Integer> prestigeMax(Player player) {
-		PlayerCache cache = PlayerCache.from(player);
+	public static Triple<UpgradeResult, Double, Integer> upgradeMax(Player player, UpgradeType type) {
+		ApolloPlayer cache = ApolloPlayer.from(player);
 		Rank rank = cache.getRank();
 		Economy economy = VaultHook.getEconomy();
 
@@ -195,6 +195,9 @@ public class Rank extends YamlConfig {
 		while (economy.getBalance(player) >= rank.getUpgradePrice() + spent) {
 			if (rank.getNextRank() == null)
 				return new Triple<>(UpgradeResult.MAX_RANK, spent, times);
+
+			if (rank.getUpgradeType() != type)
+				break;
 
 			spent += rank.getUpgradePrice();
 			rank = rank.getNextRank();

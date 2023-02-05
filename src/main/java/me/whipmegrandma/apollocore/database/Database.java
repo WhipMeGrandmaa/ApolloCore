@@ -2,9 +2,8 @@ package me.whipmegrandma.apollocore.database;
 
 import lombok.Getter;
 import me.whipmegrandma.apollocore.api.IntermediateDatabase;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Rank;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.Valid;
@@ -37,7 +36,7 @@ public class Database extends IntermediateDatabase {
 				.setPrimaryColumn("UUID"));
 	}
 
-	public void load(Player player, Consumer<PlayerCache> callback) {
+	public void load(Player player, Consumer<ApolloPlayer> callback) {
 		this.checkLoadedAndSync();
 
 		Common.runAsync(() -> {
@@ -53,7 +52,7 @@ public class Database extends IntermediateDatabase {
 						return;
 					}
 
-					Common.runLater(() -> callback.accept(PlayerCache.fromDatabase(resultSet)));
+					Common.runLater(() -> callback.accept(ApolloPlayer.fromDatabase(resultSet)));
 				}
 			} catch (Throwable t) {
 				Common.error(t, "Unable to load player data for " + player.getName());
@@ -61,7 +60,7 @@ public class Database extends IntermediateDatabase {
 		});
 	}
 
-	public void load(String username, Consumer<PlayerCache> callback) {
+	public void load(String username, Consumer<ApolloPlayer> callback) {
 		this.checkLoadedAndSync();
 
 		Common.runAsync(() -> {
@@ -77,7 +76,7 @@ public class Database extends IntermediateDatabase {
 						return;
 					}
 
-					Common.runLater(() -> callback.accept(PlayerCache.fromDatabase(resultSet)));
+					Common.runLater(() -> callback.accept(ApolloPlayer.fromDatabase(resultSet)));
 				}
 			} catch (Throwable t) {
 				Common.error(t, "Unable to load player data for " + username);
@@ -85,20 +84,20 @@ public class Database extends IntermediateDatabase {
 		});
 	}
 
-	public void loadAll(Consumer<List<PlayerCache>> callback) {
+	public void loadAll(Consumer<List<ApolloPlayer>> callback) {
 		this.checkLoadedAndSync();
 
 		Common.runAsync(() -> {
-			List<PlayerCache> dataList = new ArrayList<>();
+			List<ApolloPlayer> dataList = new ArrayList<>();
 
-			this.selectAll("{table}", data -> dataList.add(PlayerCache.fromDatabase(data)));
+			this.selectAll("{table}", data -> dataList.add(ApolloPlayer.fromDatabase(data)));
 
-			for (ListIterator<PlayerCache> iterator = dataList.listIterator(); iterator.hasNext(); ) {
-				Player player = Bukkit.getPlayerExact(iterator.next().getUsername());
+			for (ListIterator<ApolloPlayer> iterator = dataList.listIterator(); iterator.hasNext(); ) {
+				ApolloPlayer offlinePlayer = iterator.next();
 
-				if (player != null) {
+				if (ApolloPlayer.contains(offlinePlayer.getUuid())) {
 					iterator.remove();
-					iterator.add(PlayerCache.from(player));
+					iterator.add(ApolloPlayer.from(offlinePlayer.getUuid()));
 				}
 			}
 
@@ -106,12 +105,12 @@ public class Database extends IntermediateDatabase {
 		});
 	}
 
-	public void save(Player player, Consumer<PlayerCache> callback) {
+	public void save(Player player, Consumer<ApolloPlayer> callback) {
 		this.checkLoadedAndSync();
 
 		Common.runAsync(() -> {
 
-			PlayerCache cache = PlayerCache.from(player);
+			ApolloPlayer cache = ApolloPlayer.from(player);
 
 			try {
 
@@ -149,6 +148,25 @@ public class Database extends IntermediateDatabase {
 				synchronized (this) {
 					this.update("UPDATE {table} set " + column + " = '" + updatedValue + "' WHERE Username = '" + username + "' COLLATE NOCASE");
 				}
+
+			} catch (Throwable t) {
+				Common.error(t, "Unable to update " + column + " to " + updatedValue + " for " + username);
+			}
+		});
+	}
+
+	public void update(String username, String column, Object updatedValue, Consumer<String> callback) {
+		this.checkLoadedAndSync();
+
+		Common.runAsync(() -> {
+
+			try {
+
+				synchronized (this) {
+					this.update("UPDATE {table} set " + column + " = '" + updatedValue + "' WHERE Username = '" + username + "' COLLATE NOCASE");
+				}
+
+				Common.runLater(() -> callback.accept(username));
 
 			} catch (Throwable t) {
 				Common.error(t, "Unable to update " + column + " to " + updatedValue + " for " + username);

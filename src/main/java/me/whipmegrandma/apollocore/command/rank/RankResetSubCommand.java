@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command.rank;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class RankResetSubCommand extends SimpleSubCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			PlayerCache.from(getPlayer()).setRank(Rank.getFirstRank());
+			ApolloPlayer.from(getPlayer()).setRank(Rank.getFirstRank());
 			super.tell("Your rank has been reset to " + Rank.getFirstRank().getName() + ".");
 
 			return;
@@ -38,7 +38,7 @@ public class RankResetSubCommand extends SimpleSubCommand {
 
 		if (target != null) {
 
-			PlayerCache cache = PlayerCache.from(target);
+			ApolloPlayer cache = ApolloPlayer.from(target);
 			cache.setRank(Rank.getFirstRank());
 
 			Common.tell(target, "Your rank has been reset to " + Rank.getFirstRank().getName() + ".");

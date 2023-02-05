@@ -1,10 +1,10 @@
 package me.whipmegrandma.apollocore.menu;
 
 import lombok.Data;
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.whipmegrandma.apollocore.manager.EnchantsManager;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.util.EnchantPurchaseUtil;
+import me.whipmegrandma.apollocore.util.PlaceholderUtil;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -17,7 +17,6 @@ import org.mineacademy.fo.collection.SerializedMap;
 import org.mineacademy.fo.menu.Menu;
 import org.mineacademy.fo.menu.button.Button;
 import org.mineacademy.fo.menu.model.ItemCreator;
-import org.mineacademy.fo.model.HookManager;
 import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
@@ -106,7 +105,7 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 
 				@Override
 				public void onClickedInMenu(Player player, Menu menu, ClickType click) {
-					PlayerCache cache = PlayerCache.from(player);
+					ApolloPlayer cache = ApolloPlayer.from(player);
 
 					if (data.enchantment != null) {
 						EnchantPurchaseUtil.PurchaseEnum result = EnchantPurchaseUtil.buy(player, data.enchantment, data.getTokens0(player), data.getMaxLevelForDefault());
@@ -147,11 +146,11 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 
 				@Override
 				public ItemStack getItem() {
-					PlayerCache cache = PlayerCache.from(player);
+					ApolloPlayer cache = ApolloPlayer.from(player);
 					Integer level = cache.getEnchantLevel(data.enchantment);
 
-					String title = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(player, data.getTitle()) : data.getTitle();
-					List<String> lore = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(player, data.getLore()) : data.getLore();
+					String title = PlaceholderUtil.set(player, data.getTitle());
+					List<String> lore = PlaceholderUtil.set(player, data.getLore());
 
 					String formattedTitle = null;
 					List<String> formattedLore = null;
@@ -257,7 +256,7 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 			if (this.tokens == null && this.tokensByLevel.isEmpty())
 				return 0;
 
-			PlayerCache cache = PlayerCache.from(player);
+			ApolloPlayer cache = ApolloPlayer.from(player);
 
 			int playerLevel = cache.getEnchantLevel(this.enchantment);
 

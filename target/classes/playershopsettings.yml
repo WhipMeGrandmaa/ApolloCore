@@ -1,0 +1,10 @@
+Banned_Items:
+  - DIAMOND
+  - DIRT
+  - GRASS
+Banned_Special_Items:
+  - PERSONAL_PICKAXE
+  - MINEBOMB
+  - TOKENS_NOTE
+Minimum_Price: 500
+Maximum_Price: 100000

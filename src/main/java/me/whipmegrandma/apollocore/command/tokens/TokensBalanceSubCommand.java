@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command.tokens;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.command.SimpleCommandGroup;
@@ -25,7 +25,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			int tokens = PlayerCache.from(getPlayer()).getTokens();
+			int tokens = ApolloPlayer.from(getPlayer()).getTokens();
 			super.tell("Tokens: " + NumberFormat.getInstance().format(tokens));
 
 			return;
@@ -37,7 +37,7 @@ public class TokensBalanceSubCommand extends SimpleSubCommand {
 
 		if (target != null) {
 
-			int tokens = PlayerCache.from(target).getTokens();
+			int tokens = ApolloPlayer.from(target).getTokens();
 
 			if (target.equals(getPlayer())) {
 				super.tell("Tokens: " + NumberFormat.getInstance().format(tokens));

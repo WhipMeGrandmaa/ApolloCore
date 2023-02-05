@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command.blockstats;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -25,7 +25,7 @@ public class BlockstatsResetSubCommand extends SimpleSubCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			PlayerCache.from(getPlayer()).setBlocksBroken(0);
+			ApolloPlayer.from(getPlayer()).setBlocksBroken(0);
 			super.tell("The amount of blocks you've broken has been reset.");
 
 			return;
@@ -37,7 +37,7 @@ public class BlockstatsResetSubCommand extends SimpleSubCommand {
 
 		if (target != null) {
 
-			PlayerCache cache = PlayerCache.from(target);
+			ApolloPlayer cache = ApolloPlayer.from(target);
 			cache.setBlocksBroken(0);
 
 			Common.tell(target, "The amount of blocks you've broken has been reset.");

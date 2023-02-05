@@ -3,7 +3,6 @@ package me.whipmegrandma.apollocore.listener;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.enums.CompMetadataTags;
 import me.whipmegrandma.apollocore.model.MineBomb;
-import me.whipmegrandma.apollocore.model.PlayerCache;
 import me.whipmegrandma.apollocore.util.MineBombUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
 import me.whipmegrandma.apollocore.util.WorldGuardUtil;
@@ -130,9 +129,7 @@ public final class MineBombListener implements Listener {
 
 			if (sphereBlocks.isEmpty())
 				return;
-
-			PlayerCache.from(player).addBlocksBroken(sphereBlocks.size());
-
+			
 			VaultEcoUtil.sell(player, sphereBlocks);
 
 			bomb.remove();

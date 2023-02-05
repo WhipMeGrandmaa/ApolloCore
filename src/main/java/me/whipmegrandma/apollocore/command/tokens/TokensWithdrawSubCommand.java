@@ -1,14 +1,13 @@
 package me.whipmegrandma.apollocore.command.tokens;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.whipmegrandma.apollocore.enums.CompMetadataTags;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.settings.TokensSettings;
+import me.whipmegrandma.apollocore.util.PlaceholderUtil;
 import org.bukkit.inventory.ItemStack;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 import org.mineacademy.fo.menu.model.ItemCreator;
-import org.mineacademy.fo.model.HookManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class TokensWithdrawSubCommand extends SimpleSubCommand {
 
 		checkBoolean(amount > 0, "The amount to withdraw must be a positive number.");
 
-		PlayerCache cache = PlayerCache.from(getPlayer());
+		ApolloPlayer cache = ApolloPlayer.from(getPlayer());
 		int tokens = cache.getTokens();
 
 		checkBoolean(tokens >= amount, "Insufficient tokens!");
@@ -40,8 +39,8 @@ public class TokensWithdrawSubCommand extends SimpleSubCommand {
 
 		String tokensString = NumberFormat.getInstance().format(amount);
 
-		String replacePlaceholdersName = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(getPlayer(), TokensSettings.name) : TokensSettings.name;
-		List<String> replacePlaceholdersLore = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(getPlayer(), TokensSettings.lore) : TokensSettings.lore;
+		String replacePlaceholdersName = PlaceholderUtil.set(getPlayer(), TokensSettings.name);
+		List<String> replacePlaceholdersLore = PlaceholderUtil.set(getPlayer(), TokensSettings.lore);
 
 		String formattedName = replacePlaceholdersName.replace("%tokens%", tokensString);
 		List<String> formattedLore = new ArrayList<>();

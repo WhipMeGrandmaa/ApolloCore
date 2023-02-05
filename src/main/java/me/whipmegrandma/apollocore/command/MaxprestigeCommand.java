@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command;
 
 import me.whipmegrandma.apollocore.hook.VaultHook;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Rank;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
@@ -26,12 +26,12 @@ public final class MaxprestigeCommand extends SimpleCommand {
 		checkConsole();
 
 		Player player = getPlayer();
-		PlayerCache cache = PlayerCache.from(player);
+		ApolloPlayer cache = ApolloPlayer.from(player);
 		Rank rank = cache.getRank();
 
-		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.PRESTIGE, "You must use '/rankup'.");
+		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.PRESTIGE, "You must use '/maxrankup'.");
 
-		Triple<Rank.UpgradeResult, Double, Integer> data = Rank.prestigeMax(player);
+		Triple<Rank.UpgradeResult, Double, Integer> data = Rank.upgradeMax(player, Rank.UpgradeType.PRESTIGE);
 		Rank.UpgradeResult result = data.getFirst();
 		double spent = data.getSecond();
 		int times = data.getThird();

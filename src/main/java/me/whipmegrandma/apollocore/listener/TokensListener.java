@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.listener;
 
 import me.whipmegrandma.apollocore.enums.CompMetadataTags;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +32,7 @@ public final class TokensListener implements Listener {
 		Integer amount = key != null ? Integer.parseInt(key) : null;
 
 		if (amount != null) {
-			PlayerCache cache = PlayerCache.from(player);
+			ApolloPlayer cache = ApolloPlayer.from(player);
 			cache.setTokens(cache.getTokens() + amount);
 
 			Common.tell(player, "You deposited " + NumberFormat.getInstance().format(amount) + " tokens.");

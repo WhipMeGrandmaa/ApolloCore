@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command.tokens;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -25,7 +25,7 @@ public class TokensResetSubCommand extends SimpleSubCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			PlayerCache.from(getPlayer()).setTokens(0);
+			ApolloPlayer.from(getPlayer()).setTokens(0);
 			super.tell("Your tokens has been reset.");
 
 			return;
@@ -37,7 +37,7 @@ public class TokensResetSubCommand extends SimpleSubCommand {
 
 		if (target != null) {
 
-			PlayerCache cache = PlayerCache.from(target);
+			ApolloPlayer cache = ApolloPlayer.from(target);
 			cache.setTokens(0);
 
 			Common.tell(target, "Your tokens has been reset.");

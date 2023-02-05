@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command;
 
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -25,7 +25,7 @@ public final class BlocksCommand extends SimpleCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			int blocks = PlayerCache.from(getPlayer()).getBlocksBroken();
+			int blocks = ApolloPlayer.from(getPlayer()).getBlocksBroken();
 			this.blocksTopPosition(getPlayer(), "You've broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
 
 			return;
@@ -37,7 +37,7 @@ public final class BlocksCommand extends SimpleCommand {
 
 		if (target != null) {
 
-			int blocks = PlayerCache.from(target).getBlocksBroken();
+			int blocks = ApolloPlayer.from(target).getBlocksBroken();
 
 			if (target.equals(getPlayer())) {
 				this.blocksTopPosition(getPlayer(), "You've broken " + Common.plural(blocks, "block") + ".", "Blocktop Position: #%position%");
@@ -92,7 +92,7 @@ public final class BlocksCommand extends SimpleCommand {
 
 			int position = 1;
 
-			for (PlayerCache cache : allData) {
+			for (ApolloPlayer cache : allData) {
 				if (cache.getUsername().equals(target))
 					for (String line : message)
 						Common.tell(sender, line.replace("%position%", String.valueOf(position)));

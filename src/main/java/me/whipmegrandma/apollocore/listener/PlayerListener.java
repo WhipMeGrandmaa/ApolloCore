@@ -2,7 +2,7 @@ package me.whipmegrandma.apollocore.listener;
 
 import lombok.Getter;
 import me.whipmegrandma.apollocore.database.Database;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
 import me.whipmegrandma.apollocore.util.WorldGuardUtil;
@@ -31,7 +31,7 @@ public final class PlayerListener implements Listener {
 		Database.getInstance().load(player, cache -> {
 
 			if (cache == null) {
-				PlayerCache.from(player).addToCache();
+				ApolloPlayer.from(player).addToCache();
 				Database.getInstance().save(player, non -> {
 				});
 
@@ -50,16 +50,20 @@ public final class PlayerListener implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 
-		Database.getInstance().save(player, cache -> PlayerCache.from(player).removeFromCache());
+		Database.getInstance().save(player, cache -> {
+
+			if (cache.getNumberOfShopItems() < 1)
+				ApolloPlayer.from(player).removeFromCache();
+		});
 	}
 
 	@EventHandler
 	public void onBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		
+
 		if (WorldGuardUtil.testBuild(block.getLocation(), player)) {
-			PlayerCache.from(player).increaseBlocksBroken();
+			ApolloPlayer.from(player).increaseBlocksBroken();
 			VaultEcoUtil.sell(player, block);
 		}
 	}

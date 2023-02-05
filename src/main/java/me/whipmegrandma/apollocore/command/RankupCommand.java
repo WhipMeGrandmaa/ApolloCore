@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.command;
 
 import me.whipmegrandma.apollocore.hook.VaultHook;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Rank;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public final class RankupCommand extends SimpleCommand {
 		checkConsole();
 
 		Player player = getPlayer();
-		PlayerCache cache = PlayerCache.from(player);
+		ApolloPlayer cache = ApolloPlayer.from(player);
 		Rank rank = cache.getRank();
 
 		checkBoolean(rank.getUpgradeType() == Rank.UpgradeType.RANKUP, "You must use the '/prestige'.");

@@ -19,6 +19,7 @@ public final class PlayershopCommandGroup extends SimpleCommandGroup {
 	protected void registerSubcommands() {
 		registerSubcommand(new PlayershopAddSubCommand(this));
 		registerSubcommand(new PlayershopOpenSubCommand(this));
+		registerSubcommand(new PlayershopMarketSubCommand(this));
 	}
 
 	@Override

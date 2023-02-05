@@ -1,0 +1,85 @@
+Market_Place:
+  Title: "Market Place"
+  Individual_Title: "&ePlayer Shop of &d%player_name%"
+  Individual_Lore:
+    - ""
+    - "&7Number of items for sale: &f%playershop_itemsize%x"
+    - "&7Newest enlistment: &f%playershop_newestitemname%"
+    - "&7Listed: &f%playershop_newestitemtimemade%"
+Player_Shop:
+  Title: "&d%player_name%"
+  Individual_Lore_Added_On:
+    Yours:
+      - ""
+      - "&8&l&m---------------"
+      - ""
+      - "&7Price: &a$%playershop_itemprice%"
+      - "&7Listed: &f%playershop_itemtimemade%"
+      - ""
+      - "&eClick to remove."
+    Other:
+      - ""
+      - "&8&l&m---------------"
+      - ""
+      - "&7Price: &a$%playershop_itemprice%"
+      - "&7Listed: &f%playershop_itemtimemade%"
+      - ""
+      - "&eClick to purchase."
+Confirm_Menu:
+  Title: "Confirmation"
+  Individual_Lore_Added_On:
+    - ""
+    - "&8&l&m---------------"
+    - ""
+    - "&7Price: &a$%playershop_itemprice%"
+Buttons:
+  Info:
+    Material: END_CRYSTAL
+    Title: "&d&lInformation"
+    Lore:
+      - "&7Command: &f/playershop add <price>"
+      - "Shift Right Click to remove"
+      - "an item from your player shop."
+  Refresh:
+    Material: STRING
+    Title: "&d&lRefresh"
+    Lore:
+      - ""
+      - "&7Refresh the listings."
+  Sort:
+    New:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dNewest Item"
+    Most_Items:
+      Material: CHARCOAL
+      Title: "&d&lSorting"
+      Lore:
+        - ""
+        - "&7Sorted by: &dMost Items"
+  Next_Page:
+    Material: GREEN_SHULKER_BOX
+    Title: "&aNext Page"
+  Previous_Page:
+    Material: RED_SHULKER_BOX
+    Title: "&cPrevious Page"
+  Personal_Shop:
+    Material: CHEST
+    Title: "&d&lPersonal Shop"
+    Lore:
+      - ""
+      - "&7Click to go to your shop."
+  Market:
+    Material: ENDER_CHEST
+    Title: "&d&lMarket"
+    Lore:
+      - ""
+      - "&7Click to go to the market."
+  Confirm:
+    Material: LIME_WOOL
+    Title: "&aCONFIRM"
+  Deny:
+    Material: RED_WOOL
+    Title: "&cDENY"

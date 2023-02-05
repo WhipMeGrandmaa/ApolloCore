@@ -15,6 +15,7 @@ public class ShopItem implements ConfigSerializable {
 
 	private ItemStack item;
 	private Integer price;
+	private Long timeMade;
 	private String key;
 	private String value;
 
@@ -23,7 +24,7 @@ public class ShopItem implements ConfigSerializable {
 				.of(this.item)
 				.tag(this.key, this.value)
 				.make();
-		
+
 		PlayerUtil.addItemsOrDrop(player, taggedItem);
 	}
 
@@ -33,6 +34,7 @@ public class ShopItem implements ConfigSerializable {
 
 		map.put("Price", this.price);
 		map.put("Item", this.item);
+		map.put("Time_Made", this.timeMade);
 
 		if (this.key != null && this.value != null) {
 			map.put("NBTTagKey", this.key);
@@ -47,6 +49,7 @@ public class ShopItem implements ConfigSerializable {
 
 		shopItem.item = item;
 		shopItem.price = price;
+		shopItem.timeMade = System.currentTimeMillis();
 
 		for (CompMetadataTags tag : CompMetadataTags.values())
 			if (CompMetadata.hasMetadata(shopItem.item, tag.toString())) {
@@ -66,6 +69,7 @@ public class ShopItem implements ConfigSerializable {
 
 		shopItem.price = map.getInteger("Price");
 		shopItem.item = map.getItemStack("Item");
+		shopItem.timeMade = map.getLong("Time_Made");
 
 		shopItem.key = map.containsKey("NBTTagKey") ? map.getString("NBTTagKey") : null;
 		shopItem.value = map.containsKey("NBTTagValue") ? map.getString("NBTTagValue") : null;

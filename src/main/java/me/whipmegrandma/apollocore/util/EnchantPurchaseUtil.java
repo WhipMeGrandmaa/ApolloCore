@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.util;
 
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.IntermediateEnchant;
-import me.whipmegrandma.apollocore.model.PlayerCache;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.remain.CompSound;
@@ -9,7 +9,7 @@ import org.mineacademy.fo.remain.CompSound;
 public class EnchantPurchaseUtil {
 
 	public static PurchaseEnum buy(Player player, Enchantment enchantment, int price, int maxLevelDefaultEnchant) {
-		PlayerCache cache = PlayerCache.from(player);
+		ApolloPlayer cache = ApolloPlayer.from(player);
 		int balance = cache.getTokens();
 		int level = cache.getEnchantLevel(enchantment);
 

@@ -1,15 +1,13 @@
 package me.whipmegrandma.apollocore.util;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.whipmegrandma.apollocore.enums.CompMetadataTags;
-import me.whipmegrandma.apollocore.model.PlayerCache;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.settings.PersonalPickaxeSettings;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.mineacademy.fo.PlayerUtil;
 import org.mineacademy.fo.menu.model.ItemCreator;
-import org.mineacademy.fo.model.HookManager;
 import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.remain.CompMetadata;
 
@@ -32,8 +30,8 @@ public class PersonalPickaxeUtil {
 	public static void update(Player player) {
 		int slot = has(player);
 
-		String replacedName = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(player, PersonalPickaxeSettings.name) : PersonalPickaxeSettings.name;
-		List<String> replacedLore = HookManager.isPlaceholderAPILoaded() ? PlaceholderAPI.setPlaceholders(player, PersonalPickaxeSettings.lore) : PersonalPickaxeSettings.lore;
+		String replacedName = PlaceholderUtil.set(player, PersonalPickaxeSettings.name);
+		List<String> replacedLore = PlaceholderUtil.set(player, PersonalPickaxeSettings.lore);
 
 		ItemCreator unfinishedPickaxe = ItemCreator.of(PersonalPickaxeSettings.material)
 				.glow(PersonalPickaxeSettings.glow)
@@ -52,7 +50,7 @@ public class PersonalPickaxeUtil {
 
 	private static ItemCreator updateEnchants(ItemCreator unfinishedPickaxe, Player player) {
 
-		for (Map.Entry<Enchantment, Integer> entry : PlayerCache.from(player).getEnchantments().entrySet()) {
+		for (Map.Entry<Enchantment, Integer> entry : ApolloPlayer.from(player).getEnchantments().entrySet()) {
 			Enchantment enchantment = entry.getKey();
 			int level = entry.getValue();
 

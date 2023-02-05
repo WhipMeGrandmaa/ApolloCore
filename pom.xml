@@ -94,6 +94,12 @@
             <version>9.4</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime</artifactId>
+            <version>5.0.6.Final</version>
+        </dependency>
     </dependencies>
 
     <!-- DO NOT EDIT unless instructed to do so or you know what you're doing. -->
@@ -141,6 +147,7 @@
                         <includes>
                             <include>${foundation.path}:Foundation*</include>
                             <include>com.elmakers.mine.bukkit:EffectLib</include>
+                            <include>org.ocpsoft.prettytime:prettytime</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -151,6 +158,9 @@
 
                             <pattern>de.slikey</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.lib.slikey</shadedPattern>
+
+                            <pattern>org.ocpsoft</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.lib.ocpsoft</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
