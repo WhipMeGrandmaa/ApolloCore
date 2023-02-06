@@ -13,6 +13,7 @@ public class PersonalPickaxeSettings extends YamlStaticConfig {
 	public static String name;
 	public static List<String> lore;
 	public static Boolean glow;
+	public static Integer hotbarSlot;
 
 	@Override
 	protected void onLoad() throws Exception {
@@ -24,5 +25,12 @@ public class PersonalPickaxeSettings extends YamlStaticConfig {
 		name = isSet("Name") ? getString("Name") : "&d&l%player_name% &b&lPickaxe";
 		lore = isSet("Lore") ? getStringList("Lore") : Arrays.asList("", "&7Right click to open", "&7the pickaxe menu.");
 		glow = isSet("Glow_When_Not_Enchanted") ? getBoolean("Glow_When_Not_Enchanted") : false;
+		hotbarSlot = isSet("Hotbar_Slot") ? getInteger("Hotbar_Slot") - 1 : 0;
+
+		if (hotbarSlot > 8)
+			hotbarSlot = 8;
+
+		else if (hotbarSlot < 0)
+			hotbarSlot = 0;
 	}
 }

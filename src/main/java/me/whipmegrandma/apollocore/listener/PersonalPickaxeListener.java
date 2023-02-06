@@ -11,13 +11,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.annotation.AutoRegister;
 import org.mineacademy.fo.remain.CompMaterial;
@@ -40,18 +39,21 @@ public final class PersonalPickaxeListener implements Listener {
 		if (!(event.getWhoClicked() instanceof Player))
 			return;
 
-		ItemStack cursor = event.getCursor();
-		ItemStack clicked = event.getCurrentItem();
+		PlayerInventory inventory = event.getWhoClicked().getInventory();
+
 		ClickType clickType = event.getClick();
 
-		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString())) {
-			Inventory clickedInventory = event.getClickedInventory();
+		ItemStack cursor = event.getCursor();
+		ItemStack clicked = event.getCurrentItem();
+		ItemStack number = clickType == ClickType.NUMBER_KEY ? inventory.getItem(event.getHotbarButton()) : null;
 
-			if (clickedInventory != null && clickedInventory.getType() != InventoryType.PLAYER)
-				event.setCancelled(true);
-		}
+		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString()))
+			event.setCancelled(true);
 
-		if (!CompMaterial.isAir(clicked) && CompMetadata.hasMetadata(clicked, CompMetadataTags.PICKAXE.toString()) && (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT))
+		if (!CompMaterial.isAir(clicked) && CompMetadata.hasMetadata(clicked, CompMetadataTags.PICKAXE.toString()))
+			event.setCancelled(true);
+
+		if (!CompMaterial.isAir(number) && CompMetadata.hasMetadata(number, CompMetadataTags.PICKAXE.toString()))
 			event.setCancelled(true);
 	}
 
@@ -62,16 +64,8 @@ public final class PersonalPickaxeListener implements Listener {
 
 		ItemStack cursor = event.getOldCursor();
 
-		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString())) {
-			int size = event.getView().getTopInventory().getSize();
-
-			for (int slot : event.getRawSlots()) {
-				if (slot > size)
-					continue;
-
-				event.setCancelled(true);
-			}
-		}
+		if (!CompMaterial.isAir(cursor) && CompMetadata.hasMetadata(cursor, CompMetadataTags.PICKAXE.toString()))
+			event.setCancelled(true);
 	}
 
 	@EventHandler
