@@ -21,7 +21,7 @@ public final class BlocksCommand extends SimpleCommand {
 
 	@Override
 	protected void onCommand() {
-
+		
 		if (args.length == 0) {
 			checkConsole();
 

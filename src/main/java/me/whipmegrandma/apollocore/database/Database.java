@@ -1,7 +1,6 @@
 package me.whipmegrandma.apollocore.database;
 
 import lombok.Getter;
-import me.whipmegrandma.apollocore.api.IntermediateDatabase;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Rank;
 import org.bukkit.entity.Player;
@@ -33,6 +32,7 @@ public class Database extends IntermediateDatabase {
 				.add("Rank", "LONGTEXT")
 				.add("Blocks_Broken", "INTEGER")
 				.add("Player_Shop", "LONGTEXT")
+				.add("Mine", "LONGTEXT")
 				.setPrimaryColumn("UUID"));
 	}
 
@@ -123,7 +123,8 @@ public class Database extends IntermediateDatabase {
 						"Enchantments", cache.enchantmentsToMap().toJson(),
 						"Rank", cache.getRank() != null ? cache.getRank().getName() : Rank.getFirstRank() != null ? Rank.getFirstRank().getName() : "No Rank",
 						"Blocks_Broken", cache.getBlocksBroken(),
-						"Player_Shop", cache.shopItemsToMap().toJson().replace("'", "''"));
+						"Player_Shop", cache.shopItemsToMap().toJson().replace("'", "''"),
+						"Mine", cache.getMine() != null ? cache.getMine().serialize().toJson() : "No Mine");
 
 				final String columns = Common.join(map.keySet());
 				final String values = Common.join(map.values(), ", ", value -> value == null || value.equals("NULL") ? "NULL" : "'" + value + "'");

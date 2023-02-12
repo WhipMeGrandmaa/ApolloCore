@@ -59,6 +59,7 @@
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -100,6 +101,12 @@
             <artifactId>prettytime</artifactId>
             <version>5.0.6.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ZandyDEV</groupId>
+            <artifactId>PlayerBorderAPI</artifactId>
+            <version>Build_5</version>
+        </dependency>
     </dependencies>
 
     <!-- DO NOT EDIT unless instructed to do so or you know what you're doing. -->
@@ -122,8 +129,8 @@
                      https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <version>3.10.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -148,6 +155,7 @@
                             <include>${foundation.path}:Foundation*</include>
                             <include>com.elmakers.mine.bukkit:EffectLib</include>
                             <include>org.ocpsoft.prettytime:prettytime</include>
+                            <include>com.github.ZandyDEV:PlayerBorderAPI</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -161,11 +169,21 @@
 
                             <pattern>org.ocpsoft</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.lib.ocpsoft</shadedPattern>
+
+                            <pattern>com.github.ZandyDEV</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.lib.zandydev</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
                         <filter>
                             <artifact>com.elmakers.mine.bukkit:EffectLib</artifact>
+                            <excludes>
+                                <exclude>*.yml</exclude>
+                                <exclude>*.php</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>com.github.ZandyDEV:PlayerBorderAPI</artifact>
                             <excludes>
                                 <exclude>*.yml</exclude>
                                 <exclude>*.php</exclude>

@@ -26,8 +26,9 @@ public class ApolloPlayer {
 	private Rank rank;
 	private Integer blocksBroken;
 	private List<ShopItem> shopItems;
+	private Mine mine;
 
-	private ApolloPlayer(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken, List<ShopItem> shopItems) {
+	private ApolloPlayer(UUID uuid, String username, Integer tokens, Map<Enchantment, Integer> enchantments, Rank rank, Integer blocksBroken, List<ShopItem> shopItems, Mine mine) {
 		this.uuid = uuid;
 		this.username = username;
 		this.tokens = tokens;
@@ -35,10 +36,15 @@ public class ApolloPlayer {
 		this.rank = rank;
 		this.blocksBroken = blocksBroken;
 		this.shopItems = shopItems;
+		this.mine = mine;
 	}
 
 	public void setTokens(Integer tokens) {
 		this.tokens = tokens;
+	}
+
+	public void setMine(Mine mine) {
+		this.mine = mine;
 	}
 
 	public void setEnchantment(Enchantment enchantment, Integer level) {
@@ -114,7 +120,7 @@ public class ApolloPlayer {
 		ApolloPlayer cache = playerCache.get(uuid);
 
 		if (cache == null)
-			cache = new ApolloPlayer(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0, new ArrayList<>());
+			cache = new ApolloPlayer(uuid, username, 0, new HashMap<>(), Rank.getFirstRank() != null ? Rank.getFirstRank() : null, 0, new ArrayList<>(), null);
 
 		return cache;
 	}
@@ -168,8 +174,9 @@ public class ApolloPlayer {
 			Rank rank = Rank.getByName(resultSet.getString("Rank")) != null ? Rank.getByName(resultSet.getString("Rank")) : Rank.getFirstRank();
 			Integer blocksBroken = resultSet.getInt("Blocks_Broken");
 			List<ShopItem> shopItems = deserializeShopItems(SerializedMap.fromJson(resultSet.getString("Player_Shop")));
+			Mine mine = !resultSet.getString("Mine").equals("No Mine") ? deserializeMine(SerializedMap.fromJson(resultSet.getString("Mine"))) : null;
 
-			return new ApolloPlayer(uuid, username, tokens, enchants, rank, blocksBroken, shopItems);
+			return new ApolloPlayer(uuid, username, tokens, enchants, rank, blocksBroken, shopItems, mine);
 		} catch (Throwable t) {
 			Common.error(t, "Unable to convert data from database.");
 		}
@@ -192,5 +199,14 @@ public class ApolloPlayer {
 
 	private static List<ShopItem> deserializeShopItems(SerializedMap map) {
 		return map.getList("Player_Shop", ShopItem.class);
+	}
+
+	private static Mine deserializeMine(SerializedMap map) {
+		return Mine.deserialize(map);
+	}
+
+	public static void addAllToCache(List<ApolloPlayer> data) {
+		for (ApolloPlayer player : data)
+			player.addToCache();
 	}
 }

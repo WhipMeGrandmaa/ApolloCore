@@ -32,8 +32,16 @@
                     excludes="*.yml,*.php"
             />
 
-            <zipgroupfileset dir="${user.home}/.m2/repository/com/github/kangarko/Foundation/${foundation.version}/"
+            <zipgroupfileset dir="${user.home}/.m2/repository/com/github/kangarko/Foundation/${foundation.version}"
                              includes="**/*${foundation.version}.jar"/>
+
+            <zipgroupfileset dir="${user.home}/.m2/repository/org/ocpsoft/prettytime/prettytime/5.0.6.Final"
+                             includes="prettytime-5.0.6.Final.jar"
+                             excludes="*.yml,*.php"/>
+
+            <zipfileset
+                    src="${user.home}/.m2/repository/com/github/ZandyDEV/PlayerBorderAPI/Build_5/PlayerBorderAPI-Build_5.jar"
+                    excludes="*.yml,*.php"/>
             <!--<fileset dir="../Foundation/target/classes"/>-->
         </jar>
 

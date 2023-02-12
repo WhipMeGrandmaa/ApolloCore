@@ -1,4 +1,4 @@
-package me.whipmegrandma.apollocore.api;
+package me.whipmegrandma.apollocore.database;
 
 import lombok.*;
 import org.mineacademy.fo.*;

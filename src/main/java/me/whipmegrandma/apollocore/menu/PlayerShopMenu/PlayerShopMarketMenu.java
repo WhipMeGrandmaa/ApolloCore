@@ -1,7 +1,7 @@
 package me.whipmegrandma.apollocore.menu.PlayerShopMenu;
 
-import me.whipmegrandma.apollocore.api.IntermediateMenuPagged;
 import me.whipmegrandma.apollocore.enums.SortedBy;
+import me.whipmegrandma.apollocore.menu.IntermediateMenuPagged;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.ShopItem;
 import me.whipmegrandma.apollocore.settings.PlayerShopMenuSettings;

@@ -9,7 +9,7 @@ import java.util.*;
 public class EnchantsManager {
 
 	private static Map<String, Enchantment> byName = new HashMap<>();
-	
+
 	static {
 		for (Enchantment enchantment : Enchantment.values())
 			if (enchantment.getItemTarget().toString().equals("TOOL"))

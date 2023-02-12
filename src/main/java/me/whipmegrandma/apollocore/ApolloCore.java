@@ -1,25 +1,29 @@
 package me.whipmegrandma.apollocore;
 
+import com.github.zandy.playerborderapi.api.PlayerBorderAPI;
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.hook.EffectLibHook;
 import me.whipmegrandma.apollocore.hook.PapiHook;
 import me.whipmegrandma.apollocore.hook.VaultHook;
 import me.whipmegrandma.apollocore.listener.MineBombListener;
 import me.whipmegrandma.apollocore.listener.PlayerListener;
+import me.whipmegrandma.apollocore.manager.MineWorldManager;
 import me.whipmegrandma.apollocore.manager.TaskManager;
 import me.whipmegrandma.apollocore.menu.PersonalPickaxeEnchantsMenu;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import me.whipmegrandma.apollocore.model.Rank;
+import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
-import me.whipmegrandma.apollocore.util.PlayerShopUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.model.HookManager;
 import org.mineacademy.fo.plugin.SimplePlugin;
 import org.mineacademy.fo.remain.Remain;
+
+import java.util.Iterator;
 
 public final class ApolloCore extends SimplePlugin {
 
@@ -29,10 +33,13 @@ public final class ApolloCore extends SimplePlugin {
 
 	@Override
 	protected void onReloadablesStart() {
+		MineSettings.load();
 		TaskManager.restart();
+		MineWorldManager.load();
+
 		this.loadSettings();
 		this.registerHooks();
-		this.loadPlayerShops();
+		this.loadData();
 		this.updatePickaxe();
 	}
 
@@ -45,6 +52,7 @@ public final class ApolloCore extends SimplePlugin {
 		MineBombListener.getCooldown().clear();
 		EffectLibHook.disable();
 		PlayerListener.getBlocksBroken().clear();
+		PlayerBorderAPI.getInstance().removeBorders();
 
 		for (Player player : Remain.getOnlinePlayers())
 			Database.getInstance().save(player, ApolloPlayer::removeFromCache);
@@ -77,13 +85,28 @@ public final class ApolloCore extends SimplePlugin {
 			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
 		}
 
+		if (!HookManager.isWorldEditLoaded()) {
+			Common.log("WorldEdit is not loaded. Disabling plugin.");
+
+			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
+		}
+
 		EffectLibHook.restart();
 	}
 
-	private void loadPlayerShops() {
+	private void loadData() {
 		Database.getInstance().loadAll(data -> {
-			PlayerShopUtil.filter(data);
-			PlayerShopUtil.addAllToCache(data);
+
+			for (Iterator<ApolloPlayer> iterator = data.listIterator(); iterator.hasNext(); ) {
+				ApolloPlayer player = iterator.next();
+
+				if (player.getNumberOfShopItems() <= 0 && player.getMine() == null && Remain.getPlayerByUUID(player.getUuid()) == null)
+					iterator.remove();
+			}
+
+			data.sort((playerOne, playerTwo) -> playerTwo.getNewestShopItemTime().compareTo(playerOne.getNewestShopItemTime()));
+			
+			ApolloPlayer.addAllToCache(data);
 		});
 	}
 

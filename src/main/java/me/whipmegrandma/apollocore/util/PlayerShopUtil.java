@@ -54,11 +54,6 @@ public class PlayerShopUtil {
 		data.sort((playerOne, playerTwo) -> playerTwo.getNewestShopItemTime().compareTo(playerOne.getNewestShopItemTime()));
 	}
 
-	public static void addAllToCache(List<ApolloPlayer> data) {
-		for (ApolloPlayer player : data)
-			player.addToCache();
-	}
-
 	public static List<ApolloPlayer> getAllDataFiltered() {
 		List<ApolloPlayer> data = ApolloPlayer.getAllCached();
 

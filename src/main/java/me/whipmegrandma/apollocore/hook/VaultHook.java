@@ -10,11 +10,11 @@ public class VaultHook {
 	private static Economy economy;
 
 	public static void load() {
-		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-		
-		if (rsp == null)
+		RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+
+		if (provider == null)
 			return;
 
-		economy = rsp.getProvider();
+		economy = provider.getProvider();
 	}
 }

@@ -45,21 +45,30 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Kriztian/Desktop/Developing/Intellij Coding/ApolloCore/src/main/resources/menus&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Kriztian/Desktop/Developing/Intellij Coding/ApolloCore/src/main/resources/schematics&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4816092&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;settings.saveactions&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources\schematics" />
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources\menus" />
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources\schematics" />
+      <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources" />
+      <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\api" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="me.whipmegrandma.apollocore.command.playershop" />
-      <recent name="me.whipmegrandma.apollocore.task" />
+      <recent name="me.whipmegrandma.apollocore.command.mine" />
+      <recent name="me.whipmegrandma.apollocore.model.tool" />
+      <recent name="me.whipmegrandma.apollocore.listener" />
       <recent name="me.whipmegrandma.apollocore.settings" />
-      <recent name="me.whipmegrandma.apollocore.command" />
-      <recent name="me.whipmegrandma.apollocore.command.blockstats" />
+      <recent name="me.whipmegrandma.apollocore.command.playershop" />
     </key>
   </component>
   <component name="RunManager" selected="JAR Application.1.18.2 Live Debug">

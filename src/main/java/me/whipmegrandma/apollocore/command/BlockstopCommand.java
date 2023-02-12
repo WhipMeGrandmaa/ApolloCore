@@ -27,7 +27,7 @@ public final class BlockstopCommand extends SimpleCommand {
 		Database.getInstance().loadAll(allData -> {
 
 			allData.sort((cache1, cache2) -> cache2.getBlocksBroken().compareTo(cache1.getBlocksBroken()));
-
+			
 			int position = 1;
 			List<SimpleComponent> lines = new ArrayList<>();
 

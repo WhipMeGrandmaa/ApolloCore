@@ -52,7 +52,7 @@ public final class PlayerListener implements Listener {
 
 		Database.getInstance().save(player, cache -> {
 
-			if (cache.getNumberOfShopItems() < 1)
+			if (cache.getNumberOfShopItems() < 1 && cache.getMine() == null)
 				ApolloPlayer.from(player).removeFromCache();
 		});
 	}

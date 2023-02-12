@@ -22,9 +22,8 @@ public class PlayershopMarketSubCommand extends SimpleSubCommand {
 	protected void onCommand() {
 		checkConsole();
 
-		List<ApolloPlayer> data = ApolloPlayer.getAllCached();
-
-		PlayerShopUtil.filter(data);
+		List<ApolloPlayer> data = PlayerShopUtil.getAllDataFiltered();
+		
 		PlayerShopUtil.sortShops(SortedBy.NEWEST_ITEM, data);
 
 		new PlayerShopMarketMenu(getPlayer(), data).displayTo(getPlayer());

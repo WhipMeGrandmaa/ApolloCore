@@ -5,7 +5,10 @@ public enum CompMetadataTags {
 	WITHDRAW("ApolloCore:Tokens"),
 	PICKAXE("ApolloCore:Pickaxe"),
 	MINEBOMB("ApolloCore:MineBomb"),
-	PROJECTILE("ApolloCore:Projectile");
+	PROJECTILE("ApolloCore:Projectile"),
+	MINEEDIT("ApolloCore:MineEdit"),
+	CENTER("ApolloCore:Center"),
+	HOME("ApolloCore:Home");
 
 	private final String compData;
 

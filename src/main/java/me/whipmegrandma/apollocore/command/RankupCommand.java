@@ -22,7 +22,7 @@ public final class RankupCommand extends SimpleCommand {
 	@Override
 	protected void onCommand() {
 		checkConsole();
-
+		
 		Player player = getPlayer();
 		ApolloPlayer cache = ApolloPlayer.from(player);
 		Rank rank = cache.getRank();

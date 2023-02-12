@@ -1,4 +1,4 @@
-package me.whipmegrandma.apollocore.api;
+package me.whipmegrandma.apollocore.menu;
 
 import lombok.Getter;
 import lombok.NonNull;

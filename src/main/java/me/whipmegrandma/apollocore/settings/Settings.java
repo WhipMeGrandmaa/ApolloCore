@@ -34,7 +34,7 @@ public class Settings extends YamlStaticConfig {
 			return;
 		}
 
-		Common.log("MySQL is not set in settings.yml, connecting to SQLite.");
+		Common.log("[ApolloCore] MySQL is not set in settings.yml, connecting to SQLite.");
 		Database.getInstance().connect("jdbc:sqlite:" + FileUtil.getOrMakeFile("database.sqlite").getAbsolutePath());
 
 	}
