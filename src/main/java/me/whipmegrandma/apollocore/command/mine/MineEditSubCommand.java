@@ -73,6 +73,9 @@ public class MineEditSubCommand extends SimpleSubCommand {
 			this.editor = null;
 			this.mine = null;
 			this.nextFreeLocation = null;
+			this.mineRegion = new VisualizedRegion();
+			this.centerLocation = null;
+			this.homeLocation = null;
 
 			Mine.updateAll();
 
@@ -88,7 +91,7 @@ public class MineEditSubCommand extends SimpleSubCommand {
 
 		this.mine = Mine.create(nextFreeLocation, false);
 
-		this.mine.teleport(getPlayer(), nextFreeLocation, false);
+		this.mine.teleportToHome(getPlayer(), nextFreeLocation, false);
 		tell("Entering mine editor. Use '/mine edit' again to exit and save.");
 
 		Common.runLater(30, () -> {

@@ -1,10 +1,13 @@
 package me.whipmegrandma.apollocore.command.mine;
 
+import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Mine;
 import org.bukkit.entity.Player;
+import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
+import org.mineacademy.fo.remain.Remain;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,25 +26,59 @@ public class MineTeleportSubCommand extends SimpleSubCommand {
 	protected void onCommand() {
 		checkConsole();
 
-		Player player = getPlayer();
-		ApolloPlayer cache = ApolloPlayer.from(args.length == 0 ? player.getName() : args[0]);
+		if (args.length == 0) {
 
-		if (args.length > 0)
-			checkBoolean(cache != null, args[0] + " has never joined the server before.");
+			Mine mine = ApolloPlayer.from(getPlayer()).getMine();
+			checkBoolean(mine != null, "You don't own a mine. Use '/mine create' to make one.");
 
-		Mine mine = cache.getMine();
+			mine.teleportToHome(getPlayer());
+			tell("You teleported to your mine.");
 
-		checkBoolean(mine != null, args.length == 0 ? "You don't own a mine. Use '/mine create' to make one." : cache.getUsername() + " doesn't own a mine.");
+			return;
+		}
 
-		if (!mine.equals(ApolloPlayer.from(player).getMine()) && !mine.getCanTeleport() && (mine.getAllowedPlayers() != null ? !mine.getAllowedPlayers().contains(player.getUniqueId()) : true) && !player.isOp())
-			returnTell(cache.getUsername() + " has visitation toggled off.");
+		String username = args[0];
 
-		mine.teleport(player);
+		ApolloPlayer target = ApolloPlayer.from(username);
 
-		if (args.length == 0)
-			tell("You have teleported to your mine.");
-		else if (args.length == 1) {
-			tell(player.getName().equalsIgnoreCase(args[0]) ? "You have teleported to your mine." : "You have teleported to the mine of " + cache.getUsername() + ".");
+		if (target != null) {
+
+			Mine mine = target.getMine();
+			checkBoolean(mine != null, target.getUsername() + " doesn't own a mine.");
+
+			if (!mine.isPlayerAllowed(getPlayer()) && !getPlayer().isOp())
+				checkBoolean(mine.getCanTeleport(), target.getUsername() + " has mine teleportation toggled off to outsiders.");
+
+			mine.teleportToHome(getPlayer());
+
+			if (target.getUuid().equals(getPlayer().getUniqueId())) {
+				tell("You teleported to your mine.");
+
+				return;
+			}
+
+			tell("You teleported to the mine of " + target.getUsername() + ".");
+
+			Player targetPlayer = Remain.getPlayerByUUID(target.getUuid());
+
+			if (targetPlayer != null)
+				Common.tell(targetPlayer, getPlayer().getName() + " has teleported to your mine.");
+
+		} else {
+
+			Database.getInstance().load(username, cache -> {
+
+				if (cache == null) {
+					super.tell(username + " has never joined the server before.");
+
+					return;
+				}
+
+				String name = cache.getUsername();
+
+				tell(name + " doesn't own a mine.");
+
+			});
 		}
 	}
 
@@ -54,8 +91,9 @@ public class MineTeleportSubCommand extends SimpleSubCommand {
 
 			for (Iterator<ApolloPlayer> iterator = cached.listIterator(); iterator.hasNext(); ) {
 				ApolloPlayer player = iterator.next();
+				Mine mine = player.getMine();
 
-				if (player.getMine() == null)
+				if (mine == null || (mine != null && !mine.isPlayerAllowed(getPlayer()) && !mine.getCanTeleport() && !player.getUuid().equals(getPlayer().getUniqueId()) && !getPlayer().isOp()))
 					iterator.remove();
 				else
 					names.add(player.getUsername());

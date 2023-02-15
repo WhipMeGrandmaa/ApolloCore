@@ -9,13 +9,20 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.model.Tuple;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class VaultEcoUtil {
 
 	private static final Economy economy = VaultHook.getEconomy();
+
+	public static void sell(Player player, List<Block> blocks) {
+		Set<Location> locations = new HashSet<>();
+
+		for (Block block : blocks)
+			locations.add(block.getLocation());
+
+		sell(player, locations);
+	}
 
 	public static void sell(Player player, Set<Location> blocks) {
 		HashMap<UUID, Tuple<Integer, Double>> map = PlayerListener.getBlocksBroken();
@@ -52,6 +59,5 @@ public class VaultEcoUtil {
 
 		if (moneyMade != 0)
 			PlayerListener.getBlocksBroken().put(uuid, new Tuple<>(brokenOld + 1, moneyMadeOld + moneyMade));
-
 	}
 }

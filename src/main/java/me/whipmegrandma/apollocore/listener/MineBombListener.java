@@ -2,6 +2,7 @@ package me.whipmegrandma.apollocore.listener;
 
 import lombok.Getter;
 import me.whipmegrandma.apollocore.enums.CompMetadataTags;
+import me.whipmegrandma.apollocore.model.Mine;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import me.whipmegrandma.apollocore.util.MineBombUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
@@ -104,9 +105,10 @@ public final class MineBombListener implements Listener {
 		});
 
 		EntityUtil.trackFalling(bomb, () -> {
+			if (!WorldGuardUtil.testBuild(bomb.getLocation(), player)) {
+				if (player.getGameMode() != GameMode.CREATIVE)
+					MineBombUtil.give(player, mineBomb, 1);
 
-			if (!WorldGuardUtil.testBuild(bomb.getLocation(), player) && player.getGameMode() != GameMode.CREATIVE) {
-				MineBombUtil.give(player, mineBomb, 1);
 				bomb.remove();
 
 				return;
@@ -125,11 +127,17 @@ public final class MineBombListener implements Listener {
 
 			Set<Location> sphereBlocks = BlockUtil.getSphere(bomb.getLocation(), mineBomb.getRadius(), false);
 
-			sphereBlocks.removeIf(location -> !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()));
+			sphereBlocks.removeIf(location -> !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()) || Mine.getWithinMineRegion(location) == null || Mine.getWithinMineRegion(location).isPlayerAllowed(player));
 
-			if (sphereBlocks.isEmpty())
+			if (sphereBlocks.isEmpty()) {
+				if (player.getGameMode() != GameMode.CREATIVE)
+					MineBombUtil.give(player, mineBomb, 1);
+
+				bomb.remove();
+
 				return;
-			
+			}
+
 			VaultEcoUtil.sell(player, sphereBlocks);
 
 			bomb.remove();

@@ -4,10 +4,10 @@ import de.slikey.effectlib.effect.SphereEffect;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.hook.EffectLibHook;
 import me.whipmegrandma.apollocore.hook.VaultHook;
+import me.whipmegrandma.apollocore.util.ProbabilityCollection;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.ReflectionUtil;
-import org.mineacademy.fo.Valid;
 import org.mineacademy.fo.collection.SerializedMap;
 import org.mineacademy.fo.model.Triple;
 import org.mineacademy.fo.remain.CompSound;
@@ -15,6 +15,7 @@ import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
 import java.text.DecimalFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +33,11 @@ public class Rank extends YamlConfig {
 	private Boolean infiniteRanks;
 	private Integer infiniteNumber;
 	private Double upgradePriceMultiplier;
-	private SerializedMap upgradeByLevel;
+	private LinkedHashMap<Integer, Integer> upgradeByInfiniteLevel;
+	private Integer mineRegionIncrease;
+	private ProbabilityCollection mineBlocks;
+	private LinkedHashMap<Integer, ProbabilityCollection> mineBlocksByInfiniteLevel;
+	private LinkedHashMap<Integer, Integer> mineRegionIncreaseByInfiniteLevel;
 
 	private Rank(String name) {
 		this.setPathPrefix(name);
@@ -40,7 +45,7 @@ public class Rank extends YamlConfig {
 		this.loadConfiguration(NO_DEFAULT, "ranks.yml");
 	}
 
-	private Rank(String rankFormatted, String nextRank, Integer upgradePrice, UpgradeType upgradeType, Boolean infiniteRanks, Integer infiniteNumber, Double upgradePriceMultiplier, SerializedMap upgradeByLevel) {
+	private Rank(String rankFormatted, String nextRank, Integer upgradePrice, UpgradeType upgradeType, Boolean infiniteRanks, Integer infiniteNumber, Double upgradePriceMultiplier, LinkedHashMap<Integer, Integer> upgradeByLevel, Integer mineRegionIncrease, ProbabilityCollection mineBlocks, LinkedHashMap<Integer, ProbabilityCollection> mineBlocksByInfiniteLevel, LinkedHashMap<Integer, Integer> mineRegionIncreaseByInfiniteLevel) {
 		this.rankFormatted = rankFormatted;
 		this.nextRank = nextRank;
 		this.upgradePrice = upgradePrice;
@@ -48,7 +53,11 @@ public class Rank extends YamlConfig {
 		this.infiniteRanks = infiniteRanks;
 		this.infiniteNumber = infiniteNumber;
 		this.upgradePriceMultiplier = upgradePriceMultiplier;
-		this.upgradeByLevel = upgradeByLevel;
+		this.upgradeByInfiniteLevel = upgradeByLevel;
+		this.mineRegionIncrease = mineRegionIncrease;
+		this.mineBlocks = mineBlocks;
+		this.mineBlocksByInfiniteLevel = mineBlocksByInfiniteLevel;
+		this.mineRegionIncreaseByInfiniteLevel = mineRegionIncreaseByInfiniteLevel;
 	}
 
 	@Override
@@ -60,10 +69,38 @@ public class Rank extends YamlConfig {
 		this.infiniteRanks = getBoolean("Infinite_Ranks", false);
 		this.infiniteNumber = 1;
 		this.upgradePriceMultiplier = getDouble("Infinite_Upgrade_Price_Multiplier", 1.0);
-		this.upgradeByLevel = getMap("Infinite_Price_By_Level");
+		this.mineRegionIncrease = getInteger("Mine_Region_Increase", 0);
+		this.mineBlocks = get("Mine_Blocks", ProbabilityCollection.class);
+		this.deserializeIndividualInfinite();
 
 		if (getBoolean("First_Rank", false))
 			firstRank = this;
+	}
+
+	private void deserializeIndividualInfinite() {
+		LinkedHashMap<Integer, Integer> upgradeByInfiniteLevel = new LinkedHashMap<>();
+		LinkedHashMap<Integer, ProbabilityCollection> mineBlocksByInfiniteLevel = new LinkedHashMap<>();
+		LinkedHashMap<Integer, Integer> mineRegionIncreaseByInfiniteLevel = new LinkedHashMap<>();
+
+		for (Map.Entry<String, Object> entry : getMap("Infinite_Settings_By_Level").entrySet()) {
+			Integer level = Integer.valueOf(entry.getKey());
+			SerializedMap settings = SerializedMap.of(entry.getValue());
+
+			Integer price = settings.getInteger("Upgrade_Price");
+			if (price != null)
+				upgradeByInfiniteLevel.put(level, price);
+
+			ProbabilityCollection mineBlocks = settings.get("Mine_Blocks", ProbabilityCollection.class);
+			if (mineBlocks != null)
+				mineBlocksByInfiniteLevel.put(level, mineBlocks);
+
+			Integer mineRegionIncrease = settings.getInteger("Mine_Region_Increase", 0);
+			mineRegionIncreaseByInfiniteLevel.put(level, mineRegionIncrease);
+		}
+
+		this.upgradeByInfiniteLevel = upgradeByInfiniteLevel;
+		this.mineBlocksByInfiniteLevel = mineBlocksByInfiniteLevel;
+		this.mineRegionIncreaseByInfiniteLevel = mineRegionIncreaseByInfiniteLevel;
 	}
 
 	public UpgradeResult upgrade(Player player) {
@@ -96,14 +133,14 @@ public class Rank extends YamlConfig {
 	}
 
 	public double getUpgradePrice() {
-		if (this.upgradePrice == null && this.upgradeByLevel.isEmpty())
+		if (this.upgradePrice == null && this.upgradeByInfiniteLevel.isEmpty())
 			return 0;
 
-		for (Map.Entry<String, Object> entry : this.upgradeByLevel.entrySet()) {
-			int prestige = Valid.isInteger(entry.getKey()) ? Integer.parseInt(entry.getKey()) : 0;
-			int price = Valid.isInteger(entry.getValue().toString()) ? Integer.parseInt(entry.getValue().toString()) : 0;
+		for (Map.Entry<Integer, Integer> entry : this.upgradeByInfiniteLevel.entrySet()) {
+			int prestige = entry.getKey();
+			int price = entry.getValue();
 
-			if (this.getInfiniteNumber() + 1 == prestige)
+			if (this.getInfiniteNumber() == prestige)
 				return price;
 		}
 
@@ -115,6 +152,38 @@ public class Rank extends YamlConfig {
 		DecimalFormat decimal = new DecimalFormat("0.00");
 
 		return Double.parseDouble(decimal.format(this.upgradePrice * multiplier));
+	}
+
+	public ProbabilityCollection getMineBlockChances() {
+		if (this.mineBlocks == null && this.mineBlocksByInfiniteLevel.isEmpty())
+			return null;
+
+		ProbabilityCollection collection = null;
+
+		for (Map.Entry<Integer, ProbabilityCollection> entry : this.mineBlocksByInfiniteLevel.entrySet()) {
+			collection = entry.getValue();
+
+			if (entry.getKey() + 1 > this.infiniteNumber)
+				break;
+		}
+
+		return collection != null ? collection : this.getMineBlocks();
+	}
+
+	public int getMineRegionIncrease() {
+		if (this.mineRegionIncrease == null && this.mineRegionIncreaseByInfiniteLevel.isEmpty())
+			return 0;
+
+		int increase = 0;
+
+		for (Map.Entry<Integer, Integer> entry : this.mineRegionIncreaseByInfiniteLevel.entrySet()) {
+			increase = entry.getValue();
+
+			if (entry.getKey() + 1 > this.infiniteNumber)
+				break;
+		}
+
+		return increase != 0 ? increase : this.mineRegionIncrease;
 	}
 
 	public String getRankFormatted() {
@@ -132,7 +201,7 @@ public class Rank extends YamlConfig {
 	}
 
 	public Rank getInfiniteRank(Integer infiniteNumber) {
-		Rank rank = new Rank(this.rankFormatted, this.nextRank, this.upgradePrice, this.upgradeType, this.infiniteRanks, infiniteNumber, this.upgradePriceMultiplier, this.upgradeByLevel);
+		Rank rank = new Rank(this.rankFormatted, this.nextRank, this.upgradePrice, this.upgradeType, this.infiniteRanks, infiniteNumber, this.upgradePriceMultiplier, this.upgradeByInfiniteLevel, this.mineRegionIncrease, this.mineBlocks, this.mineBlocksByInfiniteLevel, this.mineRegionIncreaseByInfiniteLevel);
 		rank.setPathPrefix(this.getPathPrefix());
 
 		return rank;
@@ -238,6 +307,5 @@ public class Rank extends YamlConfig {
 		INSUFFICIENT_BALANCE,
 		MAX_RANK,
 		SUCCESS
-
 	}
 }

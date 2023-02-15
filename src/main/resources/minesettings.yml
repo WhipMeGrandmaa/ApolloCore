@@ -6,3 +6,4 @@ World_Type: NORMAL
 
 Biome: PLAINS
 Border_Radius: 20
+Max_Mine_Player_Size: 3

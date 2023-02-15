@@ -3,6 +3,7 @@ package me.whipmegrandma.apollocore.listener;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
+import me.whipmegrandma.apollocore.model.Mine;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
 import me.whipmegrandma.apollocore.util.WorldGuardUtil;
@@ -64,7 +65,13 @@ public final class PlayerListener implements Listener {
 
 		if (WorldGuardUtil.testBuild(block.getLocation(), player)) {
 			ApolloPlayer.from(player).increaseBlocksBroken();
-			VaultEcoUtil.sell(player, block);
+
+			Mine mine = Mine.getWithinMineRegion(block.getLocation());
+
+			if (mine != null && mine.isPlayerAllowed(player)) {
+				VaultEcoUtil.sell(player, block);
+				event.setDropItems(false);
+			}
 		}
 	}
 }

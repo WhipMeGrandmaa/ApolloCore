@@ -2,7 +2,9 @@ package me.whipmegrandma.apollocore.listener;
 
 import com.github.zandy.playerborderapi.api.PlayerBorderAPI;
 import me.whipmegrandma.apollocore.command.mine.MineEditSubCommand;
+import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Mine;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +31,7 @@ public final class MineListener implements Listener {
 		if (uuid.equals(MineEditSubCommand.getInstance().getEditor()) && !command.equalsIgnoreCase("/mine edit") && !command.equalsIgnoreCase("/mine sethome") && !command.equalsIgnoreCase("/mine setcenter")) {
 			event.setCancelled(true);
 
-			Common.tell(player, "You must exit the mine editor to use commands!");
+			Common.tell(player, "You must exit the mine editor to use this command.");
 		}
 	}
 
@@ -53,10 +55,10 @@ public final class MineListener implements Listener {
 		Player player = event.getPlayer();
 		Location location = player.getLocation();
 
-		Common.runLater(4, () -> PlayerBorderAPI.getInstance().removeBorder(player));
+		Mine mine = Mine.getWithinRegion(location);
 
-		if (Mine.isWithinRegion(location))
-			Mine.getWithinRegion(location).showBorder(player);
+		if (mine == null)
+			Common.runLater(1, () -> PlayerBorderAPI.getInstance().removeBorder(player));
 	}
 
 	@EventHandler
@@ -64,7 +66,23 @@ public final class MineListener implements Listener {
 		Player player = event.getPlayer();
 		Location location = player.getLocation();
 
-		if (Mine.isWithinRegion(location))
-			Mine.getWithinRegion(location).showBorder(player);
+		Mine mine = Mine.getWithinRegion(location);
+		ApolloPlayer apolloPlayer = null;
+
+		for (ApolloPlayer cache : ApolloPlayer.getAllCached())
+			if (mine != null && mine.equals(cache.getMine()))
+				apolloPlayer = cache;
+
+		if (apolloPlayer == null)
+			return;
+
+		if (!mine.getCanTeleport() && !mine.isPlayerAllowed(player) && !player.getUniqueId().equals(apolloPlayer.getUuid())) {
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/spawn " + player.getName());
+			Common.tell(player, apolloPlayer.getUsername() + " has mine teleportation toggled off to outsiders.");
+
+			return;
+		}
+
+		mine.showBorder(player);
 	}
 }

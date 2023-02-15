@@ -1,16 +1,19 @@
 me\whipmegrandma\apollocore\listener\PersonalPickaxeListener.class
 me\whipmegrandma\apollocore\command\mine\MineCreateSubCommand.class
 me\whipmegrandma\apollocore\command\minebomb\MinebombCommandGroup.class
+me\whipmegrandma\apollocore\command\mine\MineAddSubCommand.class
 me\whipmegrandma\apollocore\util\PlaceholderUtil.class
 me\whipmegrandma\apollocore\command\blockstats\BlockstatsResetSubCommand.class
 me\whipmegrandma\apollocore\menu\IntermediateMenuPagged$2.class
 me\whipmegrandma\apollocore\model\ShopItem.class
 me\whipmegrandma\apollocore\command\minebomb\MinebombListSubCommand.class
 me\whipmegrandma\apollocore\listener\MineBombListener.class
+me\whipmegrandma\apollocore\command\mine\MineSetradiusSubCommand.class
 me\whipmegrandma\apollocore\command\PrestigeCommand$1.class
 me\whipmegrandma\apollocore\settings\PriceSettings.class
 me\whipmegrandma\apollocore\model\enchant\BlackholeEnchant.class
 me\whipmegrandma\apollocore\database\Database.class
+me\whipmegrandma\apollocore\command\mine\MineKickSubCommand.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$LastCredentials.class
 me\whipmegrandma\apollocore\command\apollocore\ApollocoreCommandGroup.class
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$ButtonData.class
@@ -25,6 +28,7 @@ me\whipmegrandma\apollocore\command\MaxprestigeCommand$1.class
 me\whipmegrandma\apollocore\command\PrestigeCommand.class
 me\whipmegrandma\apollocore\command\rank\RankCommandGroup.class
 me\whipmegrandma\apollocore\listener\PlayerListener.class
+me\whipmegrandma\apollocore\util\ProbabilityCollection.class
 me\whipmegrandma\apollocore\model\enchant\TokenGreedEnchant.class
 me\whipmegrandma\apollocore\settings\TokensSettings.class
 me\whipmegrandma\apollocore\hook\PapiHook.class
@@ -39,6 +43,8 @@ me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu.class
 me\whipmegrandma\apollocore\command\tokens\TokensWithdrawSubCommand.class
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$3.class
 me\whipmegrandma\apollocore\manager\MineWorldManager.class
+me\whipmegrandma\apollocore\enums\Operator.class
+me\whipmegrandma\apollocore\util\ProbabilityCollection$ProbabilitySetElement.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$TableRow.class
 me\whipmegrandma\apollocore\model\enchant\WrathEnchant.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$TableCreator.class
@@ -55,6 +61,7 @@ me\whipmegrandma\apollocore\manager\MineWorldManager$1$1.class
 me\whipmegrandma\apollocore\command\playershop\PlayershopResetSubCommand.class
 me\whipmegrandma\apollocore\command\minebomb\MinebombGiveSubCommand.class
 me\whipmegrandma\apollocore\command\playershop\PlayershopAddSubCommand.class
+me\whipmegrandma\apollocore\command\mine\MineResetSubCommand.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$1.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase.class
 me\whipmegrandma\apollocore\model\enchant\SpeedEnchant.class
@@ -78,6 +85,7 @@ me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$3.class
 me\whipmegrandma\apollocore\util\MineBombUtil.class
 me\whipmegrandma\apollocore\manager\EnchantsManager.class
 me\whipmegrandma\apollocore\command\blockstats\BlockstatsSetSubCommand.class
+me\whipmegrandma\apollocore\command\mine\MineToggleSubCommand.class
 me\whipmegrandma\apollocore\listener\ChatFormatListener.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$ConfirmMenu$2.class
 me\whipmegrandma\apollocore\command\tokens\TokensAddSubCommand.class
@@ -117,6 +125,7 @@ me\whipmegrandma\apollocore\task\BlocksBrokenTask.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$ConfirmMenu.class
 me\whipmegrandma\apollocore\util\PersonalPickaxeUtil.class
 me\whipmegrandma\apollocore\manager\TaskManager.class
+me\whipmegrandma\apollocore\command\mine\MineInfoSubCommand.class
 me\whipmegrandma\apollocore\model\Mine.class
 me\whipmegrandma\apollocore\model\IntermediateEnchant.class
 me\whipmegrandma\apollocore\enums\CompMetadataTags.class

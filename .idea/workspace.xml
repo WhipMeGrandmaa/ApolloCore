@@ -59,6 +59,7 @@
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util" />
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources\schematics" />
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\resources" />
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\api" />
@@ -71,7 +72,7 @@
       <recent name="me.whipmegrandma.apollocore.command.playershop" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.1.18.2 Live Debug">
+  <component name="RunManager" selected="Maven.Maven Clean Install">
     <configuration name="1.18.2 Live Debug" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/../../Servers/1.18.2 - Copy/paperclip.jar" />
       <option name="PROGRAM_PARAMETERS" value="nogui" />

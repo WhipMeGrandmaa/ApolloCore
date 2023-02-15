@@ -25,6 +25,10 @@ public final class MineCommandGroup extends SimpleCommandGroup {
 		registerSubcommand(new MineTeleportSubCommand(this));
 		registerSubcommand(new MineSetradiusSubCommand(this));
 		registerSubcommand(new MineToggleSubCommand(this));
+		registerSubcommand(new MineAddSubCommand(this));
+		registerSubcommand(new MineKickSubCommand(this));
+		registerSubcommand(new MineInfoSubCommand(this));
+		registerSubcommand(new MineResetSubCommand(this));
 	}
 
 	@Override

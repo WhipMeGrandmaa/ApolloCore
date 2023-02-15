@@ -132,7 +132,7 @@ public class ApolloPlayer {
 	public static ApolloPlayer from(String username) {
 
 		for (ApolloPlayer player : getAllCached())
-			if (username.equals(player.getUsername()))
+			if (username.equalsIgnoreCase(player.getUsername()))
 				return player;
 
 		return null;
@@ -176,7 +176,12 @@ public class ApolloPlayer {
 			List<ShopItem> shopItems = deserializeShopItems(SerializedMap.fromJson(resultSet.getString("Player_Shop")));
 			Mine mine = !resultSet.getString("Mine").equals("No Mine") ? deserializeMine(SerializedMap.fromJson(resultSet.getString("Mine"))) : null;
 
-			return new ApolloPlayer(uuid, username, tokens, enchants, rank, blocksBroken, shopItems, mine);
+			ApolloPlayer player = new ApolloPlayer(uuid, username, tokens, enchants, rank, blocksBroken, shopItems, mine);
+
+			if (mine != null)
+				mine.setOwner(player);
+
+			return player;
 		} catch (Throwable t) {
 			Common.error(t, "Unable to convert data from database.");
 		}

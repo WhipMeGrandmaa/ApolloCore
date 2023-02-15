@@ -5,32 +5,39 @@ import lombok.Data;
 import me.whipmegrandma.apollocore.enums.Operator;
 import me.whipmegrandma.apollocore.manager.MineWorldManager;
 import me.whipmegrandma.apollocore.settings.MineSettings;
+import me.whipmegrandma.apollocore.util.ProbabilityCollection;
 import me.whipmegrandma.apollocore.util.WorldEditUtil;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
 import org.mineacademy.fo.model.ConfigSerializable;
+import org.mineacademy.fo.model.Tuple;
 import org.mineacademy.fo.region.Region;
 import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.remain.Remain;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 public class Mine implements ConfigSerializable {
 
+	private ApolloPlayer owner;
 	private Location location;
 	private Location home;
 	private Location center;
 	private Region mineRegion;
 	private Boolean canTeleport;
 	private List<UUID> allowedPlayers;
+
+	public Mine() {
+		this.allowedPlayers = new ArrayList<>();
+	}
 
 	private void pasteSchematic(Location location, File schematic) {
 		WorldEditUtil.paste(location, schematic);
@@ -65,7 +72,15 @@ public class Mine implements ConfigSerializable {
 		return this.getRegion() != null && this.getRegion().isWithin(location);
 	}
 
+	public boolean isWithinMine(Location location) {
+		return this.getMineRegion().isWithin(location);
+	}
+
 	public void delete() {
+		for (Player player : Remain.getOnlinePlayers())
+			if (this.isWithin(player.getLocation()))
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/spawn " + player.getName());
+
 		Region region = getRegion();
 
 		if (region == null)
@@ -90,11 +105,160 @@ public class Mine implements ConfigSerializable {
 		return new Region(primary, secondary);
 	}
 
-	public void teleport(Player player) {
-		this.teleport(player, this.home, true);
+	public Region getMineRegion() {
+		if (this.mineRegion == null)
+			return null;
+
+		if (owner == null)
+			return this.mineRegion;
+
+		int increaseDiameter = owner.getRank().getMineRegionIncrease();
+		Location primary = this.mineRegion.getPrimary();
+		Location secondary = this.mineRegion.getSecondary();
+
+		if (primary.getBlockX() > secondary.getBlockX()) {
+			primary.add(increaseDiameter, 0, 0);
+			secondary.add(-increaseDiameter, 0, 0);
+		} else if (secondary.getBlockX() > primary.getBlockX()) {
+			secondary.add(increaseDiameter, 0, 0);
+			primary.add(-increaseDiameter, 0, 0);
+		}
+
+		if (primary.getBlockZ() > secondary.getBlockZ()) {
+			primary.add(0, 0, increaseDiameter);
+			secondary.add(0, 0, -increaseDiameter);
+		} else if (secondary.getBlockZ() > primary.getBlockZ()) {
+			secondary.add(0, 0, increaseDiameter);
+			primary.add(0, 0, -increaseDiameter);
+		}
+
+		return new Region(primary, secondary);
 	}
 
-	public void teleport(Player player, Location location, boolean displayBorder) {
+	public Tuple<Integer, Integer> getDimensionsMine() {
+		return getDimensionsMine(this.owner != null ? this.owner.getRank() : null);
+	}
+
+	public static Tuple<Integer, Integer> getDimensionsMine(Rank rank) {
+		Mine defaultMine = MineSettings.getInstance().getDefaultMine();
+
+		if (defaultMine == null)
+			return new Tuple<>(0, 0);
+
+		int primaryX = defaultMine.getMineRegion().getPrimary().getBlockX();
+		int secondaryX = defaultMine.getMineRegion().getSecondary().getBlockX();
+		int primaryZ = defaultMine.getMineRegion().getPrimary().getBlockZ();
+		int secondaryZ = defaultMine.getMineRegion().getSecondary().getBlockZ();
+
+		int x = Math.abs(primaryX - secondaryX);
+		int z = Math.abs(primaryZ - secondaryZ);
+
+		if (rank != null) {
+			int increaseDiameter = rank.getMineRegionIncrease();
+			x += increaseDiameter;
+			z += increaseDiameter;
+		}
+
+		return new Tuple<>(x, z);
+	}
+
+	public List<Tuple<CompMaterial, Double>> getMineBlocks() {
+		return getMineBlocks(owner != null ? owner.getRank() : null);
+	}
+
+	public static List<Tuple<CompMaterial, Double>> getMineBlocks(Rank rank) {
+		if (rank == null)
+			return null;
+
+		ProbabilityCollection collection = rank.getMineBlockChances();
+		List<Tuple<CompMaterial, Double>> list = new ArrayList<>();
+
+		for (ProbabilityCollection.ProbabilitySetElement element : collection.getCollection()) {
+			DecimalFormat decimalFormat = new DecimalFormat("0.00");
+			Double chance = Double.valueOf(decimalFormat.format(Double.valueOf(element.getProbability()) / collection.getTotalProbability() * 100));
+
+			list.add(new Tuple<>(element.getObject(), chance));
+		}
+
+		return list;
+	}
+
+	public int getAllowedPlayersAmount() {
+		return this.allowedPlayers.size();
+	}
+
+	public boolean isPlayerAllowed(Player player) {
+		return this.isPlayerAllowed(player.getUniqueId()) || player.getUniqueId().equals(owner.getUuid());
+	}
+
+	public boolean isPlayerAllowed(UUID uuid) {
+		return this.allowedPlayers.contains(uuid) || uuid.equals(owner.getUuid());
+	}
+
+	public void addAllowedPlayer(Player player) {
+		this.allowedPlayers.add(player.getUniqueId());
+	}
+
+	public void removeAllowedPlayer(Player player) {
+		if (player != null && this.isWithin(player.getLocation()))
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/spawn " + player.getName());
+
+		this.allowedPlayers.remove(player.getUniqueId());
+	}
+
+	public void removeAllowedPlayer(UUID uuid) {
+		this.allowedPlayers.remove(uuid);
+	}
+
+
+	public boolean isPlayerAllowed(String username) {
+		return this.getAllowedPlayerFromName(username) != null;
+	}
+
+	public OfflinePlayer getAllowedPlayerFromName(String username) {
+		for (UUID uuid : this.getAllowedPlayers()) {
+			OfflinePlayer player = Remain.getOfflinePlayerByUUID(uuid);
+
+			if (player != null && username.equals(player.getName()))
+				return player;
+		}
+
+		return null;
+	}
+
+	public List<String> getAllowedPlayerNames() {
+		List<String> names = new ArrayList<>();
+
+		for (UUID uuid : this.getAllowedPlayers()) {
+			OfflinePlayer player = Remain.getOfflinePlayerByUUID(uuid);
+
+			if (player != null)
+				names.add(player.getName());
+		}
+
+		return names;
+	}
+
+	public void resetMine() {
+		ProbabilityCollection chances = owner.getRank().getMineBlockChances();
+
+		for (Block block : this.getMineRegion().getBlocks())
+			Remain.setTypeAndData(block, chances != null ? chances.get() : CompMaterial.AIR);
+
+		for (Player player : Remain.getOnlinePlayers())
+			if (this.isWithinMine(player.getLocation())) {
+				this.teleportToHome(player);
+
+				if (!owner.getUuid().equals(player.getUniqueId()))
+					Common.tell(player, "The mine of " + owner.getUsername() + " has been reset.");
+			}
+	}
+
+	public void teleportToHome(Player player) {
+		this.teleportToHome(player, this.home, true);
+	}
+
+	public void teleportToHome(Player player, Location location, boolean displayBorder) {
 		Chunk chunk = location.getChunk();
 
 		if (!chunk.isLoaded())
@@ -109,7 +273,7 @@ public class Mine implements ConfigSerializable {
 	public void showBorder(Player player) {
 		Location center = this.center != null ? this.center : this.location;
 
-		Common.runLater(5, () -> PlayerBorderAPI.getInstance().setBorder(player, PlayerBorderAPI.BorderColor.BLUE, MineSettings.getInstance().getBorderRadius() * 2, center.getBlockX(), center.getBlockZ()));
+		Common.runLater(2, () -> PlayerBorderAPI.getInstance().setBorder(player, PlayerBorderAPI.BorderColor.BLUE, MineSettings.getInstance().getBorderRadius() * 2, center.getBlockX(), center.getBlockZ()));
 	}
 
 	public static Mine deserialize(SerializedMap map) {
@@ -163,12 +327,12 @@ public class Mine implements ConfigSerializable {
 		return mine;
 	}
 
-	public static boolean isWithinRegion(Location location) {
+	public static Mine getWithinMineRegion(Location location) {
 		for (ApolloPlayer player : ApolloPlayer.getAllCached())
-			if (player.getMine() != null && player.getMine().isWithin(location))
-				return true;
+			if (player.getMine() != null && player.getMine().isWithinMine(location))
+				return player.getMine();
 
-		return false;
+		return null;
 	}
 
 	public static Mine getWithinRegion(Location location) {

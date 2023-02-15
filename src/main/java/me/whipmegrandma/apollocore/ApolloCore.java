@@ -105,7 +105,7 @@ public final class ApolloCore extends SimplePlugin {
 			}
 
 			data.sort((playerOne, playerTwo) -> playerTwo.getNewestShopItemTime().compareTo(playerOne.getNewestShopItemTime()));
-			
+
 			ApolloPlayer.addAllToCache(data);
 		});
 	}

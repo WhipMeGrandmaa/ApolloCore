@@ -3,6 +3,7 @@ package me.whipmegrandma.apollocore.settings;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.ApolloCore;
 import me.whipmegrandma.apollocore.model.Mine;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -25,6 +26,7 @@ public class MineSettings extends YamlConfig {
 	private File schematic;
 	private Mine defaultMine;
 	private Integer borderRadius;
+	private Integer maxMinePlayerSize;
 
 	private MineSettings() {
 		this.loadConfiguration(NO_DEFAULT, "minesettings.yml");
@@ -41,7 +43,8 @@ public class MineSettings extends YamlConfig {
 		this.schematic = FileUtil.getFile("schematics/mine.schematic");
 
 		this.borderRadius = isSet("Border_Radius") ? getInteger("Border_Radius") : 20;
-		this.defaultMine = isSet("Default_Mine") ? get("Default_Mine", Mine.class) : new Mine();
+		this.defaultMine = isSet("Default_Mine") && Bukkit.getWorld(this.worldName) != null ? get("Default_Mine", Mine.class) : new Mine();
+		this.maxMinePlayerSize = isSet("Max_Mine_Player_Size") ? getInteger("Max_Mine_Player_Size") : 3;
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class MineSettings extends YamlConfig {
 
 	public void setDefaultMineRegion(Region mineRegion) {
 		this.defaultMine.setMineRegion(mineRegion);
-		
+
 		this.save();
 	}
 

@@ -30,11 +30,13 @@ public class MineCreateSubCommand extends SimpleSubCommand {
 		checkBoolean(cache.getMine() == null, "You already own a mine!");
 
 		Mine mine = Mine.create();
+		mine.setOwner(cache);
 		cache.setMine(mine);
+		mine.resetMine();
 
 		tell("You have successfully created a mine.");
 
-		mine.teleport(getPlayer());
+		mine.teleportToHome(getPlayer());
 	}
 
 	@Override
