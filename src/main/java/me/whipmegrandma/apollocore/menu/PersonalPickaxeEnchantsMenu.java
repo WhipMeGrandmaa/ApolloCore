@@ -108,22 +108,22 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 					ApolloPlayer cache = ApolloPlayer.from(player);
 
 					if (data.enchantment != null) {
-						EnchantPurchaseUtil.PurchaseEnum result = EnchantPurchaseUtil.buy(player, data.enchantment, data.getTokens0(player), data.getMaxLevelForDefault());
+						EnchantPurchaseUtil.PurchaseEnum result = EnchantPurchaseUtil.buy(player, data.enchantment, data.getTokens0(player), data.getMaxLevel());
 
 						switch (result) {
 
 							case SUCCESS:
-								menu.restartMenu(data.getPurchase()
+								menu.restartMenu(data.getPurchaseMessage()
 										.replace("%enchant%", ItemUtil.bountifyCapitalized(data.enchantment.getKey().getKey()))
 										.replace("%level%", cache.getEnchantLevel(data.enchantment).toString()));
 
 								break;
 							case INSUFFICIENT_BALANCE:
-								menu.restartMenu(data.getInsufficient());
+								menu.restartMenu(data.getInsufficientMessage());
 
 								break;
 							case MAX_LEVEL:
-								menu.restartMenu(data.getMaxLevel());
+								menu.restartMenu(data.getMaxLevelMessage());
 
 								break;
 						}
@@ -196,16 +196,16 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 		private String playerSkullName;
 
 		private Enchantment enchantment;
-		private Integer maxLevelForDefault;
+		private Integer maxLevel;
 		private String levelZero;
 		private List<String> command;
 		private String menuToOpen;
 		private Integer tokens;
 		private Integer increaseTokens;
 		private SerializedMap tokensByLevel;
-		private String purchase;
-		private String insufficient;
-		private String maxLevel;
+		private String purchaseMessage;
+		private String insufficientMessage;
+		private String maxLevelMessage;
 
 		public static ButtonData deserialize(SerializedMap map) {
 			ButtonData button = new ButtonData();
@@ -229,7 +229,7 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 
 			button.enchantment = click.containsKey("Enchantment") ? EnchantsManager.getByName(click.getString("Enchantment")) : null;
 
-			button.maxLevelForDefault = click.containsKey("Enchantment") && click.containsKey("Max_Level_For_Default_Enchants") ? click.getInteger("Max_Level_For_Default_Enchants") : 0;
+			button.maxLevel = click.containsKey("Enchantment") && click.containsKey("Max_Level") ? click.getInteger("Max_Level") : 0;
 
 			button.levelZero = click.getString("Level_Zero", "&aClick to purchase!");
 
@@ -243,11 +243,11 @@ public class PersonalPickaxeEnchantsMenu extends YamlConfig {
 
 			button.tokensByLevel = click.getMap("Tokens_By_Level");
 
-			button.purchase = click.getString("Purchase_Message", "&aPurchased %enchant% %level%");
+			button.purchaseMessage = click.getString("Purchase_Message", "&aPurchased %enchant% %level%");
 
-			button.insufficient = click.getString("Insufficient_Message", "&cInsufficient tokens");
+			button.insufficientMessage = click.getString("Insufficient_Message", "&cInsufficient tokens");
 
-			button.maxLevel = click.getString("Max_Level_Message", "&aMax level");
+			button.maxLevelMessage = click.getString("Max_Level_Message", "&aMax level");
 
 			return button;
 		}

@@ -10,6 +10,6 @@ public final class SpeedEnchant extends IntermediateEnchant {
 	private final static SpeedEnchant instance = new SpeedEnchant();
 
 	private SpeedEnchant() {
-		super("SPEED", "Speed", 5, PotionEffectType.SPEED);
+		super("SPEED", "Speed", Integer.MAX_VALUE, PotionEffectType.SPEED);
 	}
 }

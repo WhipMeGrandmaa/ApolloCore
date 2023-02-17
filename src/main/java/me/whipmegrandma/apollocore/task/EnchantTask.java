@@ -26,7 +26,7 @@ public class EnchantTask extends BukkitRunnable {
 			if (!CompMaterial.isAir(hand))
 				for (Map.Entry<Enchantment, Integer> enchant : hand.getItemMeta().getEnchants().entrySet())
 					if (enchant.getKey() instanceof IntermediateEnchant && ((IntermediateEnchant) enchant.getKey()).getEffectType() != null)
-						player.addPotionEffect(new PotionEffect(((IntermediateEnchant) enchant.getKey()).getEffectType(), Integer.MAX_VALUE, enchant.getValue()));
+						player.addPotionEffect(new PotionEffect(((IntermediateEnchant) enchant.getKey()).getEffectType(), Integer.MAX_VALUE, enchant.getValue() - 1));
 		}
 	}
 

@@ -187,6 +187,24 @@ public class Mine implements ConfigSerializable {
 		return this.allowedPlayers.size();
 	}
 
+	public int getAmountAllowedPlayersOnline() {
+		int amount = 0;
+
+		for (UUID uuid : this.allowedPlayers) {
+			Player player = Remain.getPlayerByUUID(uuid);
+
+			if (player != null)
+				amount++;
+		}
+
+		Player player = Remain.getPlayerByUUID(owner.getUuid());
+
+		if (player != null)
+			amount++;
+
+		return amount;
+	}
+
 	public boolean isPlayerAllowed(Player player) {
 		return this.isPlayerAllowed(player.getUniqueId()) || player.getUniqueId().equals(owner.getUuid());
 	}
@@ -208,22 +226,6 @@ public class Mine implements ConfigSerializable {
 
 	public void removeAllowedPlayer(UUID uuid) {
 		this.allowedPlayers.remove(uuid);
-	}
-
-
-	public boolean isPlayerAllowed(String username) {
-		return this.getAllowedPlayerFromName(username) != null;
-	}
-
-	public OfflinePlayer getAllowedPlayerFromName(String username) {
-		for (UUID uuid : this.getAllowedPlayers()) {
-			OfflinePlayer player = Remain.getOfflinePlayerByUUID(uuid);
-
-			if (player != null && username.equals(player.getName()))
-				return player;
-		}
-
-		return null;
 	}
 
 	public List<String> getAllowedPlayerNames() {

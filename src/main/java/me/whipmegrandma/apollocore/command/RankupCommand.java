@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.mineacademy.fo.annotation.AutoRegister;
 import org.mineacademy.fo.command.SimpleCommand;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 @AutoRegister
@@ -22,7 +23,7 @@ public final class RankupCommand extends SimpleCommand {
 	@Override
 	protected void onCommand() {
 		checkConsole();
-		
+
 		Player player = getPlayer();
 		ApolloPlayer cache = ApolloPlayer.from(player);
 		Rank rank = cache.getRank();
@@ -45,7 +46,7 @@ public final class RankupCommand extends SimpleCommand {
 
 				break;
 			case SUCCESS:
-				tell("You successfully ranked up to " + cache.getRank().getName() + " for $" + rank.getUpgradePrice() + "!");
+				tell("You successfully ranked up to " + cache.getRank().getName() + " for $" + NumberFormat.getInstance().format(rank.getUpgradePrice()) + "!");
 		}
 	}
 

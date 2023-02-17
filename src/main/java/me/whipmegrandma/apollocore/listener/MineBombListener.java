@@ -127,7 +127,7 @@ public final class MineBombListener implements Listener {
 
 			Set<Location> sphereBlocks = BlockUtil.getSphere(bomb.getLocation(), mineBomb.getRadius(), false);
 
-			sphereBlocks.removeIf(location -> !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()) || Mine.getWithinMineRegion(location) == null || Mine.getWithinMineRegion(location).isPlayerAllowed(player));
+			sphereBlocks.removeIf(location -> !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()) || Mine.getWithinMineRegion(location) == null || !Mine.getWithinMineRegion(location).isPlayerAllowed(player));
 
 			if (sphereBlocks.isEmpty()) {
 				if (player.getGameMode() != GameMode.CREATIVE)

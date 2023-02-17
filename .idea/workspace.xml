@@ -65,14 +65,14 @@
       <recent name="C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\api" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="me.whipmegrandma.apollocore.task" />
+      <recent name="me.whipmegrandma.apollocore.settings" />
       <recent name="me.whipmegrandma.apollocore.command.mine" />
       <recent name="me.whipmegrandma.apollocore.model.tool" />
       <recent name="me.whipmegrandma.apollocore.listener" />
-      <recent name="me.whipmegrandma.apollocore.settings" />
-      <recent name="me.whipmegrandma.apollocore.command.playershop" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.Maven Clean Install">
+  <component name="RunManager" selected="JAR Application.1.18.2 Live Debug">
     <configuration name="1.18.2 Live Debug" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/../../Servers/1.18.2 - Copy/paperclip.jar" />
       <option name="PROGRAM_PARAMETERS" value="nogui" />

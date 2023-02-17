@@ -13,8 +13,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: BLACK_HOLE
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 10
+        Increase_Tokens: 45
     Haste:
       Title: "&e%enchant%"
       Lore:
@@ -26,6 +28,7 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: HASTE
+        Max_Level: 5
         Level_Zero: "&aClick to purchase!"
         Tokens: 5
         Increase_Tokens: 45
@@ -40,8 +43,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: JACK_HAMMER
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 8
+        Increase_Tokens: 45
     Space_Droplets:
       Title: "&e%enchant%"
       Lore:
@@ -53,8 +58,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: SPACE_DROPLETS
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 15
+        Increase_Tokens: 45
     Speed:
       Title: "&e%enchant%"
       Lore:
@@ -66,6 +73,7 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: SPEED
+        Max_Level: 5
         Level_Zero: "&aClick to purchase!"
         Tokens: 14
         Increase_Tokens: 45
@@ -80,8 +88,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: STAR_MULTIPLIER
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 20
+        Increase_Tokens: 45
     Token_Greed:
       Title: "&e%enchant%"
       Lore:
@@ -93,8 +103,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: TOKEN_GREED
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 25
+        Increase_Tokens: 45
     Wrath:
       Title: "&e%enchant%"
       Lore:
@@ -106,8 +118,10 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: WRATH
+        Max_Level: 1
         Level_Zero: "&aClick to purchase!"
         Tokens: 27
+        Increase_Tokens: 45
     Fortune:
       Title: "&e%enchant%"
       Lore:
@@ -119,7 +133,7 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: FORTUNE
-        Max_Level_For_Default_Enchants: 25000
+        Max_Level: 25000
         Level_Zero: "&aClick to purchase!"
         Tokens: 4000
         Tokens_By_Level:
@@ -139,7 +153,7 @@ First_Menu:
       Material: ENCHANTED_BOOK
       Click:
         Enchantment: EFFICIENCY
-        Max_Level_For_Default_Enchants: 100
+        Max_Level: 100
         Level_Zero: "&aClick to purchase!"
         Tokens: 30
         Increase_Tokens: 45

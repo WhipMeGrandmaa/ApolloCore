@@ -10,7 +10,6 @@ import org.mineacademy.fo.command.SimpleSubCommand;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PlayershopResetSubCommand extends SimpleSubCommand {
 
@@ -58,7 +57,6 @@ public class PlayershopResetSubCommand extends SimpleSubCommand {
 				}
 
 				String name = cache.getUsername();
-				UUID uuid = cache.getUuid();
 
 				ApolloPlayer player = ApolloPlayer.from(name);
 				player.setShopItems(new ArrayList<>());

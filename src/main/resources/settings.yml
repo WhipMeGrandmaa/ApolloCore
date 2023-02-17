@@ -37,6 +37,9 @@ Location_Format: "{world} [{x}, {y}, {z}]"
 
 # -------------------------------------------------------------------------------------------------
 
+Save_Settings:
+  Database_Save_Every_Seconds: 600
+
 MySQL:
   Host: "null"
   Port: -1

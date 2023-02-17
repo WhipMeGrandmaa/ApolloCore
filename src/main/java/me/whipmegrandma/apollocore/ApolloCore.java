@@ -13,6 +13,7 @@ import me.whipmegrandma.apollocore.menu.PersonalPickaxeEnchantsMenu;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.MineBomb;
 import me.whipmegrandma.apollocore.model.Rank;
+import me.whipmegrandma.apollocore.model.enchant.BlackholeEnchant;
 import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
@@ -53,6 +54,7 @@ public final class ApolloCore extends SimplePlugin {
 		EffectLibHook.disable();
 		PlayerListener.getBlocksBroken().clear();
 		PlayerBorderAPI.getInstance().removeBorders();
+		BlackholeEnchant.getTasks().clear();
 
 		for (Player player : Remain.getOnlinePlayers())
 			Database.getInstance().save(player, ApolloPlayer::removeFromCache);
@@ -104,6 +106,7 @@ public final class ApolloCore extends SimplePlugin {
 					iterator.remove();
 			}
 
+			
 			data.sort((playerOne, playerTwo) -> playerTwo.getNewestShopItemTime().compareTo(playerOne.getNewestShopItemTime()));
 
 			ApolloPlayer.addAllToCache(data);

@@ -221,6 +221,11 @@ public class Rank extends YamlConfig {
 		effect.start();
 
 		CompSound.ENTITY_ENDER_DRAGON_GROWL.play(player);
+
+		Mine mine = ApolloPlayer.from(player).getMine();
+
+		if (mine != null)
+			mine.resetMine();
 	}
 
 	@Override

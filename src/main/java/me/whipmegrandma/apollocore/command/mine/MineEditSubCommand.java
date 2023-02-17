@@ -51,7 +51,7 @@ public class MineEditSubCommand extends SimpleSubCommand {
 		Player player = getPlayer();
 		MineSettings mineSettings = MineSettings.getInstance();
 
-		checkBoolean(MineSettings.getInstance().getSchematic() != null, "The schematic is null. You must put 'mine.schematic' in the schematics folder.");
+		checkBoolean(MineSettings.getInstance().getSchematic() == null, "The schematic is null. You must put 'mine.schematic' in the schematics folder.");
 
 		if (player.getUniqueId().equals(this.editor)) {
 			tell("Saved settings and exiting mine editor.");

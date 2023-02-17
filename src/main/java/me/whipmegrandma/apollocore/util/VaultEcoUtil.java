@@ -16,22 +16,30 @@ public class VaultEcoUtil {
 	private static final Economy economy = VaultHook.getEconomy();
 
 	public static void sell(Player player, List<Block> blocks) {
+		sell(player, blocks, 1.0);
+	}
+
+	public static void sell(Player player, List<Block> blocks, Double multiplier) {
 		Set<Location> locations = new HashSet<>();
 
 		for (Block block : blocks)
 			locations.add(block.getLocation());
 
-		sell(player, locations);
+		sell(player, locations, multiplier);
 	}
 
 	public static void sell(Player player, Set<Location> blocks) {
+		sell(player, blocks, 1.0);
+	}
+
+	public static void sell(Player player, Set<Location> blocks, Double multiplier) {
 		HashMap<UUID, Tuple<Integer, Double>> map = PlayerListener.getBlocksBroken();
 		UUID uuid = player.getUniqueId();
 		double moneyMade = 0;
 		int broken = 0;
 
 		for (Location location : blocks) {
-			moneyMade += PriceSettings.getPrice(location, player);
+			moneyMade += PriceSettings.getPrice(location, player) * multiplier;
 			broken++;
 		}
 
@@ -46,7 +54,11 @@ public class VaultEcoUtil {
 	}
 
 	public static void sell(Player player, Block block) {
-		double moneyMade = PriceSettings.getPrice(block, player);
+		sell(player, block, 1.0);
+	}
+
+	public static void sell(Player player, Block block, Double multiplier) {
+		double moneyMade = PriceSettings.getPrice(block, player) * multiplier;
 
 		HashMap<UUID, Tuple<Integer, Double>> map = PlayerListener.getBlocksBroken();
 		UUID uuid = player.getUniqueId();

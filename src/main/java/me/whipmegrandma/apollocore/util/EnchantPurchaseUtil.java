@@ -1,14 +1,13 @@
 package me.whipmegrandma.apollocore.util;
 
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
-import me.whipmegrandma.apollocore.model.IntermediateEnchant;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.remain.CompSound;
 
 public class EnchantPurchaseUtil {
 
-	public static PurchaseEnum buy(Player player, Enchantment enchantment, int price, int maxLevelDefaultEnchant) {
+	public static PurchaseEnum buy(Player player, Enchantment enchantment, int price, int maxLevel) {
 		ApolloPlayer cache = ApolloPlayer.from(player);
 		int balance = cache.getTokens();
 		int level = cache.getEnchantLevel(enchantment);
@@ -19,13 +18,7 @@ public class EnchantPurchaseUtil {
 			return PurchaseEnum.INSUFFICIENT_BALANCE;
 		}
 
-		if (enchantment instanceof IntermediateEnchant && level >= enchantment.getMaxLevel()) {
-			CompSound.FIRE.play(player);
-
-			return PurchaseEnum.MAX_LEVEL;
-		}
-
-		if (!(enchantment instanceof IntermediateEnchant) && level >= maxLevelDefaultEnchant) {
+		if (level >= maxLevel) {
 			CompSound.FIRE.play(player);
 
 			return PurchaseEnum.MAX_LEVEL;

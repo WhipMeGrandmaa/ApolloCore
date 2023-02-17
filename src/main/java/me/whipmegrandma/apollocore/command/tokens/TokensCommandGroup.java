@@ -26,7 +26,7 @@ public final class TokensCommandGroup extends SimpleCommandGroup {
 
 	@Override
 	protected String[] getHelpHeader() {
-		return new String[]{Common.colorize("{prefix} The following commands are available:")};
+		return new String[]{Common.colorize("", Common.colorize("&d&lTOKENS HELP MENU"))};
 	}
 
 

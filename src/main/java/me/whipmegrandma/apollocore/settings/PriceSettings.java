@@ -2,6 +2,7 @@ package me.whipmegrandma.apollocore.settings;
 
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -52,11 +53,14 @@ public class PriceSettings extends YamlConfig {
 	}
 
 	public static double getPrice(ItemStack item) {
-		int amount = item.getAmount();
-		String type = item.getType().toString();
+		return getPrice(item.getType(), item.getAmount());
+	}
+
+	public static double getPrice(Material material, Integer amount) {
+		String type = material.toString();
 
 		DecimalFormat decimal = new DecimalFormat("0.00");
-		
+
 		return prices.isItemLoaded(type) ? Double.parseDouble(decimal.format(prices.findItem(type).getPrice() * amount)) : 0;
 	}
 

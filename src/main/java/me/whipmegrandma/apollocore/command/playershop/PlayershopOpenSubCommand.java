@@ -1,10 +1,13 @@
 package me.whipmegrandma.apollocore.command.playershop;
 
+import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.enums.SortedBy;
 import me.whipmegrandma.apollocore.menu.PlayerShopMenu.PlayerShopIndividualMenu;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.ShopItem;
 import me.whipmegrandma.apollocore.util.PlayerShopUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
@@ -34,15 +37,33 @@ public class PlayershopOpenSubCommand extends SimpleSubCommand {
 		}
 
 		String username = args[0];
-		ApolloPlayer seller = ApolloPlayer.from(username);
+		Player target = Bukkit.getPlayerExact(username);
 
-		checkBoolean(seller != null, username + " doesn't have a player shop.");
+		if (target != null) {
+			ApolloPlayer seller = ApolloPlayer.from(username);
 
-		List<ShopItem> items = seller.getShopItems();
-		PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+			checkBoolean(seller != null, username + " doesn't have anything in their player shop.");
 
-		new PlayerShopIndividualMenu(getPlayer(), seller, items).displayTo(getPlayer());
+			List<ShopItem> items = seller.getShopItems();
+			PlayerShopUtil.sortItems(SortedBy.Individual.NEWEST, items);
+
+			new PlayerShopIndividualMenu(getPlayer(), seller, items).displayTo(getPlayer());
+			return;
+		}
+
+		Database.getInstance().load(username, cache -> {
+
+			if (cache == null) {
+				super.tell(username + " has never joined the server before.");
+
+				return;
+			}
+
+			String name = cache.getUsername();
+			super.tell(name + " doesn't have anything in their player shop.");
+		});
 	}
+
 
 	@Override
 	protected List<String> tabComplete() {

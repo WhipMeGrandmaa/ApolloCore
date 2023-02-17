@@ -56,7 +56,7 @@ public class MineKickSubCommand extends SimpleSubCommand {
 				String name = cache.getUsername();
 				UUID uuid = cache.getUuid();
 
-				checkBoolean(mine.isPlayerAllowed(name), name + " isn't a member of your mine.");
+				checkBoolean(mine.isPlayerAllowed(uuid), name + " isn't a member of your mine.");
 
 				mine.removeAllowedPlayer(uuid);
 

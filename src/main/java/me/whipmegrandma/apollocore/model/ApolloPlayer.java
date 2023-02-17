@@ -150,18 +150,17 @@ public class ApolloPlayer {
 		return playerCache.containsKey(uuid);
 	}
 
-	public static void removeOfflineFromCache() {
-
-		for (Iterator<ApolloPlayer> iterator = playerCache.values().iterator(); iterator.hasNext(); ) {
-			Player player = Remain.getPlayerByUUID(iterator.next().getUuid());
-
-			if (player == null)
-				iterator.remove();
-		}
-	}
-
 	public static List<ApolloPlayer> getAllCached() {
 		return new ArrayList<>(playerCache.values());
+	}
+
+	public static void removeUselessFromCache() {
+		for (Map.Entry<UUID, ApolloPlayer> entry : playerCache.entrySet()) {
+			ApolloPlayer player = entry.getValue();
+
+			if (player.getNumberOfShopItems() <= 0 && player.getMine() == null && Remain.getPlayerByUUID(player.getUuid()) == null)
+				playerCache.remove(entry.getKey());
+		}
 	}
 
 	public static ApolloPlayer fromDatabase(ResultSet resultSet) {

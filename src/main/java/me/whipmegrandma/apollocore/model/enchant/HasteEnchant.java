@@ -10,6 +10,6 @@ public final class HasteEnchant extends IntermediateEnchant {
 	private final static HasteEnchant instance = new HasteEnchant();
 
 	private HasteEnchant() {
-		super("HASTE", "Haste", 5, PotionEffectType.FAST_DIGGING);
+		super("HASTE", "Haste", Integer.MAX_VALUE, PotionEffectType.FAST_DIGGING);
 	}
 }

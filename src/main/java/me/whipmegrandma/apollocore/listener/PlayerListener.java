@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Mine;
+import me.whipmegrandma.apollocore.model.enchant.BlackholeEnchant;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import me.whipmegrandma.apollocore.util.VaultEcoUtil;
 import me.whipmegrandma.apollocore.util.WorldGuardUtil;
@@ -50,12 +51,15 @@ public final class PlayerListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
+		UUID uuid = player.getUniqueId();
 
 		Database.getInstance().save(player, cache -> {
 
 			if (cache.getNumberOfShopItems() < 1 && cache.getMine() == null)
 				ApolloPlayer.from(player).removeFromCache();
 		});
+
+		BlackholeEnchant.removeTasks(uuid);
 	}
 
 	@EventHandler

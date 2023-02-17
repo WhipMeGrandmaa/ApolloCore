@@ -3,6 +3,7 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\mine\MineKickSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\Mine.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\BlockstopCommand.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\task\MineResetTask.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\database\IntermediateDatabase.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\tool\MineRegionTool.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\settings\PlayerShopSettings.java
@@ -11,6 +12,7 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\settings\MineSettings.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\hook\PapiHook.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopResetSubCommand.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\EnchantByLevelSettings.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\apollocore\ApollocoreCommandGroup.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\listener\PersonalPickaxeListener.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\DirectionUtil.java
@@ -63,11 +65,13 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\settings\ChatSettings.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\PersonalPickaxeUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\listener\TokensListener.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\task\CacheSaveTask.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\enchant\HasteEnchant.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\mine\MineSetradiusSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\EnchantPurchaseUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\MineBombUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\manager\EnchantsManager.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\settings\EnchantSettings.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\rank\RankListSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\WorldGuardUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\listener\ChatFormatListener.java
@@ -80,6 +84,7 @@ C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\Rank.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\util\WorldEditUtil.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\tokens\TokensCommandGroup.java
+C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\task\BlackholeSellTask.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\mine\MineAddSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\command\playershop\PlayershopMarketSubCommand.java
 C:\Users\Kriztian\Desktop\Developing\Intellij Coding\ApolloCore\src\main\java\me\whipmegrandma\apollocore\model\enchant\TokenGreedEnchant.java

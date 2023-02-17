@@ -1,0 +1,57 @@
+Jack_Hammer:
+  1:
+    Chance: 0.3
+    On_Break:
+      Sound: ANVIL_LAND 1.0 1.0
+    Broken_Blocks:
+      Particle: SPELL
+      Particle_Chance: 0.2
+Token_Greed:
+  1:
+    Chance: 0.3
+    Minimum_Tokens: 5
+    Maximum_Tokens: 20
+    On_Break:
+      Sound: ENTITY_PLAYER_LEVELUP 1.0 1.0
+      Particle: EXPLOSION_NORMAL
+Wrath:
+  1:
+    Chance: 0.3
+    Blocks_Income: 0.7
+    On_Break:
+      Lightning: true
+    Broken_Blocks:
+      Particle: PORTAL
+      Particle_Chance: 0.2
+Space_Droplets:
+  1:
+    Chance: 0.3
+    Crater_Radius: 5
+    Droplet:
+      Material: NETHER_STAR
+      Spawn_Height_Above_Block: 10
+      Crater_Radius: 5
+      Velocity: 0.0
+      Particle: CLOUD
+      Particle_Chance: 0.5
+    On_Break:
+      Sound: ENTITY_WITHER_AMBIENT 1.0 1.0
+    On_Impact:
+      Sound: ENTITY_WITHER_BREAK_BLOCK 1.0 1.0
+    Broken_Blocks:
+      Particle: EXPLOSION_NORMAL
+      Particle_Chance: 0.2
+Star_Multiplier:
+  1:
+    Multiplier: 1.5
+Black_Hole:
+  1:
+    Chance: 0.3
+    Crater_Radius: 5
+    On_Break:
+      Sound: ENTITY_WARDEN_DIG 1.0 1.0
+      Particle: EXPLOSION_NORMAL
+    Broken_Blocks:
+      Velocity_Towards_Blackhole: 1.0
+    On_Blackhole_Disappear:
+      Sound: ENTITY_WITHER_AMBIENT 0.5 0.5

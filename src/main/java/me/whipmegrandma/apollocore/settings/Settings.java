@@ -8,6 +8,7 @@ import org.mineacademy.fo.settings.YamlStaticConfig;
 
 public class Settings extends YamlStaticConfig {
 
+	public static Integer databaseSaveSeconds;
 	public static String host;
 	public static Integer port;
 	public static String database;
@@ -20,6 +21,10 @@ public class Settings extends YamlStaticConfig {
 	}
 
 	private static void init() {
+		setPathPrefix("Save_Settings");
+
+		databaseSaveSeconds = isSet("Database_Save_Every_Seconds") ? getInteger("Database_Save_Every_Seconds") : 600;
+
 		setPathPrefix("MySQL");
 
 		host = isSet("Host") ? getString("Host") : null;
@@ -34,8 +39,10 @@ public class Settings extends YamlStaticConfig {
 			return;
 		}
 
+		if (Database.getInstance().isConnected())
+			Database.getInstance().close();
+
 		Common.log("[ApolloCore] MySQL is not set in settings.yml, connecting to SQLite.");
 		Database.getInstance().connect("jdbc:sqlite:" + FileUtil.getOrMakeFile("database.sqlite").getAbsolutePath());
-
 	}
 }

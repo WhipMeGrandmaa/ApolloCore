@@ -7,3 +7,5 @@ World_Type: NORMAL
 Biome: PLAINS
 Border_Radius: 20
 Max_Mine_Player_Size: 3
+Reset_All_Mines_Seconds: 60
+Reset_Mine_Reminder_Every_Seconds: 30

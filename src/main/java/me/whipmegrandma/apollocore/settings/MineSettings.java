@@ -27,6 +27,8 @@ public class MineSettings extends YamlConfig {
 	private Mine defaultMine;
 	private Integer borderRadius;
 	private Integer maxMinePlayerSize;
+	private Integer resetMineSeconds;
+	private Integer resetMineReminderSeconds;
 
 	private MineSettings() {
 		this.loadConfiguration(NO_DEFAULT, "minesettings.yml");
@@ -45,6 +47,8 @@ public class MineSettings extends YamlConfig {
 		this.borderRadius = isSet("Border_Radius") ? getInteger("Border_Radius") : 20;
 		this.defaultMine = isSet("Default_Mine") && Bukkit.getWorld(this.worldName) != null ? get("Default_Mine", Mine.class) : new Mine();
 		this.maxMinePlayerSize = isSet("Max_Mine_Player_Size") ? getInteger("Max_Mine_Player_Size") : 3;
+		this.resetMineSeconds = isSet("Reset_All_Mines_Seconds") ? getInteger("Reset_All_Mines_Seconds") : 60;
+		this.resetMineReminderSeconds = isSet("Reset_Mine_Reminder_Every_Seconds") ? getInteger("Reset_Mine_Reminder_Every_Seconds") : 30;
 	}
 
 	@Override
