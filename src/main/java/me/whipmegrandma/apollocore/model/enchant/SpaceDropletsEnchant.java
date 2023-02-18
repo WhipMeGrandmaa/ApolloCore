@@ -95,7 +95,7 @@ public final class SpaceDropletsEnchant extends IntermediateEnchant {
 				Set<Location> sphereBlocks = BlockUtil.getSphere(droplet.getLocation(), settings.getCraterRadiusDroplet(), false);
 
 				sphereBlocks.removeIf(location -> block.getLocation().equals(location) || !WorldGuardUtil.testBuild(location, player) || CompMaterial.isAir(location.getBlock()) || Mine.getWithinMineRegion(location) == null || !Mine.getWithinMineRegion(location).isPlayerAllowed(player));
-
+				System.out.println(sphereBlocks);
 				double multiplier = 1.0;
 
 				for (Map.Entry<SimpleEnchantment, Integer> enchant : SimpleEnchantment.findEnchantments(hand).entrySet()) {

@@ -1,6 +1,7 @@
 package me.whipmegrandma.apollocore;
 
 import com.github.zandy.playerborderapi.api.PlayerBorderAPI;
+import com.sk89q.worldguard.WorldGuard;
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.hook.EffectLibHook;
 import me.whipmegrandma.apollocore.hook.PapiHook;
@@ -17,6 +18,7 @@ import me.whipmegrandma.apollocore.model.enchant.BlackholeEnchant;
 import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
+import me.whipmegrandma.apollocore.util.WorldGuardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -93,6 +95,11 @@ public final class ApolloCore extends SimplePlugin {
 			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
 		}
 
+		if (HookManager.isWorldGuardLoaded()) {
+			WorldGuardUtil.load();
+			WorldGuard.getInstance();
+		}
+
 		EffectLibHook.restart();
 	}
 
@@ -106,7 +113,7 @@ public final class ApolloCore extends SimplePlugin {
 					iterator.remove();
 			}
 
-			
+
 			data.sort((playerOne, playerTwo) -> playerTwo.getNewestShopItemTime().compareTo(playerOne.getNewestShopItemTime()));
 
 			ApolloPlayer.addAllToCache(data);

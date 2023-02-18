@@ -21,8 +21,8 @@ public class MineCreateSubCommand extends SimpleSubCommand {
 		checkConsole();
 
 		Mine defaultMine = MineSettings.getInstance().getDefaultMine();
-
-		if (defaultMine.getCenter() == null || defaultMine.getMineRegion() == null || defaultMine.getHome() == null || MineSettings.getInstance().getSchematic() == null)
+		
+		if (defaultMine.getCenter() == null || defaultMine.getMineRegion() == null || defaultMine.getHome() == null || !MineSettings.getInstance().getSchematic().exists())
 			returnTell("Mine settings aren't set up. Contact an administrator to fix the issue.");
 
 		ApolloPlayer cache = ApolloPlayer.from(getPlayer());

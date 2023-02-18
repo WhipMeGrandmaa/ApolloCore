@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.mineacademy.fo.remain.CompMaterial;
@@ -11,7 +12,6 @@ import org.mineacademy.fo.settings.ConfigItems;
 import org.mineacademy.fo.settings.YamlConfig;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -42,26 +42,17 @@ public class PriceSettings extends YamlConfig {
 	}
 
 	public static double getPrice(Block block, Player player) {
-		ItemStack hand = player.getInventory().getItemInMainHand();
-		Collection<ItemStack> drops = !block.getDrops(hand).isEmpty() ? block.getDrops(hand) : block.getDrops();
-		double price = 0;
-
-		for (ItemStack drop : drops)
-			price += getPrice(drop);
-
-		return price;
+		return getPrice(block.getType(), player);
 	}
 
-	public static double getPrice(ItemStack item) {
-		return getPrice(item.getType(), item.getAmount());
-	}
-
-	public static double getPrice(Material material, Integer amount) {
+	public static double getPrice(Material material, Player player) {
 		String type = material.toString();
+		ItemStack hand = player.getInventory().getItemInMainHand();
+		int level = hand.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS) ? hand.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) : 1;
 
 		DecimalFormat decimal = new DecimalFormat("0.00");
 
-		return prices.isItemLoaded(type) ? Double.parseDouble(decimal.format(prices.findItem(type).getPrice() * amount)) : 0;
+		return prices.isItemLoaded(type) ? Double.parseDouble(decimal.format(prices.findItem(type).getPrice() * level)) : 0;
 	}
 
 	public static List<PriceSettings> getPrices() {

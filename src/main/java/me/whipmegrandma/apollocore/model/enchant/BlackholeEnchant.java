@@ -1,6 +1,7 @@
 package me.whipmegrandma.apollocore.model.enchant;
 
 import lombok.Getter;
+import me.whipmegrandma.apollocore.model.BlackholeTaskWrapper;
 import me.whipmegrandma.apollocore.model.EnchantByLevelSettings;
 import me.whipmegrandma.apollocore.model.IntermediateEnchant;
 import me.whipmegrandma.apollocore.model.Mine;
@@ -28,7 +29,7 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 	private final static BlackholeEnchant instance = new BlackholeEnchant();
 
 	@Getter
-	private static HashMap<UUID, List<BukkitTask>> tasks = new HashMap<>();
+	private static HashMap<UUID, List<BlackholeTaskWrapper>> tasks = new HashMap<>();
 
 	private BlackholeEnchant() {
 		super("BLACK_HOLE", "Black Hole", Integer.MAX_VALUE);
@@ -73,8 +74,8 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 
 			BukkitTask runnable = Common.runTimer(10, new BlackholeSellTask(player, block, fallingBlockList, settings.getSoundOnBlackholeDisappear()));
 
-			List<BukkitTask> currentTasks = tasks.containsKey(uuid) ? tasks.get(uuid) : new ArrayList<>();
-			currentTasks.add(runnable);
+			List<BlackholeTaskWrapper> currentTasks = tasks.containsKey(uuid) ? tasks.get(uuid) : new ArrayList<>();
+			currentTasks.add(BlackholeTaskWrapper.of(runnable, fallingBlockList));
 			tasks.put(uuid, currentTasks);
 		}
 	}
@@ -84,20 +85,36 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 	}
 
 	public static void removeCancelledTasks(UUID uuid, boolean all) {
-		List<BukkitTask> currentTasks = tasks.get(uuid);
+		List<BlackholeTaskWrapper> currentTasks = tasks.get(uuid);
 
 		if (currentTasks == null)
 			return;
 
-		for (Iterator<BukkitTask> iterator = currentTasks.iterator(); iterator.hasNext(); ) {
-			BukkitTask next = iterator.next();
+		for (Iterator<BlackholeTaskWrapper> iterator = currentTasks.iterator(); iterator.hasNext(); ) {
+			BlackholeTaskWrapper next = iterator.next();
+			BukkitTask task = next.getBukkitTask();
 
-			if (!next.isCancelled() && all)
-				next.cancel();
+			if (!task.isCancelled() && all)
+				task.cancel();
 
-			if (next.isCancelled())
+			if (task.isCancelled())
 				iterator.remove();
 		}
 		tasks.put(uuid, currentTasks);
+	}
+
+	public static void removeFallingBlocks(UUID uuid) {
+		List<BlackholeTaskWrapper> currentTasks = tasks.get(uuid);
+
+		if (currentTasks == null)
+			return;
+
+		for (Iterator<BlackholeTaskWrapper> iterator = currentTasks.iterator(); iterator.hasNext(); ) {
+			BlackholeTaskWrapper next = iterator.next();
+			List<FallingBlock> fallingBlocks = next.getFallingBlocks();
+
+			for (FallingBlock fallingBlock : fallingBlocks)
+				fallingBlock.remove();
+		}
 	}
 }

@@ -124,6 +124,7 @@ me\whipmegrandma\apollocore\command\rank\RankSetSubCommand.class
 me\whipmegrandma\apollocore\model\MineBomb.class
 me\whipmegrandma\apollocore\util\VaultEcoUtil.class
 me\whipmegrandma\apollocore\command\tokens\TokensSetSubCommand.class
+me\whipmegrandma\apollocore\model\BlackholeTaskWrapper.class
 me\whipmegrandma\apollocore\model\tool\MineRegionTool.class
 me\whipmegrandma\apollocore\task\BlocksBrokenTask.class
 me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopIndividualMenu$ConfirmMenu.class

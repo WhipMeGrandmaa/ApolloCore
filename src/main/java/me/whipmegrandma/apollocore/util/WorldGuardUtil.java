@@ -13,11 +13,13 @@ import org.mineacademy.fo.model.HookManager;
 
 public class WorldGuardUtil {
 
+	private static WorldGuardPlugin instance;
+
 	public static boolean testBuild(Location block, Player player) {
 
 		if (HookManager.isWorldGuardLoaded()) {
 
-			LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+			LocalPlayer localPlayer = instance.wrapPlayer(player);
 			com.sk89q.worldedit.util.Location locationAdapted = BukkitAdapter.adapt(block);
 			RegionContainer regionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
 			RegionQuery query = regionContainer.createQuery();
@@ -30,4 +32,7 @@ public class WorldGuardUtil {
 			return true;
 	}
 
+	public static void load() {
+		instance = WorldGuardPlugin.inst();
+	}
 }

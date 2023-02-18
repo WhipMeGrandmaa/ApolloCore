@@ -59,6 +59,7 @@ public final class PlayerListener implements Listener {
 				ApolloPlayer.from(player).removeFromCache();
 		});
 
+		BlackholeEnchant.removeFallingBlocks(uuid);
 		BlackholeEnchant.removeTasks(uuid);
 	}
 

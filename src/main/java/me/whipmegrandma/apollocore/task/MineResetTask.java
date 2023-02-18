@@ -8,14 +8,15 @@ import org.mineacademy.fo.Common;
 
 public class MineResetTask extends BukkitRunnable {
 
-	private Long millis;
+	private Long secondsLast;
 
 	@Override
 	public void run() {
-
-		if (this.millis == null || (System.currentTimeMillis() - this.millis) / 1000 >= MineSettings.getInstance().getResetMineSeconds()) {
+		Long secondsNow = System.currentTimeMillis() / 1000;
+		
+		if (this.secondsLast == null || secondsNow - secondsLast >= MineSettings.getInstance().getResetMineSeconds()) {
 			Common.broadcast("Resetting all mines with at least 1 member online.");
-			this.millis = System.currentTimeMillis();
+			this.secondsLast = System.currentTimeMillis() / 1000;
 
 			for (ApolloPlayer player : ApolloPlayer.getAllCached()) {
 				Mine mine = player.getMine();
@@ -23,7 +24,10 @@ public class MineResetTask extends BukkitRunnable {
 				if (mine != null && mine.getAmountAllowedPlayersOnline() + 1 > 0)
 					mine.resetMine();
 			}
-		} else
-			Common.broadcast("Resetting all mines with at least 1 member online in " + Common.plural(MineSettings.getInstance().getResetMineSeconds() - MineSettings.getInstance().getResetMineReminderSeconds(), "second") + ".");
+		} else {
+			Long seconds = secondsNow - this.secondsLast;
+
+			Common.broadcast("Resetting all mines with at least 1 member online in " + Common.plural(MineSettings.getInstance().getResetMineSeconds() - seconds, "second") + ".");
+		}
 	}
 }

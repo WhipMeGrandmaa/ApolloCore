@@ -42,7 +42,10 @@ public class MineSettings extends YamlConfig {
 		this.biome = isSet("Biome") ? ReflectionUtil.lookupEnumSilent(Biome.class, getString("Biome")) : Biome.PLAINS;
 
 		FileUtil.createIfNotExists("schematics/");
-		this.schematic = FileUtil.getFile("schematics/mine.schematic");
+		this.schematic = FileUtil.getFile("schematics/mine.schem");
+
+		if (!this.schematic.exists())
+			this.schematic = FileUtil.getFile("schematics/mine.schematic");
 
 		this.borderRadius = isSet("Border_Radius") ? getInteger("Border_Radius") : 20;
 		this.defaultMine = isSet("Default_Mine") && Bukkit.getWorld(this.worldName) != null ? get("Default_Mine", Mine.class) : new Mine();

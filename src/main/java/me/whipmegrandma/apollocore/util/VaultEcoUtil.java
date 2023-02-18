@@ -5,6 +5,7 @@ import me.whipmegrandma.apollocore.listener.PlayerListener;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.model.Tuple;
@@ -54,11 +55,15 @@ public class VaultEcoUtil {
 	}
 
 	public static void sell(Player player, Block block) {
-		sell(player, block, 1.0);
+		sell(player, block.getType(), 1.0);
 	}
 
-	public static void sell(Player player, Block block, Double multiplier) {
-		double moneyMade = PriceSettings.getPrice(block, player) * multiplier;
+	public static void sell(Player player, Material material) {
+		sell(player, material, 1.0);
+	}
+
+	public static void sell(Player player, Material material, Double multiplier) {
+		double moneyMade = PriceSettings.getPrice(material, player) * multiplier;
 
 		HashMap<UUID, Tuple<Integer, Double>> map = PlayerListener.getBlocksBroken();
 		UUID uuid = player.getUniqueId();
