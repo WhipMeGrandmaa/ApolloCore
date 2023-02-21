@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.mineacademy.fo.menu.model.ItemCreator;
 import org.mineacademy.fo.remain.CompMaterial;
+import org.mineacademy.fo.remain.CompMetadata;
 
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,11 @@ public class PersonalPickaxeUtil {
 	private static void removeOldPickaxe(Player player) {
 		Inventory inventory = player.getInventory();
 
-		for (int i = 0; i < inventory.getSize(); i++)
-			if (i != PersonalPickaxeSettings.hotbarSlot)
+		for (int i = 0; i < inventory.getSize(); i++) {
+			ItemStack item = inventory.getItem(i);
+
+			if (!CompMaterial.isAir(item) && CompMetadata.hasMetadata(item, CompMetadataTags.PICKAXE.toString()))
 				inventory.setItem(i, ItemCreator.of(CompMaterial.AIR).make());
+		}
 	}
 }

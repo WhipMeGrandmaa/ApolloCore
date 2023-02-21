@@ -66,10 +66,10 @@
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="me.whipmegrandma.apollocore.task" />
+      <recent name="me.whipmegrandma.apollocore.command.disenchanter" />
       <recent name="me.whipmegrandma.apollocore.settings" />
       <recent name="me.whipmegrandma.apollocore.command.mine" />
       <recent name="me.whipmegrandma.apollocore.model.tool" />
-      <recent name="me.whipmegrandma.apollocore.listener" />
     </key>
   </component>
   <component name="RunManager" selected="JAR Application.1.18.2 Live Debug">

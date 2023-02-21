@@ -48,6 +48,12 @@ public class ApolloPlayer {
 	}
 
 	public void setEnchantment(Enchantment enchantment, Integer level) {
+		if (level < 1) {
+			this.enchantments.remove(enchantment);
+
+			return;
+		}
+
 		this.enchantments.put(enchantment, level);
 	}
 

@@ -1,22 +1,23 @@
-package me.whipmegrandma.apollocore.command.playershop;
+package me.whipmegrandma.apollocore.command.disenchanter;
 
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
+import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class PlayershopResetSubCommand extends SimpleSubCommand {
+public class DisenchanterResetSubCommand extends SimpleSubCommand {
 
-	protected PlayershopResetSubCommand(SimpleCommandGroup parent) {
+	protected DisenchanterResetSubCommand(SimpleCommandGroup parent) {
 		super(parent, "reset");
 
-		this.setPermission("apollocore.command.playershop.reset");
+		this.setPermission("apollocore.command.disenchanter.reset");
 		this.setUsage("[player]");
 	}
 
@@ -26,8 +27,8 @@ public class PlayershopResetSubCommand extends SimpleSubCommand {
 		if (args.length == 0) {
 			checkConsole();
 
-			ApolloPlayer.from(getPlayer()).setShopItems(new ArrayList<>());
-			super.tell("Your player shop has been reset.");
+			ApolloPlayer.from(getPlayer()).setEnchantments(new HashMap<>());
+			super.tell("Your pickaxe enchants have been reset.");
 
 			return;
 		}
@@ -35,16 +36,18 @@ public class PlayershopResetSubCommand extends SimpleSubCommand {
 		String username = args[0];
 
 		Player target = Bukkit.getPlayerExact(username);
-
+		
 		if (target != null) {
 
 			ApolloPlayer cache = ApolloPlayer.from(target);
-			cache.setShopItems(new ArrayList<>());
+			cache.setEnchantments(new HashMap<>());
 
-			Common.tell(target, "Your player shop has been reset.");
+			PersonalPickaxeUtil.update(target);
+
+			Common.tell(target, "Your pickaxe enchants have been reset.");
 
 			if (!target.equals(getPlayer()))
-				super.tell("You've reset the player shop of " + target.getName() + ".");
+				super.tell("You've reset the pickaxe enchants of " + target.getName() + ".");
 
 		} else {
 
@@ -58,11 +61,11 @@ public class PlayershopResetSubCommand extends SimpleSubCommand {
 
 				String name = cache.getUsername();
 
-				cache.setShopItems(new ArrayList<>());
+				cache.setEnchantments(new HashMap<>());
 
 				Database.getInstance().save(cache, non -> {
 				});
-				super.tell("You've reset the player shop of " + name + ".");
+				super.tell("You've reset the pickaxe enchants of " + name + ".");
 			});
 		}
 	}

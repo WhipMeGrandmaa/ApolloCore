@@ -3,10 +3,7 @@ package me.whipmegrandma.apollocore.manager;
 import me.whipmegrandma.apollocore.settings.BlocksBrokenSettings;
 import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.settings.Settings;
-import me.whipmegrandma.apollocore.task.BlocksBrokenTask;
-import me.whipmegrandma.apollocore.task.CacheSaveTask;
-import me.whipmegrandma.apollocore.task.EnchantTask;
-import me.whipmegrandma.apollocore.task.MineResetTask;
+import me.whipmegrandma.apollocore.task.*;
 import org.bukkit.scheduler.BukkitTask;
 import org.mineacademy.fo.Common;
 
@@ -44,11 +41,28 @@ public class TaskManager {
 		start();
 	}
 
+	public static BukkitTask getMineTask() {
+		BukkitTask task = activeTasks.get(TaskType.MINE);
+
+		if (task == null) {
+			task = Common.runTimer(20, new MineTask());
+
+			activeTasks.put(TaskType.MINE, task);
+		}
+
+		return task;
+	}
+
+	public static void removeMineTask() {
+		activeTasks.remove(TaskType.MINE);
+	}
+
 	private enum TaskType {
 		ENCHANT,
 		BLOCKS_BROKEN_INFO,
 		CACHE_SAVE,
-		MINE_RESET
+		MINE_RESET,
+		MINE
 	}
 
 }

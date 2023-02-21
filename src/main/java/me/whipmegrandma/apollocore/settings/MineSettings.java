@@ -1,8 +1,10 @@
 package me.whipmegrandma.apollocore.settings;
 
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import lombok.Getter;
 import me.whipmegrandma.apollocore.ApolloCore;
 import me.whipmegrandma.apollocore.model.Mine;
+import me.whipmegrandma.apollocore.util.WorldEditUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,7 +25,7 @@ public class MineSettings extends YamlConfig {
 	private Integer distanceBetweenMines;
 	private World.Environment environment;
 	private Biome biome;
-	private File schematic;
+	private Clipboard schematic;
 	private Mine defaultMine;
 	private Integer borderRadius;
 	private Integer maxMinePlayerSize;
@@ -42,10 +44,12 @@ public class MineSettings extends YamlConfig {
 		this.biome = isSet("Biome") ? ReflectionUtil.lookupEnumSilent(Biome.class, getString("Biome")) : Biome.PLAINS;
 
 		FileUtil.createIfNotExists("schematics/");
-		this.schematic = FileUtil.getFile("schematics/mine.schem");
+		File schematic = FileUtil.getFile("schematics/mine.schem");
 
-		if (!this.schematic.exists())
-			this.schematic = FileUtil.getFile("schematics/mine.schematic");
+		if (!schematic.exists())
+			schematic = FileUtil.getFile("schematics/mine.schematic");
+
+		this.schematic = schematic.exists() ? WorldEditUtil.loadSchematic(schematic) : null;
 
 		this.borderRadius = isSet("Border_Radius") ? getInteger("Border_Radius") : 20;
 		this.defaultMine = isSet("Default_Mine") && Bukkit.getWorld(this.worldName) != null ? get("Default_Mine", Mine.class) : new Mine();

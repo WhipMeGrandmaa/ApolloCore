@@ -1,7 +1,6 @@
 package me.whipmegrandma.apollocore;
 
 import com.github.zandy.playerborderapi.api.PlayerBorderAPI;
-import com.sk89q.worldguard.WorldGuard;
 import me.whipmegrandma.apollocore.database.Database;
 import me.whipmegrandma.apollocore.hook.EffectLibHook;
 import me.whipmegrandma.apollocore.hook.PapiHook;
@@ -97,7 +96,6 @@ public final class ApolloCore extends SimplePlugin {
 
 		if (HookManager.isWorldGuardLoaded()) {
 			WorldGuardUtil.load();
-			WorldGuard.getInstance();
 		}
 
 		EffectLibHook.restart();

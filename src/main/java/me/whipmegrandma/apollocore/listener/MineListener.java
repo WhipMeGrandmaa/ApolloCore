@@ -28,7 +28,7 @@ public final class MineListener implements Listener {
 		UUID uuid = player.getUniqueId();
 		String command = event.getMessage();
 
-		if (uuid.equals(MineEditSubCommand.getInstance().getEditor()) && !command.equalsIgnoreCase("/mine edit") && !command.equalsIgnoreCase("/mine sethome") && !command.equalsIgnoreCase("/mine setcenter")) {
+		if (uuid.equals(MineEditSubCommand.getInstance().getEditor()) && !command.equalsIgnoreCase("/mine edit") && !command.equalsIgnoreCase("/mine sethome") && !command.equalsIgnoreCase("/mine setcenter") && !command.equalsIgnoreCase("/mine setradius") && !command.equalsIgnoreCase("/mine ?") && !command.equalsIgnoreCase("/mine help")) {
 			event.setCancelled(true);
 
 			Common.tell(player, "You must exit the mine editor to use this command.");

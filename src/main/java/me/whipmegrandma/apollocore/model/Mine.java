@@ -1,6 +1,7 @@
 package me.whipmegrandma.apollocore.model;
 
 import com.github.zandy.playerborderapi.api.PlayerBorderAPI;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import lombok.Data;
 import me.whipmegrandma.apollocore.enums.Operator;
 import me.whipmegrandma.apollocore.manager.MineWorldManager;
@@ -18,7 +19,6 @@ import org.mineacademy.fo.region.Region;
 import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.remain.Remain;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class Mine implements ConfigSerializable {
 		this.allowedPlayers = new ArrayList<>();
 	}
 
-	private void pasteSchematic(Location location, File schematic) {
-		WorldEditUtil.paste(location, schematic);
+	private void pasteSchematic(Location location, Clipboard clipboard) {
+		WorldEditUtil.paste(location, clipboard);
 	}
 
 	@Override
@@ -298,7 +298,7 @@ public class Mine implements ConfigSerializable {
 	public static Mine create(Location nextFreeLocation, boolean isPlayer) {
 		Mine mine = new Mine();
 		Mine defaultMine = MineSettings.getInstance().getDefaultMine();
-		File schematic = MineSettings.getInstance().getSchematic();
+		Clipboard schematic = MineSettings.getInstance().getSchematic();
 
 		mine.location = nextFreeLocation;
 

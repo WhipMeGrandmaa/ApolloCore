@@ -12,7 +12,7 @@ public class EnchantsManager {
 
 	static {
 		for (Enchantment enchantment : Enchantment.values())
-			if (enchantment.getItemTarget().toString().equals("TOOL"))
+			if (enchantment.getItemTarget() != null && enchantment.getItemTarget().toString().equals("TOOL"))
 				register(enchantment.getKey().getKey().toUpperCase(), enchantment);
 	}
 
@@ -32,6 +32,14 @@ public class EnchantsManager {
 
 	public static Collection<Enchantment> getAllEnchants() {
 		return byName.values();
+	}
+
+	public static String getName(Enchantment enchantment) {
+		for (Map.Entry<String, Enchantment> entry : byName.entrySet())
+			if (enchantment.equals(entry.getValue()))
+				return entry.getKey();
+
+		return null;
 	}
 
 	public static Enchantment getByName(String name) {

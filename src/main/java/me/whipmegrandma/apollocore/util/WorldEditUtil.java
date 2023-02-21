@@ -21,10 +21,9 @@ import java.io.FileInputStream;
 
 public class WorldEditUtil {
 
-	public static void paste(Location to, File schematicFile) {
+	public static void paste(Location to, Clipboard clipboard) {
 
 		try (EditSession session = createEditSession(to.getWorld())) {
-			final Clipboard clipboard = loadSchematic(schematicFile);
 			final Operation operation = new ClipboardHolder(clipboard)
 					.createPaste(session)
 					.to(toWorldEditVector(to))
@@ -46,7 +45,7 @@ public class WorldEditUtil {
 		return session;
 	}
 
-	private static Clipboard loadSchematic(File file) {
+	public static Clipboard loadSchematic(File file) {
 
 		try {
 			final ClipboardFormat format = ClipboardFormats.findByFile(file);
@@ -55,7 +54,7 @@ public class WorldEditUtil {
 			final ClipboardReader reader = format.getReader(new FileInputStream(file));
 			final Clipboard schematic = reader.read();
 			Valid.checkNotNull(schematic, "Failed to read schematic from " + file);
-			
+
 			return schematic;
 
 		} catch (final Throwable t) {
