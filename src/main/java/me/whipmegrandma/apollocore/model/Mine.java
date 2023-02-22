@@ -6,10 +6,9 @@ import lombok.Data;
 import me.whipmegrandma.apollocore.enums.Operator;
 import me.whipmegrandma.apollocore.manager.MineWorldManager;
 import me.whipmegrandma.apollocore.settings.MineSettings;
-import me.whipmegrandma.apollocore.util.ProbabilityCollection;
 import me.whipmegrandma.apollocore.util.WorldEditUtil;
+import me.whipmegrandma.apollocore.util.WorldGuardUtil;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
 import org.mineacademy.fo.collection.SerializedMap;
@@ -20,9 +19,7 @@ import org.mineacademy.fo.remain.CompMaterial;
 import org.mineacademy.fo.remain.Remain;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 public class Mine implements ConfigSerializable {
@@ -86,10 +83,9 @@ public class Mine implements ConfigSerializable {
 		if (region == null)
 			return;
 
-		List<Block> blocks = region.getBlocks();
+		WorldEditUtil.setBlocks(this.getRegion(), CompMaterial.AIR);
 
-		for (Block block : blocks)
-			Remain.setTypeAndData(block, CompMaterial.AIR);
+		WorldGuardUtil.deleteMineRegion(this.owner, mineRegion);
 	}
 
 	public Region getRegion() {
@@ -112,7 +108,7 @@ public class Mine implements ConfigSerializable {
 		if (owner == null)
 			return this.mineRegion;
 
-		int increaseDiameter = owner.getRank().getMineRegionIncrease();
+		int increaseDiameter = this.owner.getRank().getMineRegionIncrease();
 		Location primary = this.mineRegion.getPrimary();
 		Location secondary = this.mineRegion.getSecondary();
 
@@ -163,21 +159,21 @@ public class Mine implements ConfigSerializable {
 	}
 
 	public List<Tuple<CompMaterial, Double>> getMineBlocks() {
-		return getMineBlocks(owner != null ? owner.getRank() : null);
+		return getMineBlocks(this.owner != null ? this.owner.getRank() : null);
 	}
 
 	public static List<Tuple<CompMaterial, Double>> getMineBlocks(Rank rank) {
 		if (rank == null)
 			return null;
 
-		ProbabilityCollection collection = rank.getMineBlockChances();
+		HashMap<CompMaterial, Double> mineBlocks = rank.getMineBlockChances();
 		List<Tuple<CompMaterial, Double>> list = new ArrayList<>();
 
-		for (ProbabilityCollection.ProbabilitySetElement element : collection.getCollection()) {
+		for (Map.Entry<CompMaterial, Double> entry : mineBlocks.entrySet()) {
 			DecimalFormat decimalFormat = new DecimalFormat("0.00");
-			Double chance = Double.valueOf(decimalFormat.format(Double.valueOf(element.getProbability()) / collection.getTotalProbability() * 100));
+			Double chance = Double.valueOf(decimalFormat.format(entry.getValue()));
 
-			list.add(new Tuple<>(element.getObject(), chance));
+			list.add(new Tuple<>(entry.getKey(), chance));
 		}
 
 		return list;
@@ -197,7 +193,7 @@ public class Mine implements ConfigSerializable {
 				amount++;
 		}
 
-		Player player = Remain.getPlayerByUUID(owner.getUuid());
+		Player player = Remain.getPlayerByUUID(this.owner.getUuid());
 
 		if (player != null)
 			amount++;
@@ -206,15 +202,17 @@ public class Mine implements ConfigSerializable {
 	}
 
 	public boolean isPlayerAllowed(Player player) {
-		return this.isPlayerAllowed(player.getUniqueId()) || player.getUniqueId().equals(owner.getUuid());
+		return this.isPlayerAllowed(player.getUniqueId()) || player.getUniqueId().equals(this.owner.getUuid());
 	}
 
 	public boolean isPlayerAllowed(UUID uuid) {
-		return this.allowedPlayers.contains(uuid) || uuid.equals(owner.getUuid());
+		return this.allowedPlayers.contains(uuid) || uuid.equals(this.owner.getUuid());
 	}
 
 	public void addAllowedPlayer(Player player) {
 		this.allowedPlayers.add(player.getUniqueId());
+
+		WorldGuardUtil.addMemberToMineRegion(this.owner, player.getUniqueId());
 	}
 
 	public void removeAllowedPlayer(Player player) {
@@ -222,6 +220,8 @@ public class Mine implements ConfigSerializable {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/spawn " + player.getName());
 
 		this.allowedPlayers.remove(player.getUniqueId());
+
+		WorldGuardUtil.kickMemberFromMineRegion(this.owner, player.getUniqueId());
 	}
 
 	public void removeAllowedPlayer(UUID uuid) {
@@ -242,17 +242,16 @@ public class Mine implements ConfigSerializable {
 	}
 
 	public void resetMine() {
-		ProbabilityCollection chances = owner.getRank().getMineBlockChances();
+		HashMap<CompMaterial, Double> mineBlocks = this.owner.getRank().getMineBlockChances();
 
-		for (Block block : this.getMineRegion().getBlocks())
-			Remain.setTypeAndData(block, chances != null ? chances.get() : CompMaterial.AIR);
+		WorldEditUtil.setBlocks(this.mineRegion, mineBlocks);
 
 		for (Player player : Remain.getOnlinePlayers())
 			if (this.isWithinMine(player.getLocation())) {
 				this.teleportToHome(player);
 
 				if (!owner.getUuid().equals(player.getUniqueId()))
-					Common.tell(player, "The mine of " + owner.getUsername() + " has been reset.");
+					Common.tell(player, "The mine of " + this.owner.getUsername() + " has been reset.");
 			}
 	}
 
@@ -291,14 +290,21 @@ public class Mine implements ConfigSerializable {
 		return mine;
 	}
 
-	public static Mine create() {
-		return create(MineWorldManager.getNextFreeLocation(), true);
+	public static Mine create(Location nextFreeLocation) {
+		return create(null, nextFreeLocation);
 	}
 
-	public static Mine create(Location nextFreeLocation, boolean isPlayer) {
+	public static Mine create(ApolloPlayer owner) {
+		return create(owner, MineWorldManager.getNextFreeLocation());
+	}
+
+	public static Mine create(ApolloPlayer owner, Location nextFreeLocation) {
 		Mine mine = new Mine();
 		Mine defaultMine = MineSettings.getInstance().getDefaultMine();
 		Clipboard schematic = MineSettings.getInstance().getSchematic();
+
+		if (owner != null)
+			mine.owner = owner;
 
 		mine.location = nextFreeLocation;
 
@@ -320,10 +326,16 @@ public class Mine implements ConfigSerializable {
 			Location primaryMine = defaultMine.getMineRegion().getPrimary().clone().add(adjustedLocation);
 			Location secondaryMine = defaultMine.getMineRegion().getSecondary().clone().add(adjustedLocation);
 
-			if (isPlayer)
-				mine.canTeleport = true;
-
 			mine.mineRegion = new Region(primaryMine, secondaryMine);
+
+			mine.resetMine();
+		}
+
+		if (owner != null) {
+			mine.owner = owner;
+			mine.canTeleport = true;
+
+			WorldGuardUtil.createMineRegion(owner, mine.mineRegion);
 		}
 
 		return mine;

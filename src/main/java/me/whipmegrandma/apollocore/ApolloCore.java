@@ -17,7 +17,6 @@ import me.whipmegrandma.apollocore.model.enchant.BlackholeEnchant;
 import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.settings.PriceSettings;
 import me.whipmegrandma.apollocore.util.PersonalPickaxeUtil;
-import me.whipmegrandma.apollocore.util.WorldGuardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mineacademy.fo.Common;
@@ -35,14 +34,14 @@ public final class ApolloCore extends SimplePlugin {
 
 	@Override
 	protected void onReloadablesStart() {
+		this.registerHooks();
+		this.loadSettings();
+		this.loadData();
+		this.updatePickaxe();
+
 		MineSettings.load();
 		TaskManager.restart();
 		MineWorldManager.load();
-
-		this.loadSettings();
-		this.registerHooks();
-		this.loadData();
-		this.updatePickaxe();
 	}
 
 	@Override
@@ -94,8 +93,10 @@ public final class ApolloCore extends SimplePlugin {
 			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
 		}
 
-		if (HookManager.isWorldGuardLoaded()) {
-			WorldGuardUtil.load();
+		if (!HookManager.isWorldGuardLoaded()) {
+			Common.log("WorldGuard is not loaded. Disabling plugin.");
+
+			Bukkit.getPluginManager().disablePlugin(ApolloCore.getInstance());
 		}
 
 		EffectLibHook.restart();

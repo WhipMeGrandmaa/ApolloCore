@@ -6,6 +6,7 @@ import me.whipmegrandma.apollocore.enums.Operator;
 import me.whipmegrandma.apollocore.model.Mine;
 import me.whipmegrandma.apollocore.settings.MineSettings;
 import me.whipmegrandma.apollocore.util.DirectionUtil;
+import me.whipmegrandma.apollocore.util.WorldGuardUtil;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -65,6 +66,8 @@ public class MineWorldManager {
 								};
 							}
 						}));
+
+		WorldGuardUtil.setGlobalRegion(mineWorld);
 
 		return mineWorld;
 	}

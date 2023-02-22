@@ -13,8 +13,9 @@ public class MineResetTask extends BukkitRunnable {
 	@Override
 	public void run() {
 		Long secondsNow = System.currentTimeMillis() / 1000;
-		
+
 		if (this.secondsLast == null || secondsNow - secondsLast >= MineSettings.getInstance().getResetMineSeconds()) {
+
 			Common.broadcast("Resetting all mines with at least 1 member online.");
 			this.secondsLast = System.currentTimeMillis() / 1000;
 

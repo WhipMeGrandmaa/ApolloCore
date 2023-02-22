@@ -1,11 +1,9 @@
 package me.whipmegrandma.apollocore.command.mine;
 
-import me.whipmegrandma.apollocore.manager.TaskManager;
 import me.whipmegrandma.apollocore.model.ApolloPlayer;
 import me.whipmegrandma.apollocore.model.Mine;
-import me.whipmegrandma.apollocore.model.workloadtypes.MineCreateWorkload;
 import me.whipmegrandma.apollocore.settings.MineSettings;
-import me.whipmegrandma.apollocore.task.MineTask;
+import org.mineacademy.fo.Common;
 import org.mineacademy.fo.command.SimpleCommandGroup;
 import org.mineacademy.fo.command.SimpleSubCommand;
 
@@ -32,10 +30,12 @@ public class MineCreateSubCommand extends SimpleSubCommand {
 
 		checkBoolean(cache.getMine() == null, "You already own a mine!");
 
-		tell("Processing request...");
+		Mine mine = Mine.create(cache);
+		cache.setMine(mine);
 
-		MineTask.addWorkload(new MineCreateWorkload(getPlayer(), cache));
-		TaskManager.getMineTask();
+		Common.tell(getPlayer(), "You have successfully created a mine.");
+
+		mine.teleportToHome(getPlayer());
 	}
 
 	@Override

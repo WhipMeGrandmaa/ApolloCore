@@ -43,6 +43,7 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 			Player player = event.getPlayer();
 			UUID uuid = player.getUniqueId();
 			Block block = event.getBlock();
+			Location blackholeLocation = block.getLocation();
 			Location blockLocation = block.getLocation();
 			Mine mine = Mine.getWithinMineRegion(block.getLocation());
 
@@ -64,6 +65,7 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 				FallingBlock fallingBlock = Remain.spawnFallingBlock(individualBlock);
 				fallingBlock.setDropItem(false);
 				fallingBlock.setGravity(false);
+				
 				Remain.setTypeAndData(individualBlock, CompMaterial.AIR);
 
 				Vector velocity = blockLocation.clone().subtract(individualLocation).toVector().multiply(settings.getVelocityTowardsBlackhole());
@@ -72,7 +74,7 @@ public final class BlackholeEnchant extends IntermediateEnchant {
 				fallingBlockList.add(fallingBlock);
 			}
 
-			BukkitTask runnable = Common.runTimer(10, new BlackholeSellTask(player, block, fallingBlockList, settings.getSoundOnBlackholeDisappear()));
+			BukkitTask runnable = Common.runTimer(10, new BlackholeSellTask(player, blackholeLocation, fallingBlockList, settings.getSoundOnBlackholeDisappear()));
 
 			List<BlackholeTaskWrapper> currentTasks = tasks.containsKey(uuid) ? tasks.get(uuid) : new ArrayList<>();
 			currentTasks.add(BlackholeTaskWrapper.of(runnable, fallingBlockList));

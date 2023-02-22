@@ -92,7 +92,7 @@ public class MineEditSubCommand extends SimpleSubCommand {
 		this.preEditLocation = player.getLocation();
 		this.nextFreeLocation = MineWorldManager.getNextFreeLocation();
 
-		this.mine = Mine.create(nextFreeLocation, false);
+		this.mine = Mine.create(nextFreeLocation);
 
 		this.mine.teleportToHome(getPlayer(), nextFreeLocation, false);
 		tell("Entering mine editor. Use '/mine edit' again to exit and save.");

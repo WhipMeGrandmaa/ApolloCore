@@ -11,6 +11,7 @@ me\whipmegrandma\apollocore\command\minebomb\MinebombListSubCommand.class
 me\whipmegrandma\apollocore\listener\MineBombListener.class
 me\whipmegrandma\apollocore\command\mine\MineSetradiusSubCommand.class
 me\whipmegrandma\apollocore\command\PrestigeCommand$1.class
+me\whipmegrandma\apollocore\command\mine\MineResetallSubCommand.class
 me\whipmegrandma\apollocore\settings\PriceSettings.class
 me\whipmegrandma\apollocore\model\enchant\BlackholeEnchant.class
 me\whipmegrandma\apollocore\database\Database.class
@@ -23,7 +24,6 @@ me\whipmegrandma\apollocore\command\MaxrankupCommand$1.class
 me\whipmegrandma\apollocore\listener\TokensListener.class
 me\whipmegrandma\apollocore\model\ApolloPlayer.class
 me\whipmegrandma\apollocore\task\MineResetTask.class
-me\whipmegrandma\apollocore\task\MineTask.class
 me\whipmegrandma\apollocore\command\tokens\TokensCommandGroup.class
 me\whipmegrandma\apollocore\settings\PersonalPickaxeSettings.class
 me\whipmegrandma\apollocore\model\Rank.class
@@ -32,7 +32,6 @@ me\whipmegrandma\apollocore\command\MaxprestigeCommand$1.class
 me\whipmegrandma\apollocore\command\PrestigeCommand.class
 me\whipmegrandma\apollocore\command\rank\RankCommandGroup.class
 me\whipmegrandma\apollocore\listener\PlayerListener.class
-me\whipmegrandma\apollocore\util\ProbabilityCollection.class
 me\whipmegrandma\apollocore\model\enchant\TokenGreedEnchant.class
 me\whipmegrandma\apollocore\settings\TokensSettings.class
 me\whipmegrandma\apollocore\hook\PapiHook.class
@@ -49,7 +48,6 @@ me\whipmegrandma\apollocore\command\disenchanter\DisenchanterListSubCommand.clas
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$3.class
 me\whipmegrandma\apollocore\manager\MineWorldManager.class
 me\whipmegrandma\apollocore\enums\Operator.class
-me\whipmegrandma\apollocore\util\ProbabilityCollection$ProbabilitySetElement.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$TableRow.class
 me\whipmegrandma\apollocore\model\enchant\WrathEnchant.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$TableCreator.class
@@ -82,7 +80,6 @@ me\whipmegrandma\apollocore\menu\PlayerShopMenu\PlayerShopMarketMenu$4.class
 me\whipmegrandma\apollocore\model\Rank$UpgradeType.class
 me\whipmegrandma\apollocore\database\IntermediateDatabase$TableRow$TableRowBuilder.class
 me\whipmegrandma\apollocore\menu\PersonalPickaxeEnchantsMenu$1.class
-me\whipmegrandma\apollocore\model\workloadtypes\MineCreateWorkload.class
 me\whipmegrandma\apollocore\settings\MineSettings.class
 me\whipmegrandma\apollocore\command\rank\RankResetSubCommand.class
 me\whipmegrandma\apollocore\enums\SortedBy$Individual.class
@@ -116,7 +113,6 @@ me\whipmegrandma\apollocore\util\WorldGuardUtil.class
 me\whipmegrandma\apollocore\listener\MineListener.class
 me\whipmegrandma\apollocore\model\enchant\JackHammerEnchant.class
 me\whipmegrandma\apollocore\command\tokens\TokensBalanceSubCommand.class
-me\whipmegrandma\apollocore\interfaces\Workload.class
 me\whipmegrandma\apollocore\menu\IntermediateMenuPagged.class
 me\whipmegrandma\apollocore\util\PlayerShopUtil.class
 me\whipmegrandma\apollocore\hook\VaultHook.class
