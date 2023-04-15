@@ -53,6 +53,9 @@ public class PapiHook extends PlaceholderExpansion {
 		if ("blocksbroken".equals(params))
 			return ApolloPlayer.from(player).getBlocksBroken().toString();
 
+		if ("blocksbrokenformatted".equals(params))
+			return NumberFormat.getInstance().format(ApolloPlayer.from(player).getBlocksBroken());
+
 		return null;
 	}
 }

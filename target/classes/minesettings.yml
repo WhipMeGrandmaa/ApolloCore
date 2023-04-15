@@ -1,7 +1,7 @@
 World_Name: "world_mines"
 Distance_Between_Mines: 100
 
-# NORMAL, NETHER, THE_END
+# NORMAL, NETHER, THE_END (ender dragon spawns)
 World_Type: NORMAL
 
 Biome: PLAINS

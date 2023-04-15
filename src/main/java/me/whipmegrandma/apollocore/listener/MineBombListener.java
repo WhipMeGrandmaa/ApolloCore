@@ -105,7 +105,7 @@ public final class MineBombListener implements Listener {
 		});
 
 		EntityUtil.trackFalling(bomb, () -> {
-			if (!WorldGuardUtil.testBuild(bomb.getLocation(), player)) {
+			if (!WorldGuardUtil.testBuild(bomb.getLocation().clone().add(0, -1, 0), player) && !WorldGuardUtil.testBuild(bomb.getLocation(), player)) {
 				if (player.getGameMode() != GameMode.CREATIVE)
 					MineBombUtil.give(player, mineBomb, 1);
 

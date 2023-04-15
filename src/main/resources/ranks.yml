@@ -8,7 +8,7 @@ A:
   Mine_Blocks:
     DIAMOND_BLOCK: 30.0
     DIRT: 50.0
-    STONE: 75.0
+    STONE: 20.0
 B:
   Rank_Formatted: "&d&lB"
   Next_Rank: C
@@ -37,15 +37,15 @@ Prestige:
       Price: 2000
       Mine_Blocks:
         DIRT: 30.0
-        COBBLESTONE: 20.0
+        COBBLESTONE: 70.0
       Mine_Region_Increase: 1
     3:
       Price: 4000
       Mine_Blocks:
-        DIRT: 100.0
+        DIRT: 95.0
         COBBLESTONE: 5.0
     4:
       Price: 10000
       Mine_Blocks:
-        COBBLESTONE: 20.0
+        COBBLESTONE: 100.0
       Mine_Region_Increase: 3
